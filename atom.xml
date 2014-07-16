@@ -1,0 +1,1480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[BolinYoung's Blog]]></title>
+  <subtitle><![CDATA[Believe in yourself]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://yangbolin.cn/"/>
+  <updated>2014-07-16T13:09:46.507Z</updated>
+  <id>http://yangbolin.cn/</id>
+  
+  <author>
+    <name><![CDATA[BolinYoung]]></name>
+    <email><![CDATA[boris.yangbl@alibaba-inc.com]]></email>
+  </author>
+  
+  <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[使用ASM读取class的字节码]]></title>
+    <link href="http://yangbolin.cn/2014/07/16/asm-read-class-bytes/"/>
+    <id>http://yangbolin.cn/2014/07/16/asm-read-class-bytes/</id>
+    <published>2014-07-16T12:18:54.000Z</published>
+    <updated>2014-07-16T13:07:27.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>我们平时写的JAVA代码经过编译后就是class文件，class文件其实有非常严谨的结构，具体可以参考<a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.1" target="_blank">JVM class文件格式规范</a>,认真读完这个规范，只要你按照这个规范来解析class文件，你就一定能写个javap出来。</p>
+<a id="more"></a>
+
+<p>我们写的JAVA代码最终都是跑在JVM上面的，但是JVM不会跑JAVA源代码，JVM上面跑的是编译后的字节码，也就是说JVM只认识class文件，不认识.java文件。最近在分析Java字节码然后检测一些代码中存在的问题，需要读取Java的class文件，当然按照前面的规范去自己解析class文件也可以，不过这么做你需要处理很多细节问题，ASM就是一个优秀的字节码读取框架，这个框架把byte数组转换成更加具体的对象，方便我们对字节码进行深层次的分析，以及修改，因此最后选择ASM作为字节处理的工具，不过在使用这个工具的时候，发现常量池没法体现出来，因为我只需要常量池中的东西就够了，为了避免全部解析class文件，自己动手解析了常量池。</p>
+<p>ASM把class文件定义成下面几部分<br><img src="http://bolinyoung.qiniudn.com/ASM-SECTION-PDF.png" alt="ASM字节码分块"></p>
+<h4 id="二-ASM读取Class的字节码文件">二.ASM读取Class的字节码文件</h4>
+<p>使用ASM读取Class的字节码文件时，我们与两种思路可以选择</p>
+<ul>
+<li><p>Core-API<br>这中思路其实就是事件的思想，前面我们提到过ASM对字节码进行分块，读取到某一块的时候就会调用相应的visit方法，类似与产生一个事件，然后相应的事件监听者做出相应的响应。这中思路的优点解析过程中内存占用少，速度快，但是缺点就是过了这村就没这店，因为这种解析是顺序的，不可能倒过来的，除非你重新触发一次解析的过程，类似XML的SAX解析思想。流水式的解析，错过了，就永远错过了，除非从头再来。</p>
+</li>
+<li><p>Tree-API<br>Tree-API弥补了Core-API的不足，Tree-API会把解析出来的每一块都保存在内存中，你可以随时获取字节码中的任意一块，这样避免了Core-API的缺点，但是暴漏出来的缺点就是内存占用比较大，类似XML的DOM解析思想。保证字节码的每一块内容在整个解析的过程中一直存储在内存中。</p>
+</li>
+</ul>
+<p>我们可以借鉴ASM这种API设计的理念，解决API设计中存在的一些问题。</p>
+<p><img src="http://bolinyoung.qiniudn.com/ASM-API.png" alt="ASM-API核心类图"></p>
+<p>ClassVistor是一个抽象类，我们在使用Core-API的时候需要构造一个自己的Visitor继承ClassVistor即可，然后重载一些ClassVistor中访问各个字节码模块的方法，这样在解析到每个class文件的相应模块时，这些方法会被回调。我们在使用Tree-API的时候，需要构造一个ClassNode,通过上述类图就能看出ClassNode也是ClassVisitor的一个派生类，这不过这个ClassNode在实现这些visit方法的时候把流水式解析的结果存储在一些自己的成员变量中，从而保证各个字节码分块在整个解析的过程中都在内存中一直存在。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>我们平时写的JAVA代码经过编译后就是class文件，class文件其实有非常严谨的结构，具体可以参考<a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.1" target="_blank">JVM class文件格式规范</a>,认真读完这个规范，只要你按照这个规范来解析class文件，你就一定能写个javap出来。</p>
+]]></summary>
+    
+      <category term="ASM" scheme="http://yangbolin.cn/tags/ASM/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[JAVA字节码常量池中常量编号的疑问]]></title>
+    <link href="http://yangbolin.cn/2014/07/16/class-bytecode-constant-pool-num/"/>
+    <id>http://yangbolin.cn/2014/07/16/class-bytecode-constant-pool-num/</id>
+    <published>2014-07-16T09:50:43.000Z</published>
+    <updated>2014-07-16T11:28:23.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-问题描述">一.问题描述</h4>
+<p>最近在解析JAVA字节码的时候，发现常量池中常量编号不连续了，导致解析程序经常NPE，然后仔细测试了一下，发现常量类型如果是Long或者Double的话，就会导致常量池中常量的编号不连续了。</p>
+<a id="more"></a>
+
+<p>假如当前常量类型是Long的话，并且当前常量编号是N，此时如果还有下一个常量的话，下一个常量的编号就是N+2不是N+1了。</p>
+<p><img src="http://bolinyoung.qiniudn.com/bytecode-why.png" alt="字节码常量池中常量的编号"></p>
+<p>此时我们发现编号为2的常量是Long类型，结果下面一个常量的编号变成4了，为什么不是3?同时编号为5的常量是Double类型，结果下面一个常量的编号变成7了，为什么不是6?</p>
+<p>从上面的分析暂时可以得出的结论是:Long或者Double类型的常量在常量池中占据两个常量的编号，这个是为什么呢？</p>
+<h4 id="二-相关解释">二.相关解释</h4>
+<p>一开始以为这里的编号可能不是按照自然顺序来的，或者是相对与什么的偏移量，因为方法的字节指令前面的编号就是字节码数组中的偏移量。后面查找了一下<a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.5" target="_blank">JVM规范</a>，发现这是一个Class文件的规范定义。</p>
+<p><img src="http://bolinyoung.qiniudn.com/bytecode-guifan.png" alt="JVM常量池规范"></p>
+<p>而且已经在规范里面吐槽过了。因此在解析常量池中常量编号的时候不能一直按照自然顺序单调递增，如果常量是Long或者Double类型的话，需要跳过一个常量的编号。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-问题描述">一.问题描述</h4>
+<p>最近在解析JAVA字节码的时候，发现常量池中常量编号不连续了，导致解析程序经常NPE，然后仔细测试了一下，发现常量类型如果是Long或者Double的话，就会导致常量池中常量的编号不连续了。</p>
+]]></summary>
+    
+      <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Spring容器的事件机制]]></title>
+    <link href="http://yangbolin.cn/2014/07/07/spring-application-event/"/>
+    <id>http://yangbolin.cn/2014/07/07/spring-application-event/</id>
+    <published>2014-07-07T05:08:20.000Z</published>
+    <updated>2014-07-10T15:40:24.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>Spring容器暴漏了很多扩展点给框架的使用者，让框架的使用者能够干涉一些容器内部的事情，也让框架的使用能够感知到容器内部发生了什么事情，比如Spring容器在初始化完后，就会广播一个容器初始化完成的事件，然后事件的监听者监听到这个事件后做相应的事情，这也是Spring容器的一个非常有用的扩展点。</p>
+<a id="more"></a>
+
+<h4 id="二-事件相关的类图">二.事件相关的类图</h4>
+<p><img src="http://bolinyoung.qiniudn.com/Spring-Event.png" alt="Spring事件机制相关的类图"></p>
+<p>上面这张类图就是Spring事件机制涉及到的一些核心类图。关于事件机制核心的接口有两个ApplicationEventMulticaster和ApplicationListener,前者是事件的广播中心接口，主要负责事件的广播和监听者的注册，后者是事件监听接口,还有一个事件对象ApplicationEvent，定义事件相关的属性，比如事件的类型，事件关联的数据，不过Spring中并没有定义相关的事件类型，不同的事件对应不同的类，比如ContextRefreshedEvent，表示Spring容器上下文初始化结束了。</p>
+<p>其实事件这个概念在我们日常的开发中经常会被用到，很多人喜欢设计一个事件模块，要是让你去设计一个事件模块的话，需要考虑三个点，事件本身的定义，包括事件的类型以及事件所包含的数据，其次，需要定义事件的广播机制，一般有同步和异步，最后当然就是事件监听者的定义了，在监听者内部定义如何响应各自感兴趣的事件。</p>
+<h5 id="三-Spring事件机制的巧妙使用">三.Spring事件机制的巧妙使用</h5>
+<p>Spring容器在初始化完成后，会发广播一个容器初始化OK的事件出来，我们可以在每个bean注册一个监听上下文刷新成功的事件，等上下文刷新成功了，我们在用这个bean去做一些其他事情。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XXBean</span> <span class="keyword">implements</span> <span class="title">InitializingBean</span>, <span class="title">ApplicationContextAware</span>
+    // 把<span class="title">Spring</span>容器注入到这个<span class="title">bean</span>中
+    <span class="title">public</span> <span class="title">void</span> <span class="title">setApplicationContext</span>(<span class="title">ApplicationContext</span> <span class="title">applicationContext</span>) <span class="title">throws</span> <span class="title">BeansException</span> {</span>
+        <span class="keyword">if</span> (applicationContext <span class="keyword">instanceof</span> AbstractApplicationContext) {
+            AbstractApplicationContext apc = (AbstractApplicationContext)applicationContext;
+            <span class="comment">// 注册新listener</span>
+            apc.addListener(<span class="keyword">new</span> XXXApplicationListener());
+        }
+    }
+
+    <span class="keyword">private</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">XXXApplicationListener</span> <span class="keyword">implements</span> <span class="title">ApplicationListener</span> {</span>
+        <span class="annotation">@Override</span>
+        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span>(ApplicationEvent event) {
+            <span class="keyword">if</span> (event <span class="keyword">instanceof</span> ContextRefreshedEvent) {
+                <span class="comment">// 这时候这个bean已经在Spring容器中初始化OK了</span>
+                XXBean.<span class="keyword">this</span>.xxx.xxx <span class="comment">// 使用初始化好的bean中的相关属性做一些事情</span>
+            }
+        }
+    }
+}
+</pre></td></tr></table></figure>
+
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>Spring容器暴漏了很多扩展点给框架的使用者，让框架的使用者能够干涉一些容器内部的事情，也让框架的使用能够感知到容器内部发生了什么事情，比如Spring容器在初始化完后，就会广播一个容器初始化完成的事件，然后事件的监听者监听到这个事件后做相应的事情，这也是Spring容器的一个非常有用的扩展点。</p>
+]]></summary>
+    
+      <category term="Spring" scheme="http://yangbolin.cn/tags/Spring/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[如何读懂JVM GC日志]]></title>
+    <link href="http://yangbolin.cn/2014/07/01/how-to-read-gc-log/"/>
+    <id>http://yangbolin.cn/2014/07/01/how-to-read-gc-log/</id>
+    <published>2014-07-01T15:55:05.000Z</published>
+    <updated>2014-07-01T16:14:04.000Z</updated>
+    <content type="html"><![CDATA[<p>我们经常会在线上观察JVM运行时GC日志，其实GC日志中有很多信息可以挖掘，比如下面的GC日志信息</p>
+<blockquote>
+<p>[GC [DefNew: 34538K-&gt;2311K(36352K), 0.0232439 secs] 45898K-&gt;15874K(520320K), 0.0233874 secs]<br>[Full GC [Tenured: 313563K-&gt;15402K(483968K), 0.2368177 secs]<br>343563K-&gt;18402K(520320K), [Perm : 28671K-&gt;28635K(28672K)], 0.2371537 secs]</p>
+</blockquote>
+<a id="more"></a>
+
+<p>观察上面的GC日志，我们发现出现了一次YGC和一次FGC,JVM的内存是分代的，有老年代，新生代，还有永久代。一般我们创建的对象先会进入新生代，要是经过N次YGC后，这个对象还存在，那么这个对象就晋升到老年代，这个N是可以配置的。永久代主要存储JVM字节码以及相关的类信息。</p>
+<ul>
+<li><p>关于YGC日志的解释：<br>新生代的总大小是36352K,当新生代使用到34538K时发生了一次YGC,此时新生代的占用从34538K变到2311K，同时我们也能看到整个堆内存的变化，整个堆内存大小是520320K，当使用到45898K时发生了一次YGC,堆内存的使用由45898K变化到15874K。后面的时间是指内存回收的耗时。</p>
+</li>
+<li><p>关于YGC日志的解释：<br>老年代总大小为483968K，当老年代使用到313563K，发生了一次FGC,老年代的使用由313563K变到15402K。堆的总内存大小为520320K，当使用到343563K发生了一次FGC,堆内存的使用由343563K变到18402K。永久代的总大小为28672K，当永久代内存使用到28671K时发生了一次FGC，永久代使用的内存由28671K变到28635K。后面的时间表示内存回收的耗时。</p>
+</li>
+</ul>
+]]></content>
+    <summary type="html"><![CDATA[<p>我们经常会在线上观察JVM运行时GC日志，其实GC日志中有很多信息可以挖掘，比如下面的GC日志信息</p>
+<blockquote>
+<p>[GC [DefNew: 34538K-&gt;2311K(36352K), 0.0232439 secs] 45898K-&gt;15874K(520320K), 0.0233874 secs]<br>[Full GC [Tenured: 313563K-&gt;15402K(483968K), 0.2368177 secs]<br>343563K-&gt;18402K(520320K), [Perm : 28671K-&gt;28635K(28672K)], 0.2371537 secs]</p>
+</blockquote>
+]]></summary>
+    
+      <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[sqlmap被Spring容器加载了]]></title>
+    <link href="http://yangbolin.cn/2014/07/01/sqlmap-load-by-spring-container/"/>
+    <id>http://yangbolin.cn/2014/07/01/sqlmap-load-by-spring-container/</id>
+    <published>2014-07-01T12:10:20.000Z</published>
+    <updated>2014-07-01T15:55:31.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-现象">一.现象</h4>
+<p>最近发布需求升级一个中间件，一个web应用在启动的时候，偶尔会会报下面的错误，报错的规律无法跟踪，导致应用启动失败。<br><img src="http://bolinyoung.qiniudn.com/ibatis-spring.png" alt="ibatis-psring"><br>有时候启动应用就会出现上面的异常，有时候启动应用没有异常，在发布的时候要是机器启动失败，我们就不断重启，直到机器重启成功。</p>
+<a id="more"></a>
+
+<h4 id="二-分析">二.分析</h4>
+<p>首先，从上面的异常看到是由于当前机器上没法访问ibatis.apache.org这个域名导致，一台机器要是没法访问某个域名，要么这台机器本身有问题，要么域名对应的机器有问题，机器本身的问题可以排除，因为ping这个域名能ping的通，那么唯一的问题就是域名对应的机器拒绝访问导致，或许ibatis.apache.org这个服务不稳定。因此，上面的UnkonwHostException:ibatis.apache.org只能解释解释域名提供的服务不稳定了。</p>
+<p>其次，我们在所有的配置文件中找ibatis.apache.org这个域名，发现sqlmap的总控文件和每个sqlmap文件中有引用这个域名</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="doctype">&lt;!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd"&gt;</span>
+</pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="doctype">&lt;!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd"&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>奇怪，ibatis的配置文件怎么会被Spring解析呢？要解析也是有ibatis来解析。为什么说ibatis的配置文件被Spring解析了呢？看上图异常堆栈的开始，箭头所指</p>
+<blockquote>
+<p>at org.apache.xerces.parsers.DOMParser.parse(Unknown Source)<br>at org.apache.xerces.jaxp.DocumentBuilderImpl.parse(Unknown Source)<br>at org.springframework.beans.factory.xml.DefaultDocumentLoader.loadDocument(DefaultDocumentLoader.java:75)<br>at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(XmlBeanDefinitionReader.java:396)<br>… 63 more</p>
+</blockquote>
+<p>这行日志很明确地告诉我们Spring在偷偷解析的sqlmap配置文件了，注意核心关键词org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions(),Spring这个时候处于bean定义的读取状态。</p>
+<p>至此，有两个问题没有解决</p>
+<p>1.Spring为什么会解析这份sqlmap的配置文件呢？<br>2.Spring解析每份XML的配置文件时，都会从网上找DTD文件吗？</p>
+<p>先来回答问题1，Spring之所以会去偷偷解析这份配置文件，因为这份配置文件被Spring容器加载了，这份配置文件能被Spring容器加载，那是因为有人写错了，看了一下应用的总控配置文件，果然被写成这样子</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="pi">&lt;?xml version="1.0" encoding="GBK"?&gt;</span>
+<span class="doctype">&lt;!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd"&gt;</span>
+<span class="tag">&lt;<span class="title">beans</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"classpath*:xxxx/bean/**/*.xml"</span>/&gt;</span>
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>刚好那份sqlmap的总控配置文件也写在这xxx/bean/<em>*/</em>能匹配到的目录下面，这样这份配置文件必然会被Spring容器所加载了。</p>
+<p>再看第2个问题，答案是显然不会从网上去找DTD文件，换做是你，你也不会这么写,Spring那么多DTD文件都是存在于Spring的jar包中，在XML解析的时候会把网络地址转换成classpath中某个DTD文件的路径。关键上面的域名ibatis.apache.org在Spring做XML解析的时候没法转换成自己jar包正某个DTD文件的路径，因此XML解析程序就会从网上去找这个DTD文件，这样ibatis.apache.org这个域名就会被访问了，这个过程可以看XML解析的源代码。</p>
+<p>其实只要看看EntityResolver这个接口的注释就明白了。</p>
+<h4 id="三-解决办法">三.解决办法</h4>
+<p>1.移动sqlmap的位置，保证不会被Spring容器所加载。<br>2.把Spring总控配置文件中正则表达式修改一下，不要命中sqlmap即可。</p>
+<h4 id="四-总结">四.总结</h4>
+<p>1.最好避免sqlmap被Spring容器加载，首先这份配置文件有解析它的代码，但是不是Spring，其次Spring解析它，一个bean也解析不到，还有可能在网络不好的时候出现网络访问异常。<br>2.关于上面问题的排查，其实不像写的这么顺利，一开始忽略了最重要的问题：Spring为什么会去解析ibatis的配置文件呢？导致自己一直在怀疑XML jar包是不是冲突导致，另外要是有个问题很难定位的时候，注意那些曾经被我们忽略的细节点，或许问题的根源就在哪里。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-现象">一.现象</h4>
+<p>最近发布需求升级一个中间件，一个web应用在启动的时候，偶尔会会报下面的错误，报错的规律无法跟踪，导致应用启动失败。<br><img src="http://bolinyoung.qiniudn.com/ibatis-spring.png" alt="ibatis-psring"><br>有时候启动应用就会出现上面的异常，有时候启动应用没有异常，在发布的时候要是机器启动失败，我们就不断重启，直到机器重启成功。</p>
+]]></summary>
+    
+      <category term="Spring" scheme="http://yangbolin.cn/tags/Spring/"/>
+    
+      <category term="IBatis" scheme="http://yangbolin.cn/tags/IBatis/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[BeanFactoryPostProcessor和BeanPostProcessor]]></title>
+    <link href="http://yangbolin.cn/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/"/>
+    <id>http://yangbolin.cn/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/</id>
+    <published>2014-06-24T15:29:37.000Z</published>
+    <updated>2014-06-30T05:54:26.000Z</updated>
+    <content type="html"><![CDATA[<p>一.概述<br>我们经常使用Spring框架，Spring帮我托管bean的创建以及bean的管理，同时又暴漏出一些可扩展的地方，方面程序员去干涉bean或者Spring容器的创建。今天有同学问BeanPostProcessor相关的东西，由此很容易想到BeanFactoryPostProcessor，这里总结一下，方便后面在开发的过程中灵活使用。</p>
+<a id="more"></a>
+
+<p>二.BeanPostProcessor前置处理器<br>Spring容器在创建bean的时候，会看有没有BeanPostProcessor，如果有的话，会回调BeanPostProcessor接口中的两个方法，在bean创建之前执行程序员的一些个性化代码，在bean创建之后也执行一些程序员的个性化代码。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BeanPostProcessor</span> {</span>
+    <span class="javadoc">/** 创建bean之前回调 **/</span>
+	Object postProcessBeforeInitialization(Object bean, String beanName) <span class="keyword">throws</span> BeansException;
+	<span class="javadoc">/** 创建bean之后回调 **/</span>
+	Object postProcessAfterInitialization(Object bean, String beanName) <span class="keyword">throws</span> BeansException;
+}
+</pre></td></tr></table></figure>
+
+<p>三.BeanFactoryPostProcessor<br>这个可以让程序员去干涉一下Spring容器的创建，Spring容器创建的时候会回调这个接口的定义的这个方法，比如你可以在实现了这个接口的方法中给Spring容器注册一个JVM关闭时回调的钩子。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyBeanFactoryPostProcessor</span> <span class="keyword">implements</span> <span class="title">BeanFactoryPostProcessor</span>{</span>
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postProcessBeanFactory</span>(ConfigurableListableBeanFactory beanFactory) <span class="keyword">throws</span> BeansException {
+        <span class="comment">// 注册JVM关闭时的回调</span>
+        ConfigurableApplicationContext cxt = (ConfigurableApplicationContext)beanFactory;
+        cxt.registerShutdownHook();
+    }
+}
+</pre></td></tr></table></figure>
+
+]]></content>
+    <summary type="html"><![CDATA[<p>一.概述<br>我们经常使用Spring框架，Spring帮我托管bean的创建以及bean的管理，同时又暴漏出一些可扩展的地方，方面程序员去干涉bean或者Spring容器的创建。今天有同学问BeanPostProcessor相关的东西，由此很容易想到BeanFactoryPostProcessor，这里总结一下，方便后面在开发的过程中灵活使用。</p>
+]]></summary>
+    
+      <category term="Spring" scheme="http://yangbolin.cn/tags/Spring/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[JAVA代码中如何感知到JVM退出]]></title>
+    <link href="http://yangbolin.cn/2014/06/19/how-to-aware-jvm-exit/"/>
+    <id>http://yangbolin.cn/2014/06/19/how-to-aware-jvm-exit/</id>
+    <published>2014-06-19T14:42:58.000Z</published>
+    <updated>2014-06-30T14:30:16.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-需求">一.需求</h4>
+<p>当JVM退出的时候，把内存中的某块数据写入到DB。分析这个需求，我们需要让应用感知到JVM准备退出了，然后把数据写入DB，然后JVM继续执行退出…</p>
+<a id="more"></a>
+
+<h4 id="二-实现">二.实现</h4>
+<ul>
+<li>基于Spring的DisposableBean接口来实现<br>我们只要在自己的应用编写一个bean,实现DisposableBean这个接口中的destroy方法，然后在destroy方法中编写清理逻辑即可。要是我们不给Spring容器注册这样一个JVM关闭的钩子，JVM关闭的时候destroy方法同样不会被调用。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre>ConfigurableApplicationContext ctx = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"....xml"</span>);
+<span class="comment">// 注册JVM关闭时回调的钩子到Spring容器</span>
+ctx.registerShutdownHook();
+</pre></td></tr></table></figure>
+
+<p>必须在应用中给Spring容器注册这样关闭钩子，负责bean的destroy方法在JVM退出的时候是没法调用的。</p>
+<p>另外，如果我们的应用是一个web应用，我们在停止web应用是，该应用中实现了DisposableBean这个接口的bean的destroy方法也会被调用，这个被调用的原因不是由于创建Spring容器时注册了关闭JVM回调的钩子，而是因为关闭web应用时会回调ServletContextListener的contextDestroyed方法，ServletContextListener的实现类是ContextLoaderListener，contextDestroyed的实现如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextLoaderListener</span> <span class="keyword">implements</span> <span class="title">ServletContextListener</span> {</span>
+    <span class="keyword">private</span> ContextLoader contextLoader;
+    ...
+	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextDestroyed</span>(ServletContextEvent event) {
+		<span class="keyword">if</span> (<span class="keyword">this</span>.contextLoader != <span class="keyword">null</span>) {
+		    <span class="comment">//  关闭Spring容器</span>
+			<span class="keyword">this</span>.contextLoader.closeWebApplicationContext(event.getServletContext());
+		}
+	}
+    ...
+}
+</pre></td></tr></table></figure>
+
+<p>我们再看看ContextLoader的closeWebApplicationContext方法实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextLoader</span> {</span>
+    <span class="comment">//....</span>
+	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeWebApplicationContext</span>(ServletContext servletContext){
+		servletContext.log(<span class="string">"Closing Spring root WebApplicationContext"</span>);
+		<span class="keyword">try</span> {
+			<span class="keyword">if</span> (<span class="keyword">this</span>.context <span class="keyword">instanceof</span> ConfigurableWebApplicationContext){
+			    <span class="comment">// 销毁servlet的上下文，调用Spring容器的close方法</span>
+			    ((ConfigurableWebApplicationContext) <span class="keyword">this</span>.context).close();
+			}
+		}
+		<span class="keyword">finally</span> {
+		    <span class="comment">// ...</span>
+		}
+	}
+	<span class="comment">//...</span>
+}
+</pre></td></tr></table></figure>
+
+<p>因此web应用中不需要给Spring容器注册JVM关闭的钩子，代码中依然能够感知到JVM的关闭。</p>
+<ul>
+<li>直接基于Runtime的addShutdownHook方法来实现</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre>Runtime.getRuntime().addShutdownHook(<span class="keyword">new</span> Thread(){
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
+        System.out.println(<span class="string">"JVM EXIT..."</span>);
+    }
+});
+</pre></td></tr></table></figure>
+
+<p>JVM退出的时候会回调我们注册的这个钩子，Spring注册JVM关闭的回调也是这么搞的，具体AbstractApplicationContext.java中源代码如下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractApplicationContext</span> <span class="keyword">extends</span> <span class="title">DefaultResourceLoader</span>
+		<span class="keyword">implements</span> <span class="title">ConfigurableApplicationContext</span>, <span class="title">DisposableBean</span> {</span>
+	....
+		<span class="javadoc">/**
+	 * Register a shutdown hook with the JVM runtime, closing this context
+	 * on JVM shutdown unless it has already been closed at that time.
+	 * &lt;p&gt;Delegates to &lt;code&gt;doClose()&lt;/code&gt; for the actual closing procedure.
+	 *<span class="javadoctag"> @see</span> java.lang.Runtime#addShutdownHook
+	 *<span class="javadoctag"> @see</span> #close()
+	 *<span class="javadoctag"> @see</span> #doClose()
+	 */</span>
+	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerShutdownHook</span>() {
+		<span class="keyword">if</span> (<span class="keyword">this</span>.shutdownHook == <span class="keyword">null</span>) {
+			<span class="comment">// No shutdown hook registered yet.</span>
+			<span class="keyword">this</span>.shutdownHook = <span class="keyword">new</span> Thread() {
+				<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
+					doClose();
+				}
+			};
+			Runtime.getRuntime().addShutdownHook(<span class="keyword">this</span>.shutdownHook);
+		}
+	}
+	....
+}
+</pre></td></tr></table></figure>
+
+<h4 id="三-总结">三.总结</h4>
+<ul>
+<li><p>回调思想<br>回调也是实现程序解耦的一种思路，在平时开发的过程中要注意回调的使用，回调的调用面向接口，回调的实现交给第三方来实现，我们也可提供缺省的回调实现。</p>
+</li>
+<li><p>可扩展性<br>自己实现的框架或一定要提供可扩展的地方，方便满足别人个性化的一些需求。</p>
+</li>
+</ul>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-需求">一.需求</h4>
+<p>当JVM退出的时候，把内存中的某块数据写入到DB。分析这个需求，我们需要让应用感知到JVM准备退出了，然后把数据写入DB，然后JVM继续执行退出…</p>
+]]></summary>
+    
+      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
+    
+      <category term="编程语言" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[maven自己的仲裁机制]]></title>
+    <link href="http://yangbolin.cn/2014/06/18/maven-default-arbitration/"/>
+    <id>http://yangbolin.cn/2014/06/18/maven-default-arbitration/</id>
+    <published>2014-06-18T14:09:25.000Z</published>
+    <updated>2014-06-18T14:25:15.000Z</updated>
+    <content type="html"><![CDATA[<p>maven现在被广泛用来做项目管理的工具，我们经常在maven的pom文件中指定我们项目依赖的二方库，我们也会经常遇到jar包冲突，类冲突的问题。关于类冲突就是由于maven自己的仲裁机制，把应该引入的jar包给仲裁了，那么maven自己到底是如何仲裁jar包的呢？</p>
+<a id="more"></a>
+
+<p>假设我们在自己的pom.xml中引入下面的jar包</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="code"><pre>    ...
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>AA<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>BB<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    ....
+</pre></td></tr></table></figure>
+
+<p>AA间接依赖CC对应maven坐标如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>CC<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>BB间接依赖CC对应maven坐标如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>CC<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.1<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>此时maven编译的时候会进行仲裁，首先看依赖的路径，假设当前项目是X，对于CC有两条依赖路径,只是version不同，其他都一样。<br>1.X-&gt;AA-&gt;CC 1.0.0<br>2.X-&gt;BB-&gt;CC 1.0.1<br>发现两条路径的长度一样。接下来观察AA和BB在pom中声明的顺序，发现AA在BB的前面，此时CC使用1.0.0的版本。</p>
+<p>因此maven自己的仲裁机制是先看路径长度，路径长度一样再看声明顺序。</p>
+<p>如果我们书写下面的pom文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="code"><pre>...
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>AA<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>AA<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.1<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+...
+</pre></td></tr></table></figure>
+
+<p>按照上面的规则，路径相同，看声明顺序，因此1.0.0的版本被使用。</p>
+<p>注意:<br>maven仲裁的前置条件是artifactId和groupId一样。</p>
+]]></content>
+    <summary type="html"><![CDATA[<p>maven现在被广泛用来做项目管理的工具，我们经常在maven的pom文件中指定我们项目依赖的二方库，我们也会经常遇到jar包冲突，类冲突的问题。关于类冲突就是由于maven自己的仲裁机制，把应该引入的jar包给仲裁了，那么maven自己到底是如何仲裁jar包的呢？</p>
+]]></summary>
+    
+      <category term="maven" scheme="http://yangbolin.cn/tags/maven/"/>
+    
+      <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[sql语句的大小]]></title>
+    <link href="http://yangbolin.cn/2014/06/17/sql-size/"/>
+    <id>http://yangbolin.cn/2014/06/17/sql-size/</id>
+    <published>2014-06-17T13:52:39.000Z</published>
+    <updated>2014-06-18T14:11:21.000Z</updated>
+    <content type="html"><![CDATA[<p>今天写了下面的sql语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> XX,YY <span class="keyword">from</span> tableXX <span class="keyword">where</span> XX <span class="keyword">in</span> (<span class="string">'aa'</span>,<span class="string">'bb'</span>,<span class="string">'cc'</span>)</span>
+</pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>这个sql不是在mysql或者oracle数据库上执行，而是在一个实时计算的数据产品上执行，当in的范围超过400后，发现执行失败，咨询相关同学后，原来这个实时计算的产品中对in的范围大小有限制，缺省的限制是400。</p>
+<p>我们平时都在使用mysql，那么mysql本身对in的范围大小是否有限制呢？mysql虽然没有对in的范围直接限制，但是限制了sql语句的长度，我们可以在不同的数据库中使用下面的命令来查看当前数据库server能接受的数据包大小</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">show</span> variables <span class="keyword">like</span> <span class="string">'max_allowed_packet%'</span></span>
+</pre></td></tr></table></figure>
+
+<p>sql也是server端需要接收的数据，这个配置如果是Linux系统的化，可以查看my.cnf配置文件中配置的值。</p>
+<p>mysql不管你使用InnoDB还是MYISAM,sql的大小都有限制，和使用的数据库引擎没有关系，InnoDB支持事务，MYISAM不支持事务。</p>
+]]></content>
+    <summary type="html"><![CDATA[<p>今天写了下面的sql语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> XX,YY <span class="keyword">from</span> tableXX <span class="keyword">where</span> XX <span class="keyword">in</span> (<span class="string">'aa'</span>,<span class="string">'bb'</span>,<span class="string">'cc'</span>)</span>
+</pre></td></tr></table></figure>
+
+]]></summary>
+    
+      <category term="sql" scheme="http://yangbolin.cn/tags/sql/"/>
+    
+      <category term="数据库" scheme="http://yangbolin.cn/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[如何获取当前JAVA进程的PID]]></title>
+    <link href="http://yangbolin.cn/2014/06/14/how-to-get-java-pid/"/>
+    <id>http://yangbolin.cn/2014/06/14/how-to-get-java-pid/</id>
+    <published>2014-06-14T01:24:39.000Z</published>
+    <updated>2014-06-14T01:28:17.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-需求">一.需求</h4>
+<p>如何在JAVA代码中获取当前运行JAVA进程的进程ID，通常我们可以在JVM外部执行jps命令看到某一JAVA进程的PID，但是如何在JVM内部获取这个PID呢？</p>
+<a id="more"></a>
+
+<h4 id="二-实现">二.实现</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="code"><pre><span class="javadoc">/**
+ * 获取java进程PID
+ * 
+ *<span class="javadoctag"> @return</span>
+ */</span>
+<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getPID</span>() {
+    String rtName = ManagementFactory.getRuntimeMXBean().getName();
+    <span class="keyword">int</span> index = rtName.indexOf(<span class="string">"@"</span>);
+    <span class="keyword">if</span> (index != -<span class="number">1</span>) {
+        <span class="keyword">return</span> Integer.parseInt(rtName.substring(<span class="number">0</span>, index));
+    }
+
+    <span class="keyword">return</span> -<span class="number">99</span>;
+}
+</pre></td></tr></table></figure>
+
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-需求">一.需求</h4>
+<p>如何在JAVA代码中获取当前运行JAVA进程的进程ID，通常我们可以在JVM外部执行jps命令看到某一JAVA进程的PID，但是如何在JVM内部获取这个PID呢？</p>
+]]></summary>
+    
+      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Linux命令总结]]></title>
+    <link href="http://yangbolin.cn/2014/06/13/linux-command/"/>
+    <id>http://yangbolin.cn/2014/06/13/linux-command/</id>
+    <published>2014-06-13T06:30:04.000Z</published>
+    <updated>2014-06-19T09:29:38.000Z</updated>
+    <content type="html"><![CDATA[<p>一些常用Linux命令的总结</p>
+<a id="more"></a>
+
+<ul>
+<li>lsof -p <pid> | grep xx<br>查看当前进程中有没有使用xx相关的东西，比如可以查看当前JVM有加载的某个jar包完整信息 ，包括版本。</li>
+<li>pmap <pid> | grep xx<br>查看当前进程中有没有使用xx相关的东西，比如可以查看当前JVM有加载的某个jar包完整信息 ，包括版本。</li>
+<li>df -hl<br>查看磁盘占用率</li>
+<li><p>du -sh 文件目录<br>查看当前文件的大小</p>
+</li>
+<li><p>grep -R “xxx” .<br>在当前目录下查看包含xxx字符串的文件</p>
+</li>
+</ul>
+]]></content>
+    <summary type="html"><![CDATA[<p>一些常用Linux命令的总结</p>
+]]></summary>
+    
+      <category term="Linux" scheme="http://yangbolin.cn/tags/Linux/"/>
+    
+      <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[如何在本地通过eclipse来调试HBase的源代码]]></title>
+    <link href="http://yangbolin.cn/2014/06/07/how-to-debug-hbase-source/"/>
+    <id>http://yangbolin.cn/2014/06/07/how-to-debug-hbase-source/</id>
+    <published>2014-06-07T14:36:16.000Z</published>
+    <updated>2014-06-08T07:30:57.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>要想把HBase的源代码梳理清楚，需要在本地调试一下，可能直接看代码也能搞清楚，但是调试能让我们尽快搞清楚HBase的源代码，下面就来看一下如何在eclipse中调试HBase的源代码。</p>
+<a id="more"></a>
+
+<h4 id="二-编译HBase的源代码">二.编译HBase的源代码</h4>
+<p>1.HBase源代码的获取<br>你可以直接从HBase的官方网站上下载HBase的包，<a href="http://hbase.apache.org/" target="_blank">HBase官方地址</a><br>你也可以使用svn把hbase的代码签出</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>svn co <span class="symbol">http:</span>/<span class="regexp">/svn.apache.org/repos</span><span class="regexp">/asf/hbase</span><span class="regexp">/tags/</span><span class="number">0</span>.<span class="number">94.2</span>/ hbase_sources
+</pre></td></tr></table></figure>
+
+<p>2.HBase源代码的编译<br>进入到HBase代码的目录下面，执行下面的命令</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>mvn clean <span class="keyword">install</span> mvn clean <span class="keyword">install</span> -DskipTests
+mvn eclipse clean eclipse:eclipse
+</pre></td></tr></table></figure>
+
+<p>执行完上面的命令后，就把HBase的源码导入到eclipse中去。在执行maven命令的时候注意使用maven包自带的settings.xml，不要使用其他settings.xml文件，会导致编译不过的。</p>
+<p>3.在eclipse中做相关的设置</p>
+<p>在eclipse的Run Configurations中设置启动类<br><img src="http://bolinyoung.qiniudn.com/hbase-start.png" alt="设置启动类HMaster"></p>
+<p>在eclipse的Run Configurations中设置启动参数<br><img src="http://bolinyoung.qiniudn.com/hbase-start-args.png" alt="设置启动参数"></p>
+<p>在eclipse的Run Configurations中把conf文件放到classpath中<br><img src="http://bolinyoung.qiniudn.com/hbase-start-conf.png" alt="把conf文件放到classpath中"></p>
+<p>4.点击Run运行<br>出现了下面的错误<br><img src="http://bolinyoung.qiniudn.com/hbase-xml-version.png" alt="xml版本校验出错"><br>观察出错日志，显示hbase-default.xml版本校验出错，搞不定，搜一把，有人说在hbase-site.xml增加下面的配置项</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">property</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">name</span>&gt;</span>hbase.defaults.for.version.skip<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">value</span>&gt;</span>true<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">description</span>&gt;</span>
+		Set to true to skip the 'hbase.defaults.for.version' check.
+		Setting this to true can be useful in contexts other than
+		the other side of a maven generation; i.e. running in an
+		ide. You'll want to set this boolean to true to avoid
+		seeing the RuntimException complaint: "hbase-default.xml file
+		seems to be for and old version of HBase (@@@VERSION@@@), this
+		version is X.X.X-SNAPSHOT"
+	<span class="tag">&lt;/<span class="title">description</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>索性试一下，此错误消失了，又来一错误<br><img src="http://bolinyoung.qiniudn.com/hbase-zk-error.png" alt="HBase ZK ERROR"><br>这个错之前遇到过是由于zookeeper没启动导致，一直以为运行HMaster类，会自己启动zookeeper，所以一直在网上找答案，结果找到的答案都是错的，于是怀疑zookeeper在自己的电脑上压根就没有启动起来,所以需要想办法在本地启动zookeeper，我们看到hbase源代码中有一个HQuorumPeer类，这个类就是hbase-zookeeper的启动类，该类中有一个main方法，我们在eclipse中以application的方式启动。<br><img src="http://bolinyoung.qiniudn.com/hbase-zk-start.png" alt="hbase zk启动类"><br>把conf下面的配置文件设置到classpath中<br><img src="http://bolinyoung.qiniudn.com/hbase-zk-classpath.png" alt="设置conf到classpath"><br>这样我们就可以在eclipse中启动zookeeper啦。接下来我们再次启动HMaster<br><img src="http://bolinyoung.qiniudn.com/hbase-region-server-error.png" alt="启动HMaster控制台不断输出错误日志"><br>又出错了，看看错误日志，我们发现是RegionServer没有启动好，使用jps可以发现没有RegionServer的进程，虽然日志的级别是INFO的，回头一看确实没有启动过RegionServer，所以启动一下RegionServer啦，我们还是在eclipse中以application的方式去启动RegionServer<br><img src="http://bolinyoung.qiniudn.com/hbase-region-server.png" alt="HBase RegionServer的启动配置"><br>同样需要把conf文件加入到eclipse的classpath中，方法和前面一样，这里就不用再重复了。配置好就启动,然后发现HMaster的控制台INFO级别的日志停掉了。关于这个点我们稍微再深入一些，我们刚才的场景是启动了HMaster但是没有启动RegionServer，此时HMaster的控制台一直有INFO级别的日志输出，我们看一下ServerManager这个类中输出这段日志的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+</pre></td><td class="code"><pre><span class="javadoc">/**
+   * Wait for the region servers to report in.
+   * We will wait until one of this condition is met:
+   *  - the master is stopped
+   *  - the 'hbase.master.wait.on.regionservers.maxtostart' number of
+   *    region servers is reached
+   *  - the 'hbase.master.wait.on.regionservers.mintostart' is reached AND
+   *   there have been no new region server in for
+   *      'hbase.master.wait.on.regionservers.interval' time AND
+   *   the 'hbase.master.wait.on.regionservers.timeout' is reached
+   *
+   *<span class="javadoctag"> @throws</span> InterruptedException
+   */</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">waitForRegionServers</span>(MonitoredTask status)
+  <span class="keyword">throws</span> InterruptedException {
+    <span class="keyword">final</span> <span class="keyword">long</span> interval = <span class="keyword">this</span>.master.getConfiguration().
+      getLong(WAIT_ON_REGIONSERVERS_INTERVAL, <span class="number">1500</span>);
+    <span class="keyword">final</span> <span class="keyword">long</span> timeout = <span class="keyword">this</span>.master.getConfiguration().
+      getLong(WAIT_ON_REGIONSERVERS_TIMEOUT, <span class="number">4500</span>);
+    <span class="keyword">int</span> minToStart = <span class="keyword">this</span>.master.getConfiguration().
+      getInt(WAIT_ON_REGIONSERVERS_MINTOSTART, <span class="number">1</span>);
+    <span class="keyword">if</span> (minToStart &lt; <span class="number">1</span>) {
+      LOG.warn(String.format(
+        <span class="string">"The value of '%s' (%d) can not be less than 1, ignoring."</span>,
+        WAIT_ON_REGIONSERVERS_MINTOSTART, minToStart));
+      minToStart = <span class="number">1</span>;
+    }
+    <span class="keyword">int</span> maxToStart = <span class="keyword">this</span>.master.getConfiguration().
+      getInt(WAIT_ON_REGIONSERVERS_MAXTOSTART, Integer.MAX_VALUE);
+    <span class="keyword">if</span> (maxToStart &lt; minToStart) {
+        LOG.warn(String.format(
+            <span class="string">"The value of '%s' (%d) is set less than '%s' (%d), ignoring."</span>,
+            WAIT_ON_REGIONSERVERS_MAXTOSTART, maxToStart,
+            WAIT_ON_REGIONSERVERS_MINTOSTART, minToStart));
+        maxToStart = Integer.MAX_VALUE;
+    }
+
+    <span class="keyword">long</span> now =  System.currentTimeMillis();
+    <span class="keyword">final</span> <span class="keyword">long</span> startTime = now;
+    <span class="keyword">long</span> slept = <span class="number">0</span>;
+    <span class="keyword">long</span> lastLogTime = <span class="number">0</span>;
+    <span class="keyword">long</span> lastCountChange = startTime;
+    <span class="keyword">int</span> count = countOfRegionServers();
+    <span class="keyword">int</span> oldCount = <span class="number">0</span>;
+    <span class="keyword">while</span> (
+      !<span class="keyword">this</span>.master.isStopped() &&
+        count &lt; maxToStart &&
+        (lastCountChange+interval &gt; now || timeout &gt; slept || count &lt; minToStart)
+      ){
+
+      <span class="comment">// Log some info at every interval time or if there is a change</span>
+      <span class="keyword">if</span> (oldCount != count || lastLogTime+interval &lt; now){
+        lastLogTime = now;
+        String msg =
+          <span class="string">"Waiting for region servers count to settle; currently"</span>+
+            <span class="string">" checked in "</span> + count + <span class="string">", slept for "</span> + slept + <span class="string">" ms,"</span> +
+            <span class="string">" expecting minimum of "</span> + minToStart + <span class="string">", maximum of "</span>+ maxToStart+
+            <span class="string">", timeout of "</span>+timeout+<span class="string">" ms, interval of "</span>+interval+<span class="string">" ms."</span>;
+        LOG.info(msg);
+        status.setStatus(msg);
+      }
+
+      <span class="comment">// We sleep for some time</span>
+      <span class="keyword">final</span> <span class="keyword">long</span> sleepTime = <span class="number">50</span>;
+      Thread.sleep(sleepTime);
+      now =  System.currentTimeMillis();
+      slept = now - startTime;
+
+      oldCount = count;
+      count = countOfRegionServers();
+      <span class="keyword">if</span> (count != oldCount) {
+        lastCountChange = now;
+      }
+    }
+
+    LOG.info(<span class="string">"Finished waiting for region servers count to settle;"</span> +
+      <span class="string">" checked in "</span> + count + <span class="string">", slept for "</span> + slept + <span class="string">" ms,"</span> +
+      <span class="string">" expecting minimum of "</span> + minToStart + <span class="string">", maximum of "</span>+ maxToStart+<span class="string">","</span>+
+      <span class="string">" master is "</span>+ (<span class="keyword">this</span>.master.isStopped() ? <span class="string">"stopped."</span>: <span class="string">"running."</span>)
+    );
+  }
+</pre></td></tr></table></figure>
+
+<p>重点关注这段代码中的while循环，这段代码不断轮寻RegionServer数目，只有启动起来的RegionServer数目&gt;=hbase.master.wait.on.regionservers.mintostart这个while循环才能退出，不然while循环里面就会一直输出INFO的级别的日志，说没有RegionServer启动好，其实hbase.master.wait.on.regionservers.mintostart的默认值就是1.</p>
+<p>至此，Zookeeper，HMaster，HRegionServer都已经启动好了，这里所说的HRegionServer和上面所说的RegionServer指的是同一个东西。接下来我们访问<a href="http://localhost:60010/master-status" target="_blank">http://localhost:60010/master-status</a> 就能看到相关的信息。</p>
+<p>这样我们就可以在本地eclipse中debug一下HBase的源代码啦^=^。</p>
+<h4 id="三-最后总结">三.最后总结</h4>
+<p>我们发现在本地部署HBase，我们需要启动三个东西，Zookeeper,HMaster以及RegionServer。</p>
+<p>zookeeper通过HMaster负责协调整个HBase集群，同时zookeeper保存了hbase中-ROOT-表的地址和HMaster的地址。HRegionServer也会把自己以Ephemeral方式注册到Zookeeper中，使得HMaster可以随时感知到各个HRegionServer的健康状态。</p>
+<p>HMaster没有单点问题，HBase中可以启动多个HMaster，通过Zookeeper的Master Election机制保证总有一个Master运行，HMaster在功能上主要负责Table和Region的管理工作：</p>
+<ol>
+<li>管理用户对Table的增、删、改、查操作</li>
+<li>管理HRegionServer的负载均衡，调整Region分布</li>
+<li>在Region Split后，负责新Region的分配</li>
+<li>在HRegionServer停机后，负责失效HRegionServer 上的Regions迁移</li>
+</ol>
+<p>HRegionServer主要负责响应用户I/O请求，向HDFS文件系统中读写数据，是HBase中最核心的模块。<br>HRegionServer内部管理了一系列HRegion对象，每个HRegion对应了Table中的一个Region，HRegion中由多个HStore组成。每个HStore对应了Table中的一个Column Family的存储，可以看出每个Column Family其实就是一个集中的存储单元，因此最好将具备共同IO特性的column放在一个Column Family中，这样最高效。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>要想把HBase的源代码梳理清楚，需要在本地调试一下，可能直接看代码也能搞清楚，但是调试能让我们尽快搞清楚HBase的源代码，下面就来看一下如何在eclipse中调试HBase的源代码。</p>
+]]></summary>
+    
+      <category term="HBase" scheme="http://yangbolin.cn/tags/HBase/"/>
+    
+      <category term="大数据" scheme="http://yangbolin.cn/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[如何编写maven的helloworld插件]]></title>
+    <link href="http://yangbolin.cn/2014/06/04/how-to-dev-maven-hello-world-plugin/"/>
+    <id>http://yangbolin.cn/2014/06/04/how-to-dev-maven-hello-world-plugin/</id>
+    <published>2014-06-04T12:32:22.000Z</published>
+    <updated>2014-06-07T14:34:53.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>maven提供了一套插件机制，我们只要按照maven定义的规范编写一个插件，maven就能运行我们的插件，在平时开发的过程中我们经常会开发一些maven的插件工具，这写插件工具可以实现类冲突检测，工程部署，工程打包…等等。这里就大致记录一下如何编写一个maven的Hello Word插件，就是说在maven编译的过程中输出Hello Word。</p>
+<a id="more"></a>
+
+<h4 id="二-如何编写maven插件">二.如何编写maven插件</h4>
+<p>1.执行下面的maven命令,生成一个maven的插件工程</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>mvn archetype:create <span class="attribute">-DgroupId</span><span class="subst">=</span>com<span class="built_in">.</span>alibaba<span class="built_in">.</span>maven <span class="attribute">-DartifactId</span><span class="subst">=</span>maven<span class="attribute">-hello</span><span class="attribute">-plugin</span> <span class="attribute">-DarchetypeArtifactId</span><span class="subst">=</span>maven<span class="attribute">-archetype</span><span class="attribute">-mojo</span>
+</pre></td></tr></table></figure>
+
+<p>-DgroupId和-DartifactId就不用多解释了，插件本身也是一个二方库，二方库需要坐标，这样别人才能依赖。<br>-DarchetypeArtifactId=maven-archetype-mojo 创建maven插件工程的时候必须指定这个参数，参数值也需要写成上面这样。</p>
+<p>2.进入插件工程所在的目录,并把插件工程变成一个eclipse可识别的工程，然后导入eclipse进行开发。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="tag">cd</span> <span class="tag">maven-hello-plugin</span>
+<span class="tag">mvn</span> <span class="tag">eclipse</span><span class="pseudo">:clean</span> <span class="tag">eclipse</span><span class="pseudo">:eclipse</span>
+</pre></td></tr></table></figure>
+
+<p>3.在eclipse中开发，编写下面的类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="code"><pre><span class="keyword">import</span> org.apache.maven.plugin.AbstractMojo;
+<span class="keyword">import</span> org.apache.maven.plugin.MojoExecutionException;
+
+<span class="javadoc">/**
+ *<span class="javadoctag"> @goal</span> helloworld
+ */</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMojo</span> <span class="keyword">extends</span> <span class="title">AbstractMojo</span> {</span>
+
+    <span class="javadoc">/**
+     *<span class="javadoctag"> @parameter</span> expression="${helloworld.words}" default-value="Hello World!"
+     */</span>
+    <span class="keyword">private</span> String words;
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span>() <span class="keyword">throws</span> MojoExecutionException {
+        getLog().info(words);
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>4.在插件的目录下面执行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>mvn clean <span class="keyword">install</span>
+</pre></td></tr></table></figure>
+
+<p>把这个插件install到本地的maven仓库中<br>5.插件的运行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="tag">mvn</span> <span class="tag">com</span><span class="class">.alibaba</span><span class="class">.maven</span><span class="pseudo">:maven-hello-plugin</span><span class="pseudo">:1</span><span class="class">.0-SNAPSHOT</span><span class="pseudo">:helloworld</span>
+</pre></td></tr></table></figure>
+
+<p>输出: Hello World</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>mvn <span class="keyword">com</span><span class="preprocessor">.alibaba</span><span class="preprocessor">.maven</span>:maven-hello-plugin:<span class="number">1.0</span>-SNAPSHOT:helloworld -Dhelloworld<span class="preprocessor">.words</span>=<span class="string">"welcome!"</span>
+</pre></td></tr></table></figure>
+
+<p>输出: welcome</p>
+<h4 id="三-注意点">三.注意点</h4>
+<ul>
+<li>maven2中插件参数的注入都是通过javadoc的，使用的Plexus</li>
+<li>每个maven插件都是一个MOJO,我们自己的MOJO必须extends AbstractMojo,同时我们需要重写execute方法</li>
+<li>getLog()实际上是maven编译时信息输出的地方</li>
+<li>对于maven这种插件的设计理念可以在平时开发的过程中借鉴</li>
+</ul>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>maven提供了一套插件机制，我们只要按照maven定义的规范编写一个插件，maven就能运行我们的插件，在平时开发的过程中我们经常会开发一些maven的插件工具，这写插件工具可以实现类冲突检测，工程部署，工程打包…等等。这里就大致记录一下如何编写一个maven的Hello Word插件，就是说在maven编译的过程中输出Hello Word。</p>
+]]></summary>
+    
+      <category term="maven" scheme="http://yangbolin.cn/tags/maven/"/>
+    
+      <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[JAVA线程中join,wait,notify&&notifyAll]]></title>
+    <link href="http://yangbolin.cn/2014/06/03/join-wait-notify-notifyall/"/>
+    <id>http://yangbolin.cn/2014/06/03/join-wait-notify-notifyall/</id>
+    <published>2014-06-03T14:19:16.000Z</published>
+    <updated>2014-06-04T12:31:38.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>在编写多线程程序的时候，我们经常需要考虑线程之间的同步，比如我们使用join可以让某一线程执行结束，使用wait可以让某一线程在某个地方等待，使用notify或者notifyAll可以唤醒处于等待状态的线程。这里我们来看看这几个线程自带方法的使用以及相关的分析。</p>
+<a id="more"></a>
+
+<h4 id="二-join()的使用">二.join()的使用</h4>
+<p>join()方法是Thread类的，在Thread类中提供三种join()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre><span class="comment">// 设置毫秒级别的等待</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">join</span>(<span class="keyword">long</span> millis) 
+    <span class="keyword">throws</span> InterruptedException {<span class="comment">//...}</span>
+<span class="comment">// 设置毫秒级别，纳秒级别的等待</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">join</span>(<span class="keyword">long</span> millis, <span class="keyword">int</span> nanos) 
+    <span class="keyword">throws</span> InterruptedException {<span class="comment">//...}</span>
+<span class="comment">// 持续等待，没有时间限制</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">join</span>() <span class="keyword">throws</span> InterruptedException {<span class="comment">//...}</span>
+</pre></td></tr></table></figure>
+
+<p>如果我们写下面的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre>Thread t1 = <span class="keyword">new</span> ...
+t1.start();
+t1.join();
+System.out.println(<span class="string">"t1 has finished..."</span>);
+</pre></td></tr></table></figure>
+
+<p>此时控制台的输出一定是在线程t1执行结束后，从这点我们可以利用join来控制多个线程直线的执行顺序，比如要想线程t2在线程t1执行结束后执行，我们在调t2的start方法之前调用t1的join方法即可。</p>
+<h4 id="三-wait()&amp;&amp;notify()&amp;&amp;notifyAll()的使用">三.wait()&amp;&amp;notify()&amp;&amp;notifyAll()的使用</h4>
+<p>wait(),notify(),notifyAll()这三个方法是任何一个java对象都具有的方法。<br>在某一对象上调用wait()方法，当前线程就会在该对象上处于等待状态。<br>在某一对象上调用notify()方法，就会唤醒一个在当前对象上处于wait状态的线程，要是当前对象上有N个线程处于wait状态，就会任意选取一个唤醒。<br>在某一对象上调用notifyAll()方法，就会唤醒在某一对象上处于wait的所有线程。</p>
+<p>注意wait()和notify()的时候要使用相同的Object。</p>
+<h4 id="四-绿色线程&amp;&amp;本地线程">四.绿色线程&amp;&amp;本地线程</h4>
+<p>最近在搜索的时候发现了一个绿色线程的概念，很好奇，继续搜索了一把，发现绿色线程在jdk1.1的时候存在，后面就给干掉了，绿色线程的意思就是这个线程只是一个JVM可调度运行的任务，不会对应一个OS层面的上的线程。本地线程必须对应一个OS层面的线程。</p>
+<h4 id="五-总结">五.总结</h4>
+<p>线程的同步我们一般不太会使用join,wait,notify以及notifyAll等来同步，直接使用juc包中的一些类，但是我们需要明白这些方法的具体含义。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>在编写多线程程序的时候，我们经常需要考虑线程之间的同步，比如我们使用join可以让某一线程执行结束，使用wait可以让某一线程在某个地方等待，使用notify或者notifyAll可以唤醒处于等待状态的线程。这里我们来看看这几个线程自带方法的使用以及相关的分析。</p>
+]]></summary>
+    
+      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
+    
+      <category term="并发" scheme="http://yangbolin.cn/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="编程语言" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[SQL的JOIN总结]]></title>
+    <link href="http://yangbolin.cn/2014/06/03/sql-join/"/>
+    <id>http://yangbolin.cn/2014/06/03/sql-join/</id>
+    <published>2014-06-03T11:42:36.000Z</published>
+    <updated>2014-06-05T01:24:05.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>关系型数据库最大的优点就是关联查询，既所谓的JOIN，不像HBase这种Nosql的数据库，对于表和表的JOIN不怎么支持，关于SQL中的JOIN比较多，也不太好记忆，为了在后续开发中对SQL中的JOIN灵活使用，这里总结一些SQL中的一些JOIN。</p>
+<a id="more"></a>
+
+<h4 id="二-假设存在的表以及相关数据">二.假设存在的表以及相关数据</h4>
+<p>假设table_a中的数据如下<br><img src="http://bolinyoung.qiniudn.com/table_a.png" alt="table_a"><br>假设TableB中的数据如下<br><img src="http://bolinyoung.qiniudn.com/table_b.png" alt="table_b"></p>
+<p>table_a和table_b中有两行的name是一样的，table_a的3,4行和table_b的1,2行</p>
+<h4 id="三-各种JOIN的示例">三.各种JOIN的示例</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table_a A  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> table_b B <span class="keyword">ON</span> A.name = B.name</span>
+</pre></td></tr></table></figure>
+
+<p><img src="http://bolinyoung.qiniudn.com/sql1.png" alt="执行结果"></p>
+<p>上面SQL执行的时候以左表中的数据为基准，左表A中的数据都会出现在最终的结果中，但是右表A中的数据只有匹配到的数据参会出现在左表中。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table_a A  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> table_b B <span class="keyword">ON</span> A.name = B.name <span class="keyword">WHERE</span> B.name <span class="keyword">IS</span> <span class="keyword">NULL</span></span>
+</pre></td></tr></table></figure>
+
+<p><img src="http://bolinyoung.qiniudn.com/sql2.png" alt="执行结果"></p>
+<blockquote>
+<p>注意:<br>LEFT OUTER JOIN 和 LEFT JOIN 效果一样</p>
+</blockquote>
+<p>上面的执行结果表示只出现在左表A中的数据。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table_a A <span class="keyword">FULL</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> table_b B <span class="keyword">ON</span> A.name = B.name</span>
+</pre></td></tr></table></figure>
+
+<p>上述sql的执行结果如下</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>xyza</td>
+<td>null</td>
+<td>null</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>xyzb</td>
+<td>null</td>
+<td>null</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>xyzc</td>
+<td>1</td>
+<td>xyzc</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>xyzd</td>
+<td>3</td>
+<td>xyzd</td>
+<td></td>
+</tr>
+<tr>
+<td>null</td>
+<td>null</td>
+<td>5</td>
+<td>xyze</td>
+<td></td>
+</tr>
+<tr>
+<td>null</td>
+<td>null</td>
+<td>7</td>
+<td>xyzf</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>注意mysql不支持FULL OUTER JOIN,这里的执行结果其实就是AUB</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table_a A <span class="keyword">FULL</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> table_b B <span class="keyword">ON</span> A.name = B.name <span class="keyword">WHERE</span> A.name <span class="keyword">IS</span> <span class="keyword">NULL</span> <span class="keyword">OR</span> B.name <span class="keyword">IS</span> <span class="keyword">NULL</span></span>
+</pre></td></tr></table></figure>
+
+<p>上述sql的执行结果如下</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>xyza</td>
+<td>null</td>
+<td>null</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>xyzb</td>
+<td>null</td>
+<td>null</td>
+<td></td>
+</tr>
+<tr>
+<td>null</td>
+<td>null</td>
+<td>5</td>
+<td>xyze</td>
+<td></td>
+</tr>
+<tr>
+<td>null</td>
+<td>null</td>
+<td>7</td>
+<td>xyzf</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>A和B的交集不会出现上述结果中。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table_a A <span class="keyword">RIGHT</span> <span class="keyword">JOIN</span> table_b B <span class="keyword">ON</span> A.name = B.name <span class="keyword">WHERE</span> A.name <span class="keyword">IS</span> <span class="keyword">NULL</span></span>
+</pre></td></tr></table></figure>
+
+<p><img src="http://bolinyoung.qiniudn.com/sql3.png" alt="执行结果"><br>上述SQL的执行结果包含只出现在B中的记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table_a A <span class="keyword">RIGHT</span> <span class="keyword">JOIN</span> table_b B <span class="keyword">ON</span> A.name = B.name</span>
+</pre></td></tr></table></figure>
+
+<p><img src="http://bolinyoung.qiniudn.com/sql4.png" alt="执行结果"></p>
+<blockquote>
+<p>注意:<br>RIGHT OUTER JOIN 和 RIGHT JOIN 效果一样</p>
+</blockquote>
+<p>在执行上述SQL的时候，会以B表的数据为基准，A表匹配不到就输出null,输出结果中一定包含出现在B表中的记录。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table_a A <span class="keyword">INNER</span> <span class="keyword">JOIN</span> table_b B <span class="keyword">ON</span> A.name = B.name</span>
+</pre></td></tr></table></figure>
+
+<p><img src="http://bolinyoung.qiniudn.com/sql5.png" alt="执行结果"><br>上述执行结果类似计算A和B的交集。</p>
+<h4 id="四-各种JOIN的总结">四.各种JOIN的总结</h4>
+<p><img src="http://bolinyoung.qiniudn.com/SQL-Join.jpg" alt="各种JOIN的总结"></p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>关系型数据库最大的优点就是关联查询，既所谓的JOIN，不像HBase这种Nosql的数据库，对于表和表的JOIN不怎么支持，关于SQL中的JOIN比较多，也不太好记忆，为了在后续开发中对SQL中的JOIN灵活使用，这里总结一些SQL中的一些JOIN。</p>
+]]></summary>
+    
+      <category term="sql" scheme="http://yangbolin.cn/tags/sql/"/>
+    
+      <category term="数据库" scheme="http://yangbolin.cn/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Java Memory Model抽象]]></title>
+    <link href="http://yangbolin.cn/2014/06/02/java-memory-model-abstract/"/>
+    <id>http://yangbolin.cn/2014/06/02/java-memory-model-abstract/</id>
+    <published>2014-06-02T07:54:49.000Z</published>
+    <updated>2014-06-02T09:46:22.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-JVM运行时的数据区">一.JVM运行时的数据区</h4>
+<p>我们写的JAVA代码最终都会编译成字节码，然后在JVM虚拟机上运行。在运行字节码的时候，JVM需要知道要运行的字节码是什么，也就是说JVM本身需要存储字节码，那么字节码存储在JVM的什么地方呢？同时在运行字节码的时候，会产生一些运行时数据，这这些数据都存储在什么地方呢？我们new一个Object的时候，这时候我们就获得了一个对象的引用，那么这个引用指向的内存空间在哪里呢？在C/C++中我们经常使用malloc去给分派一块内存空间，然后返回一个指针，当然在JAVA中内存空间的分派也是少不了的，只不过JVM帮你分派了，你就不需要手动去分派了。</p>
+<a id="more"></a>
+
+<p>下面我们先看一张图，这张图描述了JVM运行时的数据区</p>
+<p><img src="http://bolinyoung.qiniudn.com/runtimedataarea.png" alt="JVM运行时的数据区"></p>
+<p>上面这张图很清晰的列出来了JVM运行时数据区的划分。</p>
+<ul>
+<li><p>方法区<br>又称perm区(永久代)，这里面主要存储一些类本身的信息，比如字节码，字面意义的常量等等，我们经常动态修改类的字节码，或者动态加载一个类，其实都是修改perm区中的内容，或者占用perm区中的空间。</p>
+</li>
+<li><p>虚拟机栈<br>JVM在执行字节码的时候，都是基于栈进行，读取栈顶的数据，做相关计算，然后入栈，同时还有局部变量表来配合。</p>
+</li>
+<li><p>本地方方法栈<br>主要指native方法的调用，使用jstack -m可以打印出native方法的调用堆栈。</p>
+</li>
+<li><p>堆<br>我们经常new一个Object，这个Object所占的内存空间就是从堆上分配来的。堆又被划分为新生代和老年代，这是为了支持GC的分代回收，发生在新生代是YGC,之所以有YGC是因为大数据JAVA对象都是朝生夕死的，YGC的成本低，因此执行一次YGC就能回收到这些朝生夕死对象所占的内存了。发生在老年代是FGC,要是对象在新生代存活到一定时间后，就会被转移到老年代，老年代中对象所占的内存空间要是想被回收，就只能有FGC来回收了。</p>
+</li>
+<li><p>程序计数器<br>这个我们经常称为PC,我们需要执行的字节码都会存储在一个数组中，PC指向一个数组下表，表示当前需要执行那个字节码，注意数组中的每个元素都是一个字节码。</p>
+</li>
+</ul>
+<h4 id="二-JAVA_内存模型的抽象">二.JAVA 内存模型的抽象</h4>
+<p>JMM是为了解决什么问题呢？</p>
+<ul>
+<li><p>1.线程之间的通信<br>关于线程之间的通信就是线程A所产生的数据，能够被线程B感知到。</p>
+</li>
+<li><p>2.线程之间的同步<br>两个线程之间通常需要同步，当线程A处于某一特殊状态的时候，线程B才能够执行。</p>
+</li>
+</ul>
+<p>下面我们先来看看JMM的抽象示意图，通过这个示意图我们来描述JMM是如何解决上面两个问题的。<br><img src="http://bolinyoung.qiniudn.com/jvmma.png" alt="JMM示意图"></p>
+<p>每个线程我们都抽象出一个线程本地内存来，其实这个线程本地内存物理上压根就不存在，这只是一个逻辑上的概念，那么这个线程本地内存到底是什么呢？其实就是缓存，写缓冲区，寄存器以及其他的硬件和编译器优化等。线程A和线程B的共享变量既会在主内存中中保持一份，也会在线程本地内存中保持一份，线程直接从本地内存中读写，JMM控制本地内存中的东西写到主内存。当然JMM也可以控制线程直接读写主内存，主内存中的东西线程A和线程B共享。既然JMM可以控制线程直接读取主内存，这样不管任何情况下主内存中的东西对于其他线程都是可见的，那么为什么不让JMM直接控制线程去读写主内存呢？原因很简单就是为了快，还记得硬件中的二级缓存不，就是这个道理。并不是所有的共享变量都需要在某一时刻被另外一个线程感知到的。</p>
+<p>那么上述模型是怎么解决一开始我们提出来的两个问题的呢？</p>
+<ul>
+<li><p>线程之间的通信<br>关于线程之间的通信，看上图就很明确了，线程A和线程B通过主内存来通信，关键是线程B能否看到线程A对共享变量的真实修改吗？这个是我们写代码的时候需要注意的，比如你可以使用volatile关键字，保证每次线程的写都刷到主内存中，线程的读都从主内存中读取。</p>
+</li>
+<li><p>线程之间的同步<br>线程之间的同步也是基于主内存共享来实现的，在主内存中找一个共享变量X，在这个共享变量X上加上一把锁，当线程A要想执行某个同步的方法或者同步代码块的时候，需要先获取到共享变量X上的所，这时候其他线程只能等线程A把所释放后才能进执行相应的代码。线程A执行完相应的代码块后，就释放共享变量X上的锁，保证其他线程可以进入同步方法或者同步代码块。关于同步我们可以使用juc包中提供的一些类，也可以使用synchronized关键字，关于synchronized关键字是最为常见的一种同步方式，这里顺带总结一下这个关键字的作用:</p>
+<blockquote>
+<p>1.互斥，有且只能有一个线程获得锁<br>2.获取到锁，所有共享变量从主内存中reload<br>3.释放锁后，所有本地内存的东西flush到主内存<br>4.静态方法上synchronized锁对象是java.lang.Class类实例，非静态方法上synchronized锁对象是当前类的对象。</p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-JVM运行时的数据区">一.JVM运行时的数据区</h4>
+<p>我们写的JAVA代码最终都会编译成字节码，然后在JVM虚拟机上运行。在运行字节码的时候，JVM需要知道要运行的字节码是什么，也就是说JVM本身需要存储字节码，那么字节码存储在JVM的什么地方呢？同时在运行字节码的时候，会产生一些运行时数据，这这些数据都存储在什么地方呢？我们new一个Object的时候，这时候我们就获得了一个对象的引用，那么这个引用指向的内存空间在哪里呢？在C/C++中我们经常使用malloc去给分派一块内存空间，然后返回一个指针，当然在JAVA中内存空间的分派也是少不了的，只不过JVM帮你分派了，你就不需要手动去分派了。</p>
+]]></summary>
+    
+      <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[vim 命令]]></title>
+    <link href="http://yangbolin.cn/2014/06/01/vi-command/"/>
+    <id>http://yangbolin.cn/2014/06/01/vi-command/</id>
+    <published>2014-05-31T16:39:35.000Z</published>
+    <updated>2014-06-02T09:50:47.000Z</updated>
+    <content type="html"><![CDATA[<p>vim的一些命令总结</p>
+<a id="more"></a>
+
+<ul>
+<li><p>shift + g<br>回到最后一行</p>
+</li>
+<li><p>gg<br>回到第一行</p>
+</li>
+<li><p>dd<br>删除某一行</p>
+</li>
+<li><p>u<br>回复修改</p>
+</li>
+<li><p>w<br>写入不退出</p>
+</li>
+<li><p>wq<br>写入并退出</p>
+</li>
+</ul>
+]]></content>
+    <summary type="html"><![CDATA[<p>vim的一些命令总结</p>
+]]></summary>
+    
+      <category term="vim" scheme="http://yangbolin.cn/tags/vim/"/>
+    
+      <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[NoClassDefFoundError VS ClassNotFoundException]]></title>
+    <link href="http://yangbolin.cn/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/"/>
+    <id>http://yangbolin.cn/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/</id>
+    <published>2014-05-31T15:52:45.000Z</published>
+    <updated>2014-05-31T16:24:42.000Z</updated>
+    <content type="html"><![CDATA[<p>在开发JAVA项目的时候，我们经常会遇到这样两种异常，一种是java.lang.NoClassDefFoundError,另外一种是java.lang.ClassNotFoundException。</p>
+<a id="more"></a>
+
+<p>对于ClassNotFoundException，意思说是需要加载的类压根在classpath中不存在，我们需要使用一个类的时候，要是类加载器没有加载过这个类，classloader就会在classpath中寻找这个类，然后使用合适的类加载器去加载这个类，要是找不到相应的类文件就会抛ClassNotFoundException异常。出现这个异常一般都是少引入了jar或者jar包冲突导致。</p>
+<p>对于NoClassDefFoundError，不是说在classpath中找不到相应的类文件，而是找到了相应的类文件，但是实例化这个类的时候出错了，JVM加载的每个类都会对应一个java.lang.Class类型的实例。此时我们需要检查的是类的static代码块或者static的成员变量，很有可能就是这些static的东东在初始化的发生了问题。例如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre>class xxx {
+    <span class="comment">// 静态成员变量也会导致这个问题，比如初始化log的时候可能会出现jar包冲突的问题,这也会抛出NoClassDefFoundError的异常</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> Logger LOG = Logger.getLogger(<span class="string">"xxx"</span>);
+    
+    <span class="keyword">static</span> {
+        <span class="comment">// 加载xxx的时候先会执行这个static代码块，要是这个static代码块执行有问题，那么就会出现NoClassDefFoundError的异常</span>
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>出现这个异常的时候，重点关注static相关的代码就会找到问题所在。</p>
+<p>下面我们看看java语言规范中关于这两个异常的定义</p>
+<blockquote>
+<p>java.lang.ClassNotFoundException<br>Thrown when an application tries to load in a class through its string name using: </p>
+<ul>
+<li>The forName method in class Class. </li>
+<li>The findSystemClass method in class ClassLoader . </li>
+<li>The loadClass method in class ClassLoader. </li>
+</ul>
+<p>but no definition for the class with the specified name could be found. </p>
+<p>java.lang.NoClassDefFoundError<br>Thrown if the Java Virtual Machine or a ClassLoader instance tries to load in the definition of a class (as part of a normal method call or as part of creating a new instance using the new expression) and no definition of the class could be found.<br>The searched-for class definition existed when the currently executing class was compiled, but the definition can no longer be found. </p>
+</blockquote>
+<p>不翻译了，很简单的英文，看英文更好理解^=^,关于码代码，一定要学会看英文文档，要是什么事情都等中文，那就迟了。</p>
+]]></content>
+    <summary type="html"><![CDATA[<p>在开发JAVA项目的时候，我们经常会遇到这样两种异常，一种是java.lang.NoClassDefFoundError,另外一种是java.lang.ClassNotFoundException。</p>
+]]></summary>
+    
+      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[FutureTask]]></title>
+    <link href="http://yangbolin.cn/2014/05/31/futuretask/"/>
+    <id>http://yangbolin.cn/2014/05/31/futuretask/</id>
+    <published>2014-05-31T12:18:57.000Z</published>
+    <updated>2014-05-31T12:25:31.000Z</updated>
+    <content type="html"><![CDATA[<p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
+<a id="more"></a>
+
+<p>看看FutureTask相关的类图</p>
+<p><img src="http://bolinyoung.qiniudn.com/futuretask.png" alt="FutureTask相关的类图"></p>
+<p>RunnableFuture一个核心的接口，该接口是Runnable和Future的合体。当然我们也可以创建一批FutureTask然后submit到一个线程池中。</p>
+<p>之前不了解juc中的FutureTask这个类，今天看书的时候发现了这个类，算是做个笔记。在以后的开发过程中，需要注意FutureTask这个类的灵活使用。</p>
+]]></content>
+    <summary type="html"><![CDATA[<p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
+]]></summary>
+    
+      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
+    
+      <category term="并发" scheme="http://yangbolin.cn/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[通过Future来取消任务]]></title>
+    <link href="http://yangbolin.cn/2014/05/31/future-cancel-task/"/>
+    <id>http://yangbolin.cn/2014/05/31/future-cancel-task/</id>
+    <published>2014-05-31T11:01:51.000Z</published>
+    <updated>2014-05-31T11:26:19.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>在多线程程序中，我们经常使用Future来获取线程的执行结果，我们想线程的执行是异步的，因此要想获取线程执行结束后的结果，我们就需要等线程执行结束，这是一种主动获取线程执行结果的方法，当然你也可以让线程拿到结果后通知你。在使用Future的时候我们经常会设置一个超时时间，要是过了这个超时时间，线程的结果还没返回，那么我们经常就会忽略这个结果，但是这个获取结果的线程怎么办呢？让他自生自灭？我看代码中经常有这种写法，让这样的线程自生自灭。</p>
+<a id="more"></a>
+
+<h4 id="二-通过Future来取消线程">二.通过Future来取消线程</h4>
+<p>要是相应的线程在规定的时间内没有返回结果，我们就把这个线程给终止了，不要让它自生自灭，因为此时线程的执行已经没有意义了，要是我们不管它，让它自生自灭就等于浪费系统资源，这个点很容易被忽略，说实话自己之前也经常忽略，直到今天看书的时候才发现。下面我们来看看使用Future的良好编程习惯：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">timedRun</span>(Runnable r, <span class="keyword">long</span> timeout, TimeUnit unit) <span class="keyword">throws</span> InterruptedException {
+    Future&lt;?&gt; task = taskExec.submit(r);
+    <span class="keyword">try</span> {
+        <span class="comment">// 设置任务执行的超时时间</span>
+        task.get(timeout,unit);
+    } <span class="keyword">catch</span>(TimeoutException e) {
+        <span class="comment">// 超时异常</span>
+    } <span class="keyword">catch</span>(ExecutionException e) {
+        <span class="comment">// 执行异常</span>
+    } <span class="keyword">finally</span> {
+        <span class="comment">// 如果任务已经结束，那么执行取消不会带来任何影响，如果任务正在执行，那么将会被中断</span>
+        task.cancel(<span class="keyword">true</span>);
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>使用Future的时候，记得不要让没有用的任务自生自灭。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>在多线程程序中，我们经常使用Future来获取线程的执行结果，我们想线程的执行是异步的，因此要想获取线程执行结束后的结果，我们就需要等线程执行结束，这是一种主动获取线程执行结果的方法，当然你也可以让线程拿到结果后通知你。在使用Future的时候我们经常会设置一个超时时间，要是过了这个超时时间，线程的结果还没返回，那么我们经常就会忽略这个结果，但是这个获取结果的线程怎么办呢？让他自生自灭？我看代码中经常有这种写法，让这样的线程自生自灭。</p>
+]]></summary>
+    
+      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
+    
+      <category term="并发" scheme="http://yangbolin.cn/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+</feed>
