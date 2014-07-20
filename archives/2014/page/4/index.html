@@ -37,8 +37,6 @@
       
         <li><a href="/">Home</a></li>
       
-        <li><a href="/archives">Archives</a></li>
-      
       
         <li><a href="/atom.xml">RSS</a></li>
       
@@ -51,6 +49,46 @@
 
 
 <h2 class="archives-title"><span>2014</span></h2>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">
+  <time datetime="2014-05-11T13:11:11.000Z">
+    May 11 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">CountDownLatch和CyclicBarrier</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在编写并发程序的时候，我们经常遇到这样的事情，就是当N个线程都走到某一步后再继续做其他事情，都走到某一步包含这N个线程都运行结束这种场景。我们可以使用线程同步的思想来解决这类问题，在C语言中中我们经常使用信号量来解决此类问题。当然要是你自己使用线程同步来解决个问题，你需要做很多事情，不过jdk提供了一些封装好的类帮助我们解决此类问题，这里我们来看如何使用juc包中提供的CountDownLatch和CyclicBarrier来解决这类问题。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/11/countdownlatch-and-cyclicbarrier/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
 
 
 
@@ -416,46 +454,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/21/sql-error-analyse/">
-  <time datetime="2014-04-21T11:26:01.000Z">
-    Apr 21 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/04/21/sql-error-analyse/">一个sql问题的排查</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-现象">一.现象</h4>
-<p>线上一台任务机对一张mysql表进行全表扫描，当扫描过程中有一行记录读出来做数据转换，发现有很多行被多次读出来，并且多次尝试去做数据转换，同时数据转换也就失败了，因此也就打出了error级别的日志。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/21/sql-error-analyse/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -489,7 +487,7 @@
 		
 			<li><a href="/tags/CSS/" title="CSS">CSS<sup>1</sup></a></li>
 		
-			<li><a href="/tags/HBase/" title="HBase">HBase<sup>2</sup></a></li>
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>2</sup></a></li>
 		
@@ -534,6 +532,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2014/07/20/hbase-keyvalue-type/" title="HBase的基础类型KeyValue">HBase的基础类型KeyValue</a>
+      </li>
+    
+      <li>
         <a href="/2014/07/16/asm-read-class-bytes/" title="使用ASM读取class的字节码">使用ASM读取class的字节码</a>
       </li>
     
@@ -569,10 +571,6 @@
         <a href="/2014/06/17/sql-size/" title="sql语句的大小">sql语句的大小</a>
       </li>
     
-      <li>
-        <a href="/2014/06/14/how-to-get-java-pid/" title="如何获取当前JAVA进程的PID">如何获取当前JAVA进程的PID</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -591,7 +589,7 @@
 		
 			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>2</sup></a></li>
 		
-			<li><a href="/categories/大数据/" title="大数据">大数据<sup>2</sup></a></li>
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>8</sup></a></li>
 		

@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2014-07-16T13:09:46.507Z</updated>
+  <updated>2014-07-20T09:38:22.970Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,100 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[HBase的基础类型KeyValue]]></title>
+    <link href="http://yangbolin.cn/2014/07/20/hbase-keyvalue-type/"/>
+    <id>http://yangbolin.cn/2014/07/20/hbase-keyvalue-type/</id>
+    <published>2014-07-20T08:22:39.000Z</published>
+    <updated>2014-07-20T09:38:17.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>HBase是面向列的存储数据的，最终的存储单元都是KeyValue的结构，HBase本身也定义了一个KeyValue的类型，这是HBase数据存储的基本类型。那么KeyValue本身会存储那些信息呢？</p>
+<a id="more"></a>
+
+<p>从名字来看应该只有两个数据，一个是Key,一个是Value,的确如此，不过这里的Key是多个元素的聚合，有rowkey,列族，列名，时间戳以及key的类型，key的类型定义如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="code"><pre>  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">enum</span> Type {
+    Minimum((<span class="keyword">byte</span>)<span class="number">0</span>),
+    Put((<span class="keyword">byte</span>)<span class="number">4</span>),
+
+    Delete((<span class="keyword">byte</span>)<span class="number">8</span>),
+    DeleteColumn((<span class="keyword">byte</span>)<span class="number">12</span>),
+    DeleteFamily((<span class="keyword">byte</span>)<span class="number">14</span>),
+
+    <span class="comment">// Maximum is used when searching; you look from maximum on down.</span>
+    Maximum((<span class="keyword">byte</span>)<span class="number">255</span>);
+    ....
+  }
+</pre></td></tr></table></figure>
+
+<h4 id="二-KeyValue结构概述">二.KeyValue结构概述</h4>
+<p><img src="http://bolinyoung.qiniudn.com/HBase-key-value.png" alt="HBase的KeyValue"></p>
+<p>HBase的KeyValue内部维护着一个字节数组，然后通过不同的偏移量来获取不同的部分，前面说过KeyValue本身就两部分，Key&amp;&amp;Value,因此KeyLength标识KeyValue中Key在字节数组中所占的长度，ValueLength标识Value在字节数组中所占的长度。观察上图，我们看到从RowLength到KeyType都是KeyValue这个基本类型的Key,我们来看一下这个Key中包含那些东西，RowLength即rowkey的长度，RowKey即rowkey的内容，ColumnFamilyLength即列族的长度，ColumnFamily即列族的内容，ColumnQualifier即列的名称，TimeStamp即时间戳，KeyType即Key的类型，前面已经介绍过。</p>
+<p>我们看到从ColumnQualifier开始内容前面不在带有长度了，关于TimeStamp和KeyType很好理解，因为他们所占的字节数目是固定，时间戳是一个long型的数字，占固定、字节数目，KeyType看其定义就能知道占1个字节，此时就剩下ColumnQualifier了，列名所占的字节数目计算一下即可，KeyLength-RowLength-ColumnFamilyLength即可，其中TimeStamp以及KeyType所占的字节长度不计算到KeyLength中，虽然他们是Keyalue中key的一部分，原因就是他们的长度固定，没有必要单独表示。<br>下面我们看看KeyValue中计算列名所占字节数目的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="code"><pre>  <span class="comment">// 字节数组中用固定长度的字节数目表示内容所占的字节数目</span>
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEY_INFRASTRUCTURE_SIZE = ROW_LENGTH_SIZE
+      + FAMILY_LENGTH_SIZE + TIMESTAMP_TYPE_SIZE;
+      
+  ......
+  <span class="javadoc">/**
+   *<span class="javadoctag"> @return</span> Qualifier length
+   */</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQualifierLength</span>() {
+    <span class="keyword">return</span> getQualifierLength(getRowLength(),getFamilyLength());
+  }
+
+  <span class="javadoc">/**
+   *<span class="javadoctag"> @return</span> Qualifier length
+   */</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQualifierLength</span>(<span class="keyword">int</span> rlength, <span class="keyword">int</span> flength) {
+    <span class="comment">// KeyLength-表示长度的字节数目-rowKeyLength-familyLength即列名所占的字节数目</span>
+    <span class="keyword">return</span> getKeyLength() -
+      (KEY_INFRASTRUCTURE_SIZE + rlength + flength);
+  }
+</pre></td></tr></table></figure>
+
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>HBase是面向列的存储数据的，最终的存储单元都是KeyValue的结构，HBase本身也定义了一个KeyValue的类型，这是HBase数据存储的基本类型。那么KeyValue本身会存储那些信息呢？</p>
+]]></summary>
+    
+      <category term="HBase" scheme="http://yangbolin.cn/tags/HBase/"/>
+    
+      <category term="大数据" scheme="http://yangbolin.cn/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[使用ASM读取class的字节码]]></title>
@@ -1411,62 +1505,6 @@ System.out.println(<span class="string">"t1 has finished..."</span>);
 <p>之前不了解juc中的FutureTask这个类，今天看书的时候发现了这个类，算是做个笔记。在以后的开发过程中，需要注意FutureTask这个类的灵活使用。</p>
 ]]></content>
     <summary type="html"><![CDATA[<p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
-]]></summary>
-    
-      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
-    
-      <category term="并发" scheme="http://yangbolin.cn/tags/%E5%B9%B6%E5%8F%91/"/>
-    
-      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[通过Future来取消任务]]></title>
-    <link href="http://yangbolin.cn/2014/05/31/future-cancel-task/"/>
-    <id>http://yangbolin.cn/2014/05/31/future-cancel-task/</id>
-    <published>2014-05-31T11:01:51.000Z</published>
-    <updated>2014-05-31T11:26:19.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>在多线程程序中，我们经常使用Future来获取线程的执行结果，我们想线程的执行是异步的，因此要想获取线程执行结束后的结果，我们就需要等线程执行结束，这是一种主动获取线程执行结果的方法，当然你也可以让线程拿到结果后通知你。在使用Future的时候我们经常会设置一个超时时间，要是过了这个超时时间，线程的结果还没返回，那么我们经常就会忽略这个结果，但是这个获取结果的线程怎么办呢？让他自生自灭？我看代码中经常有这种写法，让这样的线程自生自灭。</p>
-<a id="more"></a>
-
-<h4 id="二-通过Future来取消线程">二.通过Future来取消线程</h4>
-<p>要是相应的线程在规定的时间内没有返回结果，我们就把这个线程给终止了，不要让它自生自灭，因为此时线程的执行已经没有意义了，要是我们不管它，让它自生自灭就等于浪费系统资源，这个点很容易被忽略，说实话自己之前也经常忽略，直到今天看书的时候才发现。下面我们来看看使用Future的良好编程习惯：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">timedRun</span>(Runnable r, <span class="keyword">long</span> timeout, TimeUnit unit) <span class="keyword">throws</span> InterruptedException {
-    Future&lt;?&gt; task = taskExec.submit(r);
-    <span class="keyword">try</span> {
-        <span class="comment">// 设置任务执行的超时时间</span>
-        task.get(timeout,unit);
-    } <span class="keyword">catch</span>(TimeoutException e) {
-        <span class="comment">// 超时异常</span>
-    } <span class="keyword">catch</span>(ExecutionException e) {
-        <span class="comment">// 执行异常</span>
-    } <span class="keyword">finally</span> {
-        <span class="comment">// 如果任务已经结束，那么执行取消不会带来任何影响，如果任务正在执行，那么将会被中断</span>
-        task.cancel(<span class="keyword">true</span>);
-    }
-}
-</pre></td></tr></table></figure>
-
-<p>使用Future的时候，记得不要让没有用的任务自生自灭。</p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>在多线程程序中，我们经常使用Future来获取线程的执行结果，我们想线程的执行是异步的，因此要想获取线程执行结束后的结果，我们就需要等线程执行结束，这是一种主动获取线程执行结果的方法，当然你也可以让线程拿到结果后通知你。在使用Future的时候我们经常会设置一个超时时间，要是过了这个超时时间，线程的结果还没返回，那么我们经常就会忽略这个结果，但是这个获取结果的线程怎么办呢？让他自生自灭？我看代码中经常有这种写法，让这样的线程自生自灭。</p>
 ]]></summary>
     
       <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>

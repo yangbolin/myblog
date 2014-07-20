@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>Linux下面使用C语言写多线程程序 | BolinYoung&#39;s Blog</title>
+  <title>HBase的基础类型KeyValue | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
   <meta name="description" content="一.概述
-在Linux系统中编写多线程程序，需要使用Linux系统本身的一个库函数来创建线程">
+HBase是面向列的存储数据的，最终的存储单元都是KeyValue的结构，HBase本身也定义了一个KeyValue的类型，这是HBase数据存储的基本类型。那么KeyValue本身会存储那些信息呢？">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta property="og:title" content="Linux下面使用C语言写多线程程序"/>
+  <meta property="og:title" content="HBase的基础类型KeyValue"/>
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -50,15 +50,15 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/04/13/linux-c-thread/">
-  <time datetime="2014-04-13T14:49:13.000Z">
-    Apr 13 2014
+      <a href="/2014/07/20/hbase-keyvalue-type/">
+  <time datetime="2014-07-20T08:22:39.000Z">
+    Jul 20 2014
   </time>
 </a>
     
     
   
-    <h1 class="title">Linux下面使用C语言写多线程程序</h1>
+    <h1 class="title">HBase的基础类型KeyValue</h1>
   
 
   </header>
@@ -66,42 +66,41 @@
   <div class="entry">
     
       <h4 id="一-概述">一.概述</h4>
-<p>在Linux系统中编写多线程程序，需要使用Linux系统本身的一个库函数来创建线程</p>
+<p>HBase是面向列的存储数据的，最终的存储单元都是KeyValue的结构，HBase本身也定义了一个KeyValue的类型，这是HBase数据存储的基本类型。那么KeyValue本身会存储那些信息呢？</p>
 <a id="more"></a>
 
-<figure class="highlight c"><table><tr><td class="gutter"><pre>1
+<p>从名字来看应该只有两个数据，一个是Key,一个是Value,的确如此，不过这里的Key是多个元素的聚合，有rowkey,列族，列名，时间戳以及key的类型，key的类型定义如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
-</pre></td><td class="code"><pre><span class="keyword">int</span> pthread_create(pthread_t *thread, <span class="keyword">const</span> pthread_attr_t *attr,
-                   <span class="keyword">void</span> *(*start_routine) (<span class="keyword">void</span> *), <span class="keyword">void</span> *arg);
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="code"><pre>  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">enum</span> Type {
+    Minimum((<span class="keyword">byte</span>)<span class="number">0</span>),
+    Put((<span class="keyword">byte</span>)<span class="number">4</span>),
+
+    Delete((<span class="keyword">byte</span>)<span class="number">8</span>),
+    DeleteColumn((<span class="keyword">byte</span>)<span class="number">12</span>),
+    DeleteFamily((<span class="keyword">byte</span>)<span class="number">14</span>),
+
+    <span class="comment">// Maximum is used when searching; you look from maximum on down.</span>
+    Maximum((<span class="keyword">byte</span>)<span class="number">255</span>);
+    ....
+  }
 </pre></td></tr></table></figure>
 
-<p>返回值</p>
-<ul>
-<li>若线程创建成功，则返回0。若线程创建失败，则返回出错编号</li>
-</ul>
-<p>参数</p>
-<ul>
-<li>第一个参数为指向线程标识符的指针。</li>
-<li>第二个参数用来设置线程属性。</li>
-<li>第三个参数是线程运行函数的起始地址。</li>
-<li>最后一个参数是运行函数的参数。</li>
-</ul>
-<p>函数pthread_join用来等待一个线程的结束,创建线程后，可以在创建线程的主线程中使用这个函数来等待创建的线程运行结束</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre><span class="keyword">int</span> pthread_join(pthread_t thread, <span class="keyword">void</span> **retval);
-</pre></td></tr></table></figure>
-
-<p>返回值</p>
-<ul>
-<li>0代表成功。 失败，返回的则是错误号。</li>
-</ul>
-<p>参数</p>
-<ul>
-<li>thread: 线程标识符，即线程ID，标识唯一线程。</li>
-<li>retval: 用户定义的指针，用来存储被等待线程的返回值。</li>
-</ul>
-<h4 id="二-代码">二.代码</h4>
-<figure class="highlight c"><table><tr><td class="gutter"><pre>1
+<h4 id="二-KeyValue结构概述">二.KeyValue结构概述</h4>
+<p><img src="http://bolinyoung.qiniudn.com/HBase-key-value.png" alt="HBase的KeyValue"></p>
+<p>HBase的KeyValue内部维护着一个字节数组，然后通过不同的偏移量来获取不同的部分，前面说过KeyValue本身就两部分，Key&amp;&amp;Value,因此KeyLength标识KeyValue中Key在字节数组中所占的长度，ValueLength标识Value在字节数组中所占的长度。观察上图，我们看到从RowLength到KeyType都是KeyValue这个基本类型的Key,我们来看一下这个Key中包含那些东西，RowLength即rowkey的长度，RowKey即rowkey的内容，ColumnFamilyLength即列族的长度，ColumnFamily即列族的内容，ColumnQualifier即列的名称，TimeStamp即时间戳，KeyType即Key的类型，前面已经介绍过。</p>
+<p>我们看到从ColumnQualifier开始内容前面不在带有长度了，关于TimeStamp和KeyType很好理解，因为他们所占的字节数目是固定，时间戳是一个long型的数字，占固定、字节数目，KeyType看其定义就能知道占1个字节，此时就剩下ColumnQualifier了，列名所占的字节数目计算一下即可，KeyLength-RowLength-ColumnFamilyLength即可，其中TimeStamp以及KeyType所占的字节长度不计算到KeyLength中，虽然他们是Keyalue中key的一部分，原因就是他们的长度固定，没有必要单独表示。<br>下面我们看看KeyValue中计算列名所占字节数目的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
 3
 4
@@ -121,95 +120,28 @@
 18
 19
 20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-</pre></td><td class="code"><pre><span class="preprocessor">#include &lt;stdio.h&gt;</span>
-<span class="preprocessor">#include &lt;unistd.h&gt;</span>
-<span class="preprocessor">#include &lt;pthread.h&gt;</span>
+</pre></td><td class="code"><pre>  <span class="comment">// 字节数组中用固定长度的字节数目表示内容所占的字节数目</span>
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEY_INFRASTRUCTURE_SIZE = ROW_LENGTH_SIZE
+      + FAMILY_LENGTH_SIZE + TIMESTAMP_TYPE_SIZE;
+      
+  ......
+  <span class="javadoc">/**
+   *<span class="javadoctag"> @return</span> Qualifier length
+   */</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQualifierLength</span>() {
+    <span class="keyword">return</span> getQualifierLength(getRowLength(),getFamilyLength());
+  }
 
-<span class="comment">/** 两个线程函数的说明 **/</span>
-<span class="keyword">void</span> *One(<span class="keyword">void</span> * no);
-<span class="keyword">void</span> *Two(<span class="keyword">void</span> * no);
-
-<span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)
-{
-    <span class="comment">/** 线程变量的定义 **/</span>
-    pthread_t A, B;
-
-    <span class="comment">/** 注意函数名One 和Two这里当作函数参数传入 **/</span>
-    pthread_create(&A, NULL, One, NULL);
-    pthread_create(&B, NULL, Two, NULL);
-    
-    <span class="comment">/** 主线程等待创建的两个子线程A,B运行结束后才退出，不然主线程退出后，
-     *  创建的子线程执行不完也就退出了，pthread_join()函数，以阻塞的方式
-     *  等待thread指定的线程结束。
-     **/</span>
-    pthread_join(A, NULL);
-    pthread_join(B, NULL);
-
-    <span class="keyword">return</span> <span class="number">0</span>;
-}
-
-<span class="keyword">void</span> *One(<span class="keyword">void</span> *no)
-{
-    <span class="keyword">int</span> i;
-    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)
-    {
-        <span class="built_in">printf</span>(<span class="string">"NUAA\n"</span>);
-        <span class="comment">// 等待1秒钟</span>
-        sleep(<span class="number">1</span>);
-    }
-    
-    <span class="keyword">return</span> NULL;
-}
-
-<span class="keyword">void</span> *Two(<span class="keyword">void</span> *no)
-{
-    <span class="keyword">int</span> i;
-    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)
-    {
-        <span class="built_in">printf</span>(<span class="string">"CS\n"</span>);
-        sleep(<span class="number">1</span>);
-    }
-    
-    <span class="keyword">return</span> NULL;
-}
+  <span class="javadoc">/**
+   *<span class="javadoctag"> @return</span> Qualifier length
+   */</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQualifierLength</span>(<span class="keyword">int</span> rlength, <span class="keyword">int</span> flength) {
+    <span class="comment">// KeyLength-表示长度的字节数目-rowKeyLength-familyLength即列名所占的字节数目</span>
+    <span class="keyword">return</span> getKeyLength() -
+      (KEY_INFRASTRUCTURE_SIZE + rlength + flength);
+  }
 </pre></td></tr></table></figure>
 
-<p>注意</p>
-<ul>
-<li>1.编译命令：gcc xx.c -o xx -l pthread，编译的时候必须带上-l pthread，不然编译不过。</li>
-<li>2.执行./xx然后看到在控制台交替输出NUAA和CS</li>
-</ul>
 
     
   </div>
@@ -217,12 +149,12 @@
     
       
   <div class="categories">
-    <a class="categories-link" href="/categories/编程语言/">编程语言</a>
+    <a class="categories-link" href="/categories/大数据/">大数据</a>
   </div>
 
       
   <div class="tags">
-    <a class="tags-link" href="/tags/C/">C</a>, <a class="tags-link" href="/tags/Linux/">Linux</a>, <a class="tags-link" href="/tags/并发/">并发</a>
+    <a class="tags-link" href="/tags/HBase/">HBase</a>
   </div>
 
     
@@ -233,7 +165,7 @@
 
 <section id="comment">
   <h1 class="title">Comments</h1>
-  <div class="ds-thread" data-title="Linux下面使用C语言写多线程程序">
+  <div class="ds-thread" data-title="HBase的基础类型KeyValue">
   </div>
 <!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
 <script type="text/javascript">

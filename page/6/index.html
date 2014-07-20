@@ -4,15 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>Linux下面使用C语言写多线程程序 | BolinYoung&#39;s Blog</title>
+  <title>BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="一.概述
-在Linux系统中编写多线程程序，需要使用Linux系统本身的一个库函数来创建线程">
+  <meta name="description" content="Coder @Alibaba">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta property="og:title" content="Linux下面使用C语言写多线程程序"/>
+  
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -46,211 +45,60 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-		<div class="content"><article class="post">
+		<div class="content">
+
+
+
+
+  
+    <article class="post">
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/04/13/linux-c-thread/">
-  <time datetime="2014-04-13T14:49:13.000Z">
-    Apr 13 2014
+      <a href="/2014/04/08/java-parameter-reference/">
+  <time datetime="2014-04-08T14:05:56.000Z">
+    Apr 8 2014
   </time>
 </a>
     
     
   
-    <h1 class="title">Linux下面使用C语言写多线程程序</h1>
+    <h1 class="title"><a href="/2014/04/08/java-parameter-reference/">Java 函数参数引用思考</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <h4 id="一-概述">一.概述</h4>
-<p>在Linux系统中编写多线程程序，需要使用Linux系统本身的一个库函数来创建线程</p>
-<a id="more"></a>
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre><span class="keyword">int</span> pthread_create(pthread_t *thread, <span class="keyword">const</span> pthread_attr_t *attr,
-                   <span class="keyword">void</span> *(*start_routine) (<span class="keyword">void</span> *), <span class="keyword">void</span> *arg);
-</pre></td></tr></table></figure>
-
-<p>返回值</p>
-<ul>
-<li>若线程创建成功，则返回0。若线程创建失败，则返回出错编号</li>
-</ul>
-<p>参数</p>
-<ul>
-<li>第一个参数为指向线程标识符的指针。</li>
-<li>第二个参数用来设置线程属性。</li>
-<li>第三个参数是线程运行函数的起始地址。</li>
-<li>最后一个参数是运行函数的参数。</li>
-</ul>
-<p>函数pthread_join用来等待一个线程的结束,创建线程后，可以在创建线程的主线程中使用这个函数来等待创建的线程运行结束</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre><span class="keyword">int</span> pthread_join(pthread_t thread, <span class="keyword">void</span> **retval);
-</pre></td></tr></table></figure>
-
-<p>返回值</p>
-<ul>
-<li>0代表成功。 失败，返回的则是错误号。</li>
-</ul>
-<p>参数</p>
-<ul>
-<li>thread: 线程标识符，即线程ID，标识唯一线程。</li>
-<li>retval: 用户定义的指针，用来存储被等待线程的返回值。</li>
-</ul>
-<h4 id="二-代码">二.代码</h4>
-<figure class="highlight c"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-</pre></td><td class="code"><pre><span class="preprocessor">#include &lt;stdio.h&gt;</span>
-<span class="preprocessor">#include &lt;unistd.h&gt;</span>
-<span class="preprocessor">#include &lt;pthread.h&gt;</span>
-
-<span class="comment">/** 两个线程函数的说明 **/</span>
-<span class="keyword">void</span> *One(<span class="keyword">void</span> * no);
-<span class="keyword">void</span> *Two(<span class="keyword">void</span> * no);
-
-<span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)
-{
-    <span class="comment">/** 线程变量的定义 **/</span>
-    pthread_t A, B;
-
-    <span class="comment">/** 注意函数名One 和Two这里当作函数参数传入 **/</span>
-    pthread_create(&A, NULL, One, NULL);
-    pthread_create(&B, NULL, Two, NULL);
-    
-    <span class="comment">/** 主线程等待创建的两个子线程A,B运行结束后才退出，不然主线程退出后，
-     *  创建的子线程执行不完也就退出了，pthread_join()函数，以阻塞的方式
-     *  等待thread指定的线程结束。
-     **/</span>
-    pthread_join(A, NULL);
-    pthread_join(B, NULL);
-
-    <span class="keyword">return</span> <span class="number">0</span>;
-}
-
-<span class="keyword">void</span> *One(<span class="keyword">void</span> *no)
-{
-    <span class="keyword">int</span> i;
-    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)
-    {
-        <span class="built_in">printf</span>(<span class="string">"NUAA\n"</span>);
-        <span class="comment">// 等待1秒钟</span>
-        sleep(<span class="number">1</span>);
-    }
-    
-    <span class="keyword">return</span> NULL;
-}
-
-<span class="keyword">void</span> *Two(<span class="keyword">void</span> *no)
-{
-    <span class="keyword">int</span> i;
-    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)
-    {
-        <span class="built_in">printf</span>(<span class="string">"CS\n"</span>);
-        sleep(<span class="number">1</span>);
-    }
-    
-    <span class="keyword">return</span> NULL;
-}
-</pre></td></tr></table></figure>
-
-<p>注意</p>
-<ul>
-<li>1.编译命令：gcc xx.c -o xx -l pthread，编译的时候必须带上-l pthread，不然编译不过。</li>
-<li>2.执行./xx然后看到在控制台交替输出NUAA和CS</li>
-</ul>
+      <h3 id="一-概述">一.概述</h3>
+<p>Java是一门纯粹的面向对象语言，除了8种基本类型意外，其他都是对象。函数是编程语言中的一个非常重要的概念，Java中的函数都不是孤立存在的，不像C或者JS你可以定义一个孤立的函数，有函数就有函数调用，在Java中函数参数就两种类型，要么函数参数是基本类型，要么函数参数是引用类型。函数调用就会涉及到的参数的传递，在Java中，参数传递就一种方式，既所谓值传递，其实就是传递变量值的拷贝，如果参数类型是基本类型，那么传递的就是基本类型参数值的一份拷贝，如果参数类型是引用类型，那么传递的就是引用值的一份拷贝，而不是引用对象的一份拷贝，其实用C语言的指针来说，传递的就是指针所指内存空间地址的一份拷贝，正所谓Java中虽然没有指针，但全是指针。</p>
 
     
   </div>
-  <footer>
+  <footer class="end-sep">
     
       
-  <div class="categories">
-    <a class="categories-link" href="/categories/编程语言/">编程语言</a>
-  </div>
-
+        <div class="alignleft">
+          <a href="/2014/04/08/java-parameter-reference/#more" class="more-link">Read More</a>
+        </div>
       
-  <div class="tags">
-    <a class="tags-link" href="/tags/C/">C</a>, <a class="tags-link" href="/tags/Linux/">Linux</a>, <a class="tags-link" href="/tags/并发/">并发</a>
-  </div>
-
+      
     
     <div class="clearfix"></div>
   </footer>
 </article>
 
 
-<section id="comment">
-  <h1 class="title">Comments</h1>
-  <div class="ds-thread" data-title="Linux下面使用C语言写多线程程序">
-  </div>
-<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"bolin"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- ��˵����JS���� end -->
 
+  
 
-</section>
+  <nav id="pagination">
+  
+    <a href="/page/5/" class="prev">Prev</a>
+  
+  
+  <div class="clearfix"></div>
+</nav>
 
 </div>
 	  </div>
