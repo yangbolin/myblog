@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2014-07-20T10:10:24.184Z</updated>
+  <updated>2014-07-23T12:47:31.813Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,33 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[IBatis不同版本对parameterMap的处理]]></title>
+    <link href="http://yangbolin.cn/2014/07/23/ibatis-version-for-parametermap/"/>
+    <id>http://yangbolin.cn/2014/07/23/ibatis-version-for-parametermap/</id>
+    <published>2014-07-23T11:58:04.000Z</published>
+    <updated>2014-07-23T12:46:37.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>今天在升级一个监控的中间件时，发现必须升级ibatis的版本到2.3.4,原来ibatis的版本是2.3.0,升级后，发现sqlmap的解析出问题了，对于parameterMap这个标签解析出错，原因是parameterMap对应class没法实例化，为什么原来没有问题，升级后就有问题了呢？这时候只能怀疑版本的问题,2.3.4和2.3.0在解析parameterMap时有所不同。</p>
+<a id="more"></a>
+
+<p>下面是我们应用中一份sqlmap中写的parameterMap<br><img src="http://bolinyoung.qiniudn.com/parameterMap.png" alt="parameterMap"></p>
+<p>其实这个parameterMap在这份配置文件中压根就没有被使用过，TA-COACH-CONFIG-PARAM这个class在当前的classpath中显然不存在，同时也不是某个class在sqlmap中的别名，因此在解析的时候会报TA-COACH-CONFIG-PARAM这个class找不到。</p>
+<h5 id="二-到底那里不一样">二.到底那里不一样</h5>
+<p>那具体到ibatis的源代码中，那些代码发生了变更呢？我们首先找到解析sqlmap的类即SqlMapParser这个类，先看看2.3.0中这个类解析paramterMap的行为<br><img src="http://bolinyoung.qiniudn.com/parameterMap230.png" alt="2.3.0"><br>我们看到在2.3.0这个版本中拿到parameterClassName后，尝试去实例化这个类型的实例，此时要是这个类找不到就出现Exception，但是该版本中没有处理这个异常，就是说这个异常默默地被吞了。</p>
+<p>接下来再看看2.3.4中SqlMapParser解析parameterMap的行为<br><img src="http://bolinyoung.qiniudn.com/parameterMap234.png" alt="2.3.4"><br>其实在2.3.0中作者已经意识到这个事情了，只是写了TODO，在2.3.4中正式开始抛出异常了。</p>
+<p>综上所述：<br>在ibatis的配置的文件中，要么使用类的权限定名，要么使用类的别名，要是一个class在classpath中不存在，但是你在sqlmap中使用了，你就等着翻源码查问题吧。还好上面的那个parameterMap形同虚设，我可以放心地删了它。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>今天在升级一个监控的中间件时，发现必须升级ibatis的版本到2.3.4,原来ibatis的版本是2.3.0,升级后，发现sqlmap的解析出问题了，对于parameterMap这个标签解析出错，原因是parameterMap对应class没法实例化，为什么原来没有问题，升级后就有问题了呢？这时候只能怀疑版本的问题,2.3.4和2.3.0在解析parameterMap时有所不同。</p>
+]]></summary>
+    
+      <category term="IBatis" scheme="http://yangbolin.cn/tags/IBatis/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[HBase的基础类型KeyValue]]></title>
@@ -1485,31 +1512,6 @@ System.out.println(<span class="string">"t1 has finished..."</span>);
 ]]></summary>
     
       <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
-    
-      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[FutureTask]]></title>
-    <link href="http://yangbolin.cn/2014/05/31/futuretask/"/>
-    <id>http://yangbolin.cn/2014/05/31/futuretask/</id>
-    <published>2014-05-31T12:18:57.000Z</published>
-    <updated>2014-05-31T12:25:31.000Z</updated>
-    <content type="html"><![CDATA[<p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
-<a id="more"></a>
-
-<p>看看FutureTask相关的类图</p>
-<p><img src="http://bolinyoung.qiniudn.com/futuretask.png" alt="FutureTask相关的类图"></p>
-<p>RunnableFuture一个核心的接口，该接口是Runnable和Future的合体。当然我们也可以创建一批FutureTask然后submit到一个线程池中。</p>
-<p>之前不了解juc中的FutureTask这个类，今天看书的时候发现了这个类，算是做个笔记。在以后的开发过程中，需要注意FutureTask这个类的灵活使用。</p>
-]]></content>
-    <summary type="html"><![CDATA[<p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
-]]></summary>
-    
-      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
-    
-      <category term="并发" scheme="http://yangbolin.cn/tags/%E5%B9%B6%E5%8F%91/"/>
     
       <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
     

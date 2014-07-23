@@ -57,6 +57,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/07/23/ibatis-version-for-parametermap/">
+  <time datetime="2014-07-23T11:58:04.000Z">
+    Jul 23 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/07/23/ibatis-version-for-parametermap/">IBatis不同版本对parameterMap的处理</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>今天在升级一个监控的中间件时，发现必须升级ibatis的版本到2.3.4,原来ibatis的版本是2.3.0,升级后，发现sqlmap的解析出问题了，对于parameterMap这个标签解析出错，原因是parameterMap对应class没法实例化，为什么原来没有问题，升级后就有问题了呢？这时候只能怀疑版本的问题,2.3.4和2.3.0在解析parameterMap时有所不同。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/07/23/ibatis-version-for-parametermap/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/07/16/asm-read-class-bytes/">
   <time datetime="2014-07-16T12:18:54.000Z">
     Jul 16 2014
@@ -413,45 +453,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/31/futuretask/">
-  <time datetime="2014-05-31T12:18:57.000Z">
-    May 31 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/31/futuretask/">FutureTask</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/31/futuretask/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -485,7 +486,7 @@
 		
 			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
 		
-			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>2</sup></a></li>
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
 			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>16</sup></a></li>
 		
@@ -528,6 +529,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2014/07/23/ibatis-version-for-parametermap/" title="IBatis不同版本对parameterMap的处理">IBatis不同版本对parameterMap的处理</a>
+      </li>
+    
+      <li>
         <a href="/2014/07/20/hbase-keyvalue-type/" title="HBase的基础类型KeyValue">HBase的基础类型KeyValue</a>
       </li>
     
@@ -563,10 +568,6 @@
         <a href="/2014/06/18/maven-default-arbitration/" title="maven自己的仲裁机制">maven自己的仲裁机制</a>
       </li>
     
-      <li>
-        <a href="/2014/06/17/sql-size/" title="sql语句的大小">sql语句的大小</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -593,7 +594,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>18</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>19</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		

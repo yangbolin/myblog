@@ -4,14 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>Archives: 2014/7 | BolinYoung&#39;s Blog</title>
+  <title>IBatis不同版本对parameterMap的处理 | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="Coder @Alibaba">
+  <meta name="description" content="一.概述
+今天在升级一个监控的中间件时，发现必须升级ibatis的版本到2.3.4,原来ibatis的版本是2.3.0,升级后，发现sqlmap的解析出问题了，对于parameterMap这个标签解析出错，原因是parameterMap对应class没法实例化，为什么原来没有问题，升级后就有问题了呢？这时候只能怀疑版本的问题,2.3.4和2.3.0在解析parameterMap时有所不同。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
+  <meta property="og:title" content="IBatis不同版本对parameterMap的处理"/>
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -45,15 +46,7 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-		<div class="content">
-
-
-<h2 class="archives-title"><span>2014</span></h2>
-
-
-
-  
-    <article class="post">
+		<div class="content"><article class="post">
   <header>
     
       <div class="icon"></div>
@@ -65,7 +58,7 @@
     
     
   
-    <h1 class="title"><a href="/2014/07/23/ibatis-version-for-parametermap/">IBatis不同版本对parameterMap的处理</a></h1>
+    <h1 class="title">IBatis不同版本对parameterMap的处理</h1>
   
 
   </header>
@@ -74,274 +67,55 @@
     
       <h4 id="一-概述">一.概述</h4>
 <p>今天在升级一个监控的中间件时，发现必须升级ibatis的版本到2.3.4,原来ibatis的版本是2.3.0,升级后，发现sqlmap的解析出问题了，对于parameterMap这个标签解析出错，原因是parameterMap对应class没法实例化，为什么原来没有问题，升级后就有问题了呢？这时候只能怀疑版本的问题,2.3.4和2.3.0在解析parameterMap时有所不同。</p>
+<a id="more"></a>
+
+<p>下面是我们应用中一份sqlmap中写的parameterMap<br><img src="http://bolinyoung.qiniudn.com/parameterMap.png" alt="parameterMap"></p>
+<p>其实这个parameterMap在这份配置文件中压根就没有被使用过，TA-COACH-CONFIG-PARAM这个class在当前的classpath中显然不存在，同时也不是某个class在sqlmap中的别名，因此在解析的时候会报TA-COACH-CONFIG-PARAM这个class找不到。</p>
+<h5 id="二-到底那里不一样">二.到底那里不一样</h5>
+<p>那具体到ibatis的源代码中，那些代码发生了变更呢？我们首先找到解析sqlmap的类即SqlMapParser这个类，先看看2.3.0中这个类解析paramterMap的行为<br><img src="http://bolinyoung.qiniudn.com/parameterMap230.png" alt="2.3.0"><br>我们看到在2.3.0这个版本中拿到parameterClassName后，尝试去实例化这个类型的实例，此时要是这个类找不到就出现Exception，但是该版本中没有处理这个异常，就是说这个异常默默地被吞了。</p>
+<p>接下来再看看2.3.4中SqlMapParser解析parameterMap的行为<br><img src="http://bolinyoung.qiniudn.com/parameterMap234.png" alt="2.3.4"><br>其实在2.3.0中作者已经意识到这个事情了，只是写了TODO，在2.3.4中正式开始抛出异常了。</p>
+<p>综上所述：<br>在ibatis的配置的文件中，要么使用类的权限定名，要么使用类的别名，要是一个class在classpath中不存在，但是你在sqlmap中使用了，你就等着翻源码查问题吧。还好上面的那个parameterMap形同虚设，我可以放心地删了它。</p>
 
     
   </div>
-  <footer class="end-sep">
+  <footer>
     
       
-        <div class="alignleft">
-          <a href="/2014/07/23/ibatis-version-for-parametermap/#more" class="more-link">Read More</a>
-        </div>
+  <div class="categories">
+    <a class="categories-link" href="/categories/编程开发/">编程开发</a>
+  </div>
+
       
-      
+  <div class="tags">
+    <a class="tags-link" href="/tags/IBatis/">IBatis</a>
+  </div>
+
     
     <div class="clearfix"></div>
   </footer>
 </article>
 
 
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/20/hbase-keyvalue-type/">
-  <time datetime="2014-07-20T08:22:39.000Z">
-    Jul 20 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/20/hbase-keyvalue-type/">HBase的基础类型KeyValue</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>HBase是面向列的存储数据的，最终的存储单元都是KeyValue的结构，HBase本身也定义了一个KeyValue的类型，这是HBase数据存储的基本类型。那么KeyValue本身会存储那些信息呢？</p>
-
-    
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="IBatis不同版本对parameterMap的处理">
   </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/20/hbase-keyvalue-type/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
 
 
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/16/asm-read-class-bytes/">
-  <time datetime="2014-07-16T12:18:54.000Z">
-    Jul 16 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/16/asm-read-class-bytes/">使用ASM读取class的字节码</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>我们平时写的JAVA代码经过编译后就是class文件，class文件其实有非常严谨的结构，具体可以参考<a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.1" target="_blank">JVM class文件格式规范</a>,认真读完这个规范，只要你按照这个规范来解析class文件，你就一定能写个javap出来。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/16/asm-read-class-bytes/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/16/class-bytecode-constant-pool-num/">
-  <time datetime="2014-07-16T09:50:43.000Z">
-    Jul 16 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/16/class-bytecode-constant-pool-num/">JAVA字节码常量池中常量编号的疑问</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-问题描述">一.问题描述</h4>
-<p>最近在解析JAVA字节码的时候，发现常量池中常量编号不连续了，导致解析程序经常NPE，然后仔细测试了一下，发现常量类型如果是Long或者Double的话，就会导致常量池中常量的编号不连续了。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/16/class-bytecode-constant-pool-num/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/07/spring-application-event/">
-  <time datetime="2014-07-07T05:08:20.000Z">
-    Jul 7 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/07/spring-application-event/">Spring容器的事件机制</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>Spring容器暴漏了很多扩展点给框架的使用者，让框架的使用者能够干涉一些容器内部的事情，也让框架的使用能够感知到容器内部发生了什么事情，比如Spring容器在初始化完后，就会广播一个容器初始化完成的事件，然后事件的监听者监听到这个事件后做相应的事情，这也是Spring容器的一个非常有用的扩展点。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/07/spring-application-event/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/01/how-to-read-gc-log/">
-  <time datetime="2014-07-01T15:55:05.000Z">
-    Jul 1 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/01/how-to-read-gc-log/">如何读懂JVM GC日志</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>我们经常会在线上观察JVM运行时GC日志，其实GC日志中有很多信息可以挖掘，比如下面的GC日志信息</p>
-<blockquote>
-<p>[GC [DefNew: 34538K-&gt;2311K(36352K), 0.0232439 secs] 45898K-&gt;15874K(520320K), 0.0233874 secs]<br>[Full GC [Tenured: 313563K-&gt;15402K(483968K), 0.2368177 secs]<br>343563K-&gt;18402K(520320K), [Perm : 28671K-&gt;28635K(28672K)], 0.2371537 secs]</p>
-</blockquote>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/01/how-to-read-gc-log/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/01/sqlmap-load-by-spring-container/">
-  <time datetime="2014-07-01T12:10:20.000Z">
-    Jul 1 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/01/sqlmap-load-by-spring-container/">sqlmap被Spring容器加载了</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-现象">一.现象</h4>
-<p>最近发布需求升级一个中间件，一个web应用在启动的时候，偶尔会会报下面的错误，报错的规律无法跟踪，导致应用启动失败。<br><img src="http://bolinyoung.qiniudn.com/ibatis-spring.png" alt="ibatis-psring"><br>有时候启动应用就会出现上面的异常，有时候启动应用没有异常，在发布的时候要是机器启动失败，我们就不断重启，直到机器重启成功。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/01/sqlmap-load-by-spring-container/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-
-  <nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav>
-
+</section>
 
 </div>
 	  </div>

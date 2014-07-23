@@ -57,6 +57,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/04/09/hbase-idea/">
+  <time datetime="2014-04-09T11:25:55.000Z">
+    Apr 9 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/09/hbase-idea/">HBase理解</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="一-概述">一.概述</h3>
+<p>在互联网应用中，经常需要存储大量的用户数据，然后对这些数据进行加工，分析最终产出对用户有价值的数据，关于数据的存储，我们可以选择文件，缓存以及数据库等，在数据库我们经常使用关系型数据库(mysql,oracle等)来存储，当数据达到一定量就需要进行分表分库，以便提高数据库的查询效率，例如在mysql中当表记录行数超过400万的时候，通常就需要分表。但是如果我们存储数据的时候选择的是HBase，这时候就不用分表，HBase中的表可以支撑上亿行，上百万列，这些数据最终存储都是分布在多台机器上的，因此HBase可以存储大量的数据，但是HBase就不具备关系型数据库的关联查询，就是说在HBase中不存在表和表的JOIN查询，关系型的查询是关系型数据库天生的优势，这样在HBase中存储的数据一定是一些弱关系的数据，要是数据之间有很强的关系，那就不太适合存储在HBase中了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/09/hbase-idea/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/04/08/java-parameter-reference/">
   <time datetime="2014-04-08T14:05:56.000Z">
     Apr 8 2014
@@ -126,7 +166,7 @@
 		
 			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
 		
-			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>2</sup></a></li>
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
 			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>16</sup></a></li>
 		
@@ -169,6 +209,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2014/07/23/ibatis-version-for-parametermap/" title="IBatis不同版本对parameterMap的处理">IBatis不同版本对parameterMap的处理</a>
+      </li>
+    
+      <li>
         <a href="/2014/07/20/hbase-keyvalue-type/" title="HBase的基础类型KeyValue">HBase的基础类型KeyValue</a>
       </li>
     
@@ -204,10 +248,6 @@
         <a href="/2014/06/18/maven-default-arbitration/" title="maven自己的仲裁机制">maven自己的仲裁机制</a>
       </li>
     
-      <li>
-        <a href="/2014/06/17/sql-size/" title="sql语句的大小">sql语句的大小</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -234,7 +274,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>18</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>19</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		

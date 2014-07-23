@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/07/23/ibatis-version-for-parametermap/</loc>
+    <lastmod>2014-07-23T11:58:04.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/07/20/hbase-keyvalue-type/</loc>
     <lastmod>2014-07-20T08:22:39.000Z</lastmod>
   </url>
