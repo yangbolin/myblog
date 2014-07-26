@@ -55,6 +55,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/04/12/async-write-data/">
+  <time datetime="2014-04-12T07:20:21.000Z">
+    Apr 12 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/12/async-write-data/">一个数据产品中异步写数据的实现思路</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求描述">一.需求描述</h4>
+<p>最近在开发一个大数据产品，这个数据产品主要是快速产出用户需要的数据，每次用户调我们数据产品提供的接口后，我们都会把接口的返回值存储到HBase和缓存，存储到HBase目的是后续做一些统计用，存储到缓存的目的加速数据产品的计算速度，因为某些数据在一段时间内计算的结果都是一样的。这个需求可以简单描述成这样，把数据产品的计算结果写缓存和HBase。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/12/async-write-data/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/04/09/hbase-idea/">
   <time datetime="2014-04-09T11:25:55.000Z">
     Apr 9 2014
@@ -190,9 +230,9 @@
 		
 			<li><a href="/tags/zookeeper/" title="zookeeper">zookeeper<sup>2</sup></a></li>
 		
-			<li><a href="/tags/并发/" title="并发">并发<sup>8</sup></a></li>
+			<li><a href="/tags/单元测试/" title="单元测试">单元测试<sup>1</sup></a></li>
 		
-			<li><a href="/tags/算法/" title="算法">算法<sup>1</sup></a></li>
+			<li><a href="/tags/并发/" title="并发">并发<sup>8</sup></a></li>
 		
 		</ul>
 </div>
@@ -205,6 +245,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/07/26/ut-failed-problems/" title="单元测试Failed的排查">单元测试Failed的排查</a>
+      </li>
     
       <li>
         <a href="/2014/07/23/ibatis-version-for-parametermap/" title="IBatis不同版本对parameterMap的处理">IBatis不同版本对parameterMap的处理</a>
@@ -242,10 +286,6 @@
         <a href="/2014/06/19/how-to-aware-jvm-exit/" title="JAVA代码中如何感知到JVM退出">JAVA代码中如何感知到JVM退出</a>
       </li>
     
-      <li>
-        <a href="/2014/06/18/maven-default-arbitration/" title="maven自己的仲裁机制">maven自己的仲裁机制</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -267,6 +307,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>8</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
 		
 			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
 		

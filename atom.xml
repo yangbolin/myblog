@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2014-07-23T12:47:31.813Z</updated>
+  <updated>2014-07-26T08:13:35.420Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,29 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[单元测试Failed的排查]]></title>
+    <link href="http://yangbolin.cn/2014/07/26/ut-failed-problems/"/>
+    <id>http://yangbolin.cn/2014/07/26/ut-failed-problems/</id>
+    <published>2014-07-26T07:47:22.000Z</published>
+    <updated>2014-07-26T08:13:24.000Z</updated>
+    <content type="html"><![CDATA[<p>最近各种中间件升级的事情，升级中间件可能会出现很多诡异的问题，此时我们需要定位这些问题是自己升级导致还是其他原因导致，升级中间件可能会出现很多JAR包冲突的问题，此时需要一一排查。</p>
+<a id="more"></a>
+
+<p>前两天升级后遇到这样的问题，系统中的单元测试在eclipse中单独跑没有问题，但是使用mvn test一起跑就会出现大部分单元测试PASS不了，此时查看单元测试FAIL的日志发现获取数据库连接超时，由于本次升级出现了很多JAR包冲突的问题，导致自己一直在怀疑是不是某个JAR包又冲突了导致数据库连接获取超时了？因此排查思路一直停留在JAR包冲突的这个范围内，查了好久，问题依然没有解决，由于自己维护的这个服务化应用非常重要，不能不管单元测试就发布，同时自己也不会放过这个问题，一定要追查到底。</p>
+<p>是不是自己的陷入了排查误区了呢？于是把整个代码的变更自己又回顾了一遍，发现最多的就是JAR包版本的升级，引入新的JAR包版本。记得之前自己总结过一句话：要是一个问题排查了好久没有眉目的话，记得去看看那些被你忽略过的细节问题，很可能问题就出现这些被忽略的细节上面。</p>
+<p>那到底那些细节被忽略了呢？问题的现象是什么？单个跑UT能够PASS,批量跑UT一部分不能PASS,因为数据库连接获取超时，单个和批量就是这里的细节了，此时自己有一种突然醒悟的感觉，问题就这里了，单个跑只获取一个数据库连接，批量跑会获取多个数据库连接，数据库连接池的问题，不是我升级导致，因此找DBA搞定这个问题。</p>
+<p>其实这个问题很简单，发现自己有时候很容易被最近刚出现的问题困扰住，思路一直停留如何最近刚出现的问题上，以后需要注意分析问题出现的本质原因，比如数据连接获取不到其实跟JAR包冲突的关系不是很大，可以说几乎没啥关系，不要受一些最近出现的问题的影响，避免思路被困住。</p>
+]]></content>
+    <summary type="html"><![CDATA[<p>最近各种中间件升级的事情，升级中间件可能会出现很多诡异的问题，此时我们需要定位这些问题是自己升级导致还是其他原因导致，升级中间件可能会出现很多JAR包冲突的问题，此时需要一一排查。</p>
+]]></summary>
+    
+      <category term="单元测试" scheme="http://yangbolin.cn/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="开发杂谈" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[IBatis不同版本对parameterMap的处理]]></title>
@@ -1462,58 +1485,6 @@ System.out.println(<span class="string">"t1 has finished..."</span>);
       <category term="vim" scheme="http://yangbolin.cn/tags/vim/"/>
     
       <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[NoClassDefFoundError VS ClassNotFoundException]]></title>
-    <link href="http://yangbolin.cn/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/"/>
-    <id>http://yangbolin.cn/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/</id>
-    <published>2014-05-31T15:52:45.000Z</published>
-    <updated>2014-05-31T16:24:42.000Z</updated>
-    <content type="html"><![CDATA[<p>在开发JAVA项目的时候，我们经常会遇到这样两种异常，一种是java.lang.NoClassDefFoundError,另外一种是java.lang.ClassNotFoundException。</p>
-<a id="more"></a>
-
-<p>对于ClassNotFoundException，意思说是需要加载的类压根在classpath中不存在，我们需要使用一个类的时候，要是类加载器没有加载过这个类，classloader就会在classpath中寻找这个类，然后使用合适的类加载器去加载这个类，要是找不到相应的类文件就会抛ClassNotFoundException异常。出现这个异常一般都是少引入了jar或者jar包冲突导致。</p>
-<p>对于NoClassDefFoundError，不是说在classpath中找不到相应的类文件，而是找到了相应的类文件，但是实例化这个类的时候出错了，JVM加载的每个类都会对应一个java.lang.Class类型的实例。此时我们需要检查的是类的static代码块或者static的成员变量，很有可能就是这些static的东东在初始化的发生了问题。例如</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-</pre></td><td class="code"><pre>class xxx {
-    <span class="comment">// 静态成员变量也会导致这个问题，比如初始化log的时候可能会出现jar包冲突的问题,这也会抛出NoClassDefFoundError的异常</span>
-    <span class="keyword">private</span> <span class="keyword">static</span> Logger LOG = Logger.getLogger(<span class="string">"xxx"</span>);
-    
-    <span class="keyword">static</span> {
-        <span class="comment">// 加载xxx的时候先会执行这个static代码块，要是这个static代码块执行有问题，那么就会出现NoClassDefFoundError的异常</span>
-    }
-}
-</pre></td></tr></table></figure>
-
-<p>出现这个异常的时候，重点关注static相关的代码就会找到问题所在。</p>
-<p>下面我们看看java语言规范中关于这两个异常的定义</p>
-<blockquote>
-<p>java.lang.ClassNotFoundException<br>Thrown when an application tries to load in a class through its string name using: </p>
-<ul>
-<li>The forName method in class Class. </li>
-<li>The findSystemClass method in class ClassLoader . </li>
-<li>The loadClass method in class ClassLoader. </li>
-</ul>
-<p>but no definition for the class with the specified name could be found. </p>
-<p>java.lang.NoClassDefFoundError<br>Thrown if the Java Virtual Machine or a ClassLoader instance tries to load in the definition of a class (as part of a normal method call or as part of creating a new instance using the new expression) and no definition of the class could be found.<br>The searched-for class definition existed when the currently executing class was compiled, but the definition can no longer be found. </p>
-</blockquote>
-<p>不翻译了，很简单的英文，看英文更好理解^=^,关于码代码，一定要学会看英文文档，要是什么事情都等中文，那就迟了。</p>
-]]></content>
-    <summary type="html"><![CDATA[<p>在开发JAVA项目的时候，我们经常会遇到这样两种异常，一种是java.lang.NoClassDefFoundError,另外一种是java.lang.ClassNotFoundException。</p>
-]]></summary>
-    
-      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
-    
-      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   
