@@ -176,46 +176,6 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/07/16/class-bytecode-constant-pool-num/">
-  <time datetime="2014-07-16T09:50:43.000Z">
-    Jul 16 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/16/class-bytecode-constant-pool-num/">JAVA字节码常量池中常量编号的疑问</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-问题描述">一.问题描述</h4>
-<p>最近在解析JAVA字节码的时候，发现常量池中常量编号不连续了，导致解析程序经常NPE，然后仔细测试了一下，发现常量类型如果是Long或者Double的话，就会导致常量池中常量的编号不连续了。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/16/class-bytecode-constant-pool-num/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
       <a href="/2014/07/07/spring-application-event/">
   <time datetime="2014-07-07T05:08:20.000Z">
     Jul 7 2014
@@ -241,48 +201,6 @@
       
         <div class="alignleft">
           <a href="/2014/07/07/spring-application-event/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/01/how-to-read-gc-log/">
-  <time datetime="2014-07-01T15:55:05.000Z">
-    Jul 1 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/01/how-to-read-gc-log/">如何读懂JVM GC日志</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>我们经常会在线上观察JVM运行时GC日志，其实GC日志中有很多信息可以挖掘，比如下面的GC日志信息</p>
-<blockquote>
-<p>[GC [DefNew: 34538K-&gt;2311K(36352K), 0.0232439 secs] 45898K-&gt;15874K(520320K), 0.0233874 secs]<br>[Full GC [Tenured: 313563K-&gt;15402K(483968K), 0.2368177 secs]<br>343563K-&gt;18402K(520320K), [Perm : 28671K-&gt;28635K(28672K)], 0.2371537 secs]</p>
-</blockquote>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/01/how-to-read-gc-log/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -453,6 +371,84 @@
 
 
   
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/">
+  <time datetime="2014-05-31T15:52:45.000Z">
+    May 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/">NoClassDefFoundError VS ClassNotFoundException</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在开发JAVA项目的时候，我们经常会遇到这样两种异常，一种是java.lang.NoClassDefFoundError,另外一种是java.lang.ClassNotFoundException。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/31/futuretask/">
+  <time datetime="2014-05-31T12:18:57.000Z">
+    May 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/31/futuretask/">FutureTask</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/31/futuretask/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
 
   <nav id="pagination">
   
@@ -490,7 +486,7 @@
 		
 			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>16</sup></a></li>
 		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>4</sup></a></li>
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>5</sup></a></li>
 		
 			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
 		
@@ -529,6 +525,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2014/07/26/jvm-byte-code-attention/" title="JVM字节码指令相关">JVM字节码指令相关</a>
+      </li>
+    
+      <li>
         <a href="/2014/07/26/java-thread-model/" title="JAVA线程模型">JAVA线程模型</a>
       </li>
     
@@ -564,10 +564,6 @@
         <a href="/2014/07/01/sqlmap-load-by-spring-container/" title="sqlmap被Spring容器加载了">sqlmap被Spring容器加载了</a>
       </li>
     
-      <li>
-        <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/" title="BeanFactoryPostProcessor和BeanPostProcessor">BeanFactoryPostProcessor和BeanPostProcessor</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -579,6 +575,8 @@
 <div class="widget categorieslist">
 		<h3>分类</h3>
 		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>3</sup></a></li>
 		
 			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
 		
@@ -596,7 +594,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>20</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>18</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		

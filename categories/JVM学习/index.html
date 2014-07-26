@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>Tag: Spring | BolinYoung&#39;s Blog</title>
+  <title>Category: JVM学习 | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
   <meta name="description" content="Coder @Alibaba">
@@ -48,7 +48,7 @@
 		<div class="content">
 
 
-<h2 class="archives-title tag"><span>Spring</span></h2>
+<h2 class="archives-title category"><span>JVM学习</span></h2>
 
 
 
@@ -57,23 +57,22 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/07/07/spring-application-event/">
-  <time datetime="2014-07-07T05:08:20.000Z">
-    Jul 7 2014
+      <a href="/2014/07/26/jvm-byte-code-attention/">
+  <time datetime="2014-07-26T11:46:08.000Z">
+    Jul 26 2014
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2014/07/07/spring-application-event/">Spring容器的事件机制</a></h1>
+    <h1 class="title"><a href="/2014/07/26/jvm-byte-code-attention/">JVM字节码指令相关</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <h4 id="一-概述">一.概述</h4>
-<p>Spring容器暴漏了很多扩展点给框架的使用者，让框架的使用者能够干涉一些容器内部的事情，也让框架的使用能够感知到容器内部发生了什么事情，比如Spring容器在初始化完后，就会广播一个容器初始化完成的事件，然后事件的监听者监听到这个事件后做相应的事情，这也是Spring容器的一个非常有用的扩展点。</p>
+      <p>JAVA代码中的每个方法都会被编译成一系列的JVM字节码指令，这些字节码指令会被JVM所执行，从而产生相应的数据，我们通常可以用javap -verbose来查看一个方法的字节码指令。</p>
 
     
   </div>
@@ -81,7 +80,7 @@
     
       
         <div class="alignleft">
-          <a href="/2014/07/07/spring-application-event/#more" class="more-link">Read More</a>
+          <a href="/2014/07/26/jvm-byte-code-attention/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -97,23 +96,65 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/07/01/sqlmap-load-by-spring-container/">
-  <time datetime="2014-07-01T12:10:20.000Z">
+      <a href="/2014/07/16/class-bytecode-constant-pool-num/">
+  <time datetime="2014-07-16T09:50:43.000Z">
+    Jul 16 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/07/16/class-bytecode-constant-pool-num/">JAVA字节码常量池中常量编号的疑问</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-问题描述">一.问题描述</h4>
+<p>最近在解析JAVA字节码的时候，发现常量池中常量编号不连续了，导致解析程序经常NPE，然后仔细测试了一下，发现常量类型如果是Long或者Double的话，就会导致常量池中常量的编号不连续了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/07/16/class-bytecode-constant-pool-num/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/07/01/how-to-read-gc-log/">
+  <time datetime="2014-07-01T15:55:05.000Z">
     Jul 1 2014
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2014/07/01/sqlmap-load-by-spring-container/">sqlmap被Spring容器加载了</a></h1>
+    <h1 class="title"><a href="/2014/07/01/how-to-read-gc-log/">如何读懂JVM GC日志</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <h4 id="一-现象">一.现象</h4>
-<p>最近发布需求升级一个中间件，一个web应用在启动的时候，偶尔会会报下面的错误，报错的规律无法跟踪，导致应用启动失败。<br><img src="http://bolinyoung.qiniudn.com/ibatis-spring.png" alt="ibatis-psring"><br>有时候启动应用就会出现上面的异常，有时候启动应用没有异常，在发布的时候要是机器启动失败，我们就不断重启，直到机器重启成功。</p>
+      <p>我们经常会在线上观察JVM运行时GC日志，其实GC日志中有很多信息可以挖掘，比如下面的GC日志信息</p>
+<blockquote>
+<p>[GC [DefNew: 34538K-&gt;2311K(36352K), 0.0232439 secs] 45898K-&gt;15874K(520320K), 0.0233874 secs]<br>[Full GC [Tenured: 313563K-&gt;15402K(483968K), 0.2368177 secs]<br>343563K-&gt;18402K(520320K), [Perm : 28671K-&gt;28635K(28672K)], 0.2371537 secs]</p>
+</blockquote>
 
     
   </div>
@@ -121,166 +162,7 @@
     
       
         <div class="alignleft">
-          <a href="/2014/07/01/sqlmap-load-by-spring-container/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">
-  <time datetime="2014-06-24T15:29:37.000Z">
-    Jun 24 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">BeanFactoryPostProcessor和BeanPostProcessor</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>一.概述<br>我们经常使用Spring框架，Spring帮我托管bean的创建以及bean的管理，同时又暴漏出一些可扩展的地方，方面程序员去干涉bean或者Spring容器的创建。今天有同学问BeanPostProcessor相关的东西，由此很容易想到BeanFactoryPostProcessor，这里总结一下，方便后面在开发的过程中灵活使用。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/03/after-returning-advice-error/">
-  <time datetime="2014-05-03T06:40:00.000Z">
-    May 3 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/03/after-returning-advice-error/">一个在方法返回前使用AOP的BUG分析</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="源代码">源代码</h4>
-<p>最近使用AOP拦截一个方法的返回值，并且修改一下方法的返回值，然后再返回，于是写了下面的代码：</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/03/after-returning-advice-error/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/19/spring-ioc-aop-idea/">
-  <time datetime="2014-04-19T07:56:47.000Z">
-    Apr 19 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/04/19/spring-ioc-aop-idea/">谈谈自己对Spring IOC 和 AOP理解</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-谈谈自己对IOC的理解">一.谈谈自己对IOC的理解</h4>
-<p>Spring提供了一个容器，把我们业务代码中需要的一些bean都管理起来，这个Spring容器负责管理这些bean的生命周期，同时保证被依赖的bean能够正确找到自己所属的bean,能够根据代码中的依赖关系正确的实例化一个bean。要是没有Spring容器，我们就需要自己去创建bean，同时设置bean所依赖的bean，Spring容器把这些事情从业务代码中剥</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/19/spring-ioc-aop-idea/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/15/spring-aop-practice/">
-  <time datetime="2014-04-15T11:58:15.000Z">
-    Apr 15 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/04/15/spring-aop-practice/">如何不用修改原来的代码呢？</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-需求描述">一.需求描述</h4>
-<p>最近遇到这样一个需求，有个数据计算的方法，我们需要优化一下，因为有些数据在一段时间内计算出的结果总是一样的，为了提高性能，我们把这些数据的计算结果缓存起来，这样下次计算的时候就先去缓存中查一下，要是缓存中存在，就直接把缓存中的数据返回，要是缓存中不存在就走原来的计算逻辑去计算，面对这个需求，我们需要做两件事情，在调用计算方法之前读取一下缓存，在调用方法之后把值写入缓存。这样的计算方法有10多个，相应的类也有10多个。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/15/spring-aop-practice/#more" class="more-link">Read More</a>
+          <a href="/2014/07/01/how-to-read-gc-log/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -298,6 +180,7 @@
   
   <div class="clearfix"></div>
 </nav>
+
 
 </div>
 	  </div>

@@ -55,6 +55,45 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">
+  <time datetime="2014-06-24T15:29:37.000Z">
+    Jun 24 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">BeanFactoryPostProcessor和BeanPostProcessor</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>一.概述<br>我们经常使用Spring框架，Spring帮我托管bean的创建以及bean的管理，同时又暴漏出一些可扩展的地方，方面程序员去干涉bean或者Spring容器的创建。今天有同学问BeanPostProcessor相关的东西，由此很容易想到BeanFactoryPostProcessor，这里总结一下，方便后面在开发的过程中灵活使用。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/06/19/how-to-aware-jvm-exit/">
   <time datetime="2014-06-19T14:42:58.000Z">
     Jun 19 2014
@@ -412,46 +451,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/06/02/java-memory-model-abstract/">
-  <time datetime="2014-06-02T07:54:49.000Z">
-    Jun 2 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/06/02/java-memory-model-abstract/">Java Memory Model抽象</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-JVM运行时的数据区">一.JVM运行时的数据区</h4>
-<p>我们写的JAVA代码最终都会编译成字节码，然后在JVM虚拟机上运行。在运行字节码的时候，JVM需要知道要运行的字节码是什么，也就是说JVM本身需要存储字节码，那么字节码存储在JVM的什么地方呢？同时在运行字节码的时候，会产生一些运行时数据，这这些数据都存储在什么地方呢？我们new一个Object的时候，这时候我们就获得了一个对象的引用，那么这个引用指向的内存空间在哪里呢？在C/C++中我们经常使用malloc去给分派一块内存空间，然后返回一个指针，当然在JAVA中内存空间的分派也是少不了的，只不过JVM帮你分派了，你就不需要手动去分派了。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/06/02/java-memory-model-abstract/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -490,7 +489,7 @@
 		
 			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>16</sup></a></li>
 		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>4</sup></a></li>
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>5</sup></a></li>
 		
 			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
 		
@@ -529,6 +528,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2014/07/26/jvm-byte-code-attention/" title="JVM字节码指令相关">JVM字节码指令相关</a>
+      </li>
+    
+      <li>
         <a href="/2014/07/26/java-thread-model/" title="JAVA线程模型">JAVA线程模型</a>
       </li>
     
@@ -564,10 +567,6 @@
         <a href="/2014/07/01/sqlmap-load-by-spring-container/" title="sqlmap被Spring容器加载了">sqlmap被Spring容器加载了</a>
       </li>
     
-      <li>
-        <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/" title="BeanFactoryPostProcessor和BeanPostProcessor">BeanFactoryPostProcessor和BeanPostProcessor</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -579,6 +578,8 @@
 <div class="widget categorieslist">
 		<h3>分类</h3>
 		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>3</sup></a></li>
 		
 			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
 		
@@ -596,7 +597,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>20</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>18</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		
