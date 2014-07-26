@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>Tag: BTrace | BolinYoung&#39;s Blog</title>
+  <title>JAVA线程模型 | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="Coder @Alibaba">
+  <meta name="description" content="我们在JAVA代码中创建一个线程，这线程在系统中会经历下面5个阶段：New-&gt;Runnable-&gt;Blocked-&gt;Running-&gt;Dead">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
+  <meta property="og:title" content="JAVA线程模型"/>
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -45,60 +45,83 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-		<div class="content">
-
-
-<h2 class="archives-title tag"><span>BTrace</span></h2>
-
-
-
-  
-    <article class="post">
+		<div class="content"><article class="post">
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/05/14/btrace-for-production-problem/">
-  <time datetime="2014-05-14T07:55:55.000Z">
-    May 14 2014
+      <a href="/2014/07/26/java-thread-model/">
+  <time datetime="2014-07-26T11:13:14.000Z">
+    Jul 26 2014
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2014/05/14/btrace-for-production-problem/">在生产环境使用BTrace来解决问题</a></h1>
+    <h1 class="title">JAVA线程模型</h1>
   
 
   </header>
   
   <div class="entry">
     
-      <h4 id="一-问题">一.问题</h4>
-<p>今天在自己应用中引入了一个新的中间件，发布到线上后，发现一个接口一直获取不到数据，此时找不到日志，因为代码中的日志输出不按常理出牌，误引入了某一中间件自定义的Logger导致日志很难找到，此时要是在测试环境，debug一下就搞定，但是线上不能这么搞，如何去查看一下本次调用接口返回的数据到底是什么呢？</p>
+      <p>我们在JAVA代码中创建一个线程，这线程在系统中会经历下面5个阶段：<br>New-&gt;Runnable-&gt;Blocked-&gt;Running-&gt;Dead</p>
+<a id="more"></a>
+
+<p>这里我们来详细看一下这几个阶段的演变以及转换<br><img src="http://bolinyoung.qiniudn.com/java-thread-model.png" alt="线程状态转换"></p>
+<ul>
+<li><p>New<br>表示这个线程对象刚刚被创建，它具备线程的一些特性，但是系统没有给它分配资源。</p>
+</li>
+<li><p>Runnable<br>表示这个线程处于就绪状态，要是能获得CPU的话，线程马上就能运行起来。</p>
+</li>
+<li><p>Blocked<br>一个正在运行的线程由于某些原因不能继续运行，它将进入阻塞状态。比如线程对象执行suspend(),sleep()等阻塞类型的方法后，线程就会进入BlockedPool，当线程调用resume()方法或者自动苏醒后，线程会进入Runnable状态;线程因为要执行synchronized同步代码块需要获取锁，但是当前要获取的锁被其他线程所占有，此时线程会进入LockPool，要是线程获取到这把锁后，线程又会进入到Runnable状态;线程执行了某个对象的wait()方法，此时线程会进入到WaitPool，当相应对象上的notify方法被调用后，线程就会进入Runnable状态。</p>
+</li>
+<li><p>Running<br>处于Runnable状态的线程要是能获取到CPU的话，马上就变成Running状态</p>
+</li>
+<li><p>Dead<br>线程运行结束，或者线程被interrupt，或者线程被stop，线程的生命周期也就结束了。</p>
+</li>
+</ul>
+<p>JVM在执行某个方法的时候，会创建一个方法执行栈帧(Frame),这个栈帧包含局部变量区和操作数栈，在局部变量区的第一个位置上存储当前方法所属的实例对象。</p>
 
     
   </div>
-  <footer class="end-sep">
+  <footer>
     
       
-        <div class="alignleft">
-          <a href="/2014/05/14/btrace-for-production-problem/#more" class="more-link">Read More</a>
-        </div>
+  <div class="categories">
+    <a class="categories-link" href="/categories/编程开发/">编程开发</a>
+  </div>
+
       
-      
+  <div class="tags">
+    <a class="tags-link" href="/tags/并发/">并发</a>
+  </div>
+
     
     <div class="clearfix"></div>
   </footer>
 </article>
 
 
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="JAVA线程模型">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
 
-  
 
-  <nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav>
+</section>
 
 </div>
 	  </div>
