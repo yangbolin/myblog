@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/07/27/how-to-use-asmifier/</loc>
+    <lastmod>2014-07-27T05:53:45.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/07/26/jvm-byte-code-attention/</loc>
     <lastmod>2014-07-26T11:46:08.000Z</lastmod>
   </url>
