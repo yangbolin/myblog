@@ -4,15 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>通过Future来取消任务 | BolinYoung&#39;s Blog</title>
+  <title>Archives: 2014/8 | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="一.概述
-在多线程程序中，我们经常使用Future来获取线程的执行结果，我们想线程的执行是异步的，因此要想获取线程执行结束后的结果，我们就需要等线程执行结束，这是一种主动获取线程执行结果的方法，当然你也可以让线程拿到结果后通知你。在使用Future的时候我们经常会设置一个超时时间，要是过了这个超时时间，线程的结果还没返回，那么我们经常就会忽略这个结果，但是这个获取结果的线程怎么办呢？让他自生自灭？我看代码中经常有这种写法，让这样的线程自生自灭。">
+  <meta name="description" content="Coder @Alibaba">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta property="og:title" content="通过Future来取消任务"/>
+  
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -46,19 +45,27 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-		<div class="content"><article class="post">
+		<div class="content">
+
+
+<h2 class="archives-title"><span>2014</span></h2>
+
+
+
+  
+    <article class="post">
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/05/31/future-cancel-task/">
-  <time datetime="2014-05-31T11:01:51.000Z">
-    May 31 2014
+      <a href="/2014/08/16/a-jvm-share/">
+  <time datetime="2014-08-16T07:44:15.000Z">
+    Aug 16 2014
   </time>
 </a>
     
     
   
-    <h1 class="title">通过Future来取消任务</h1>
+    <h1 class="title"><a href="/2014/08/16/a-jvm-share/">一次JVM分享的相关记录</a></h1>
   
 
   </header>
@@ -66,83 +73,33 @@
   <div class="entry">
     
       <h4 id="一-概述">一.概述</h4>
-<p>在多线程程序中，我们经常使用Future来获取线程的执行结果，我们想线程的执行是异步的，因此要想获取线程执行结束后的结果，我们就需要等线程执行结束，这是一种主动获取线程执行结果的方法，当然你也可以让线程拿到结果后通知你。在使用Future的时候我们经常会设置一个超时时间，要是过了这个超时时间，线程的结果还没返回，那么我们经常就会忽略这个结果，但是这个获取结果的线程怎么办呢？让他自生自灭？我看代码中经常有这种写法，让这样的线程自生自灭。</p>
-<a id="more"></a>
-
-<h4 id="二-通过Future来取消线程">二.通过Future来取消线程</h4>
-<p>要是相应的线程在规定的时间内没有返回结果，我们就把这个线程给终止了，不要让它自生自灭，因为此时线程的执行已经没有意义了，要是我们不管它，让它自生自灭就等于浪费系统资源，这个点很容易被忽略，说实话自己之前也经常忽略，直到今天看书的时候才发现。下面我们来看看使用Future的良好编程习惯：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">timedRun</span>(Runnable r, <span class="keyword">long</span> timeout, TimeUnit unit) <span class="keyword">throws</span> InterruptedException {
-    Future&lt;?&gt; task = taskExec.submit(r);
-    <span class="keyword">try</span> {
-        <span class="comment">// 设置任务执行的超时时间</span>
-        task.get(timeout,unit);
-    } <span class="keyword">catch</span>(TimeoutException e) {
-        <span class="comment">// 超时异常</span>
-    } <span class="keyword">catch</span>(ExecutionException e) {
-        <span class="comment">// 执行异常</span>
-    } <span class="keyword">finally</span> {
-        <span class="comment">// 如果任务已经结束，那么执行取消不会带来任何影响，如果任务正在执行，那么将会被中断</span>
-        task.cancel(<span class="keyword">true</span>);
-    }
-}
-</pre></td></tr></table></figure>
-
-<p>使用Future的时候，记得不要让没有用的任务自生自灭。</p>
+<p>最近看见公司一位前辈有分享JVM相关的知识，自己特地从跑过去听了一下，感觉讲的不是很深入，但是相对来说还是不错的，本文就自己听到的一些东西做一个简单的总结。平时我们大多数都是用JAVA写代码,很多人学JAVA都是从HelloWorld开始，但是从你写HelloWorld代码到最终输出HelloWorld到底发生那些事情呢？要想清楚的回答这个问题，并不是很容易，你需要对JVM有一个清晰的了解后，才能说清楚这个问题，这只是一个引子，本文也不去挑战这个问题，这里主要记录一下自己从这个分享中听到的一些感兴趣的东西。</p>
 
     
   </div>
-  <footer>
+  <footer class="end-sep">
     
       
-  <div class="categories">
-    <a class="categories-link" href="/categories/编程开发/">编程开发</a>
-  </div>
-
+        <div class="alignleft">
+          <a href="/2014/08/16/a-jvm-share/#more" class="more-link">Read More</a>
+        </div>
       
-  <div class="tags">
-    <a class="tags-link" href="/tags/JAVA/">JAVA</a>, <a class="tags-link" href="/tags/并发/">并发</a>
-  </div>
-
+      
     
     <div class="clearfix"></div>
   </footer>
 </article>
 
 
-<section id="comment">
-  <h1 class="title">Comments</h1>
-  <div class="ds-thread" data-title="通过Future来取消任务">
-  </div>
-<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"bolin"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- ��˵����JS���� end -->
 
+  
 
-</section>
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+
 
 </div>
 	  </div>
