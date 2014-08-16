@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2014-08-16T14:26:50.263Z</updated>
+  <updated>2014-08-16T14:38:27.422Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yangbolin.cn/2014/08/16/a-jvm-share/"/>
     <id>http://yangbolin.cn/2014/08/16/a-jvm-share/</id>
     <published>2014-08-16T07:44:15.000Z</published>
-    <updated>2014-08-16T14:25:26.000Z</updated>
+    <updated>2014-08-16T14:38:20.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
 <p>最近看见公司一位前辈有分享JVM相关的知识，自己特地从跑过去听了一下，感觉讲的不是很深入，但是相对来说还是不错的，本文就自己听到的一些东西做一个简单的总结。平时我们大多数都是用JAVA写代码,很多人学JAVA都是从HelloWorld开始，但是从你写HelloWorld代码到最终输出HelloWorld到底发生那些事情呢？要想清楚的回答这个问题，并不是很容易，你需要对JVM有一个清晰的了解后，才能说清楚这个问题，这只是一个引子，本文也不去挑战这个问题，这里主要记录一下自己从这个分享中听到的一些感兴趣的东西。</p>
 <a id="more"></a>
@@ -357,7 +357,7 @@ class Danger {
     
       <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
     
-      <category term="JVM知识" scheme="http://yangbolin.cn/categories/JVM%E7%9F%A5%E8%AF%86/"/>
+      <category term="JVM学习" scheme="http://yangbolin.cn/categories/JVM%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
