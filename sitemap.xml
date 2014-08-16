@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/05/10/consistent-hashing/</loc>
+    <lastmod>2014-05-10T14:03:25.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/07/27/how-to-use-asmifier/</loc>
     <lastmod>2014-07-27T05:53:45.000Z</lastmod>
   </url>
@@ -174,11 +179,6 @@
   <url>
     <loc>http://yangbolin.cn/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/</loc>
     <lastmod>2014-05-17T09:35:04.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://yangbolin.cn/2014/05/10/consistent-hashing/</loc>
-    <lastmod>2014-05-10T14:03:25.000Z</lastmod>
   </url>
   
   <url>
