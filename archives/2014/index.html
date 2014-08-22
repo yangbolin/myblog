@@ -57,6 +57,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/08/22/velocity-exception-analyze/">
+  <time datetime="2014-08-22T14:05:14.000Z">
+    Aug 22 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/08/22/velocity-exception-analyze/">一次velocity异常的分析</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-现象">一.现象</h4>
+<p>最近在使用velocity模板的时候RuntimeInstance的1103行代码出现了NPE,如下图所示<br><img src="http://bolinyoung.qiniudn.com/velocity-npe.png" alt="velocity-npe"><br>该行代码一直在抛NPE。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/08/22/velocity-exception-analyze/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/08/16/a-jvm-share/">
   <time datetime="2014-08-16T07:44:15.000Z">
     Aug 16 2014
@@ -410,46 +450,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/07/spring-application-event/">
-  <time datetime="2014-07-07T05:08:20.000Z">
-    Jul 7 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/07/spring-application-event/">Spring容器的事件机制</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>Spring容器暴漏了很多扩展点给框架的使用者，让框架的使用者能够干涉一些容器内部的事情，也让框架的使用能够感知到容器内部发生了什么事情，比如Spring容器在初始化完后，就会广播一个容器初始化完成的事件，然后事件的监听者监听到这个事件后做相应的事情，这也是Spring容器的一个非常有用的扩展点。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/07/spring-application-event/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -505,13 +505,13 @@
 		
 			<li><a href="/tags/svn/" title="svn">svn<sup>1</sup></a></li>
 		
+			<li><a href="/tags/velocity/" title="velocity">velocity<sup>1</sup></a></li>
+		
 			<li><a href="/tags/vim/" title="vim">vim<sup>1</sup></a></li>
 		
 			<li><a href="/tags/web/" title="web">web<sup>1</sup></a></li>
 		
 			<li><a href="/tags/zookeeper/" title="zookeeper">zookeeper<sup>2</sup></a></li>
-		
-			<li><a href="/tags/单元测试/" title="单元测试">单元测试<sup>1</sup></a></li>
 		
 		</ul>
 </div>
@@ -524,6 +524,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/08/22/velocity-exception-analyze/" title="一次velocity异常的分析">一次velocity异常的分析</a>
+      </li>
     
       <li>
         <a href="/2014/08/16/a-jvm-share/" title="一次JVM分享的相关记录">一次JVM分享的相关记录</a>
@@ -561,10 +565,6 @@
         <a href="/2014/07/16/class-bytecode-constant-pool-num/" title="JAVA字节码常量池中常量编号的疑问">JAVA字节码常量池中常量编号的疑问</a>
       </li>
     
-      <li>
-        <a href="/2014/07/07/spring-application-event/" title="Spring容器的事件机制">Spring容器的事件机制</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -595,7 +595,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>19</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>20</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		
