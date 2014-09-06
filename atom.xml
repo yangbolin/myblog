@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2014-08-22T16:43:45.955Z</updated>
+  <updated>2014-09-06T03:17:03.399Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,32 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[裂变思想]]></title>
+    <link href="http://yangbolin.cn/2014/09/06/fission-thought/"/>
+    <id>http://yangbolin.cn/2014/09/06/fission-thought/</id>
+    <published>2014-09-06T02:49:07.000Z</published>
+    <updated>2014-09-06T03:16:44.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>关于裂变这个词语，一开始想到的就是双11的时候红包的裂变，一个红包经过裂变后变成多个红包，让更多的人参与进来，这个红包裂变的想法当时就给自己留下了深刻的印象，其实这不是什么业务的创新，而是算法思想在业务上的经典使用。</p>
+<a id="more"></a>
+
+<p>在算法中一个经典的思想就是分治，要解决一个问题A，先把问题A分解为A1，A2，A3三个子问题，这三个子问题解决了，问题A也就得到相应的解决，此时可以理解为问题A在需要解决的时候裂变成3个子问题。问题变多了，但是原来的问题更好解决了，因此在这种状况下面问题变多不一定是坏事情。</p>
+<h4 id="二-裂变">二.裂变</h4>
+<p>当一些业务点没法在一个实体体现出来的时候，考虑把这个实体裂变，然后修改裂变后实体的相关状态以满足业务需求，此时实体A裂变成两个实体A1和A2，裂变后实体A就不存在了，但是通过A1和A2上的一些关联信息一定能推理出A1和A2是实体A裂变而来的。<br><img src="http://bolinyoung.qiniudn.com/%E8%A3%82%E5%8F%98.png" alt="裂变"></p>
+<h4 id="三-总结">三.总结</h4>
+<p>在设计的时候注意裂变思想的灵活使用，虽然很简单，但是能不能灵活使用是另外一个问题。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>关于裂变这个词语，一开始想到的就是双11的时候红包的裂变，一个红包经过裂变后变成多个红包，让更多的人参与进来，这个红包裂变的想法当时就给自己留下了深刻的印象，其实这不是什么业务的创新，而是算法思想在业务上的经典使用。</p>
+]]></summary>
+    
+      <category term="Algorithm" scheme="http://yangbolin.cn/tags/Algorithm/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[一次velocity异常的分析]]></title>
@@ -1585,253 +1611,6 @@ ctx.registerShutdownHook();
       <category term="Linux" scheme="http://yangbolin.cn/tags/Linux/"/>
     
       <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[如何在本地通过eclipse来调试HBase的源代码]]></title>
-    <link href="http://yangbolin.cn/2014/06/07/how-to-debug-hbase-source/"/>
-    <id>http://yangbolin.cn/2014/06/07/how-to-debug-hbase-source/</id>
-    <published>2014-06-07T14:36:16.000Z</published>
-    <updated>2014-06-08T07:30:57.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>要想把HBase的源代码梳理清楚，需要在本地调试一下，可能直接看代码也能搞清楚，但是调试能让我们尽快搞清楚HBase的源代码，下面就来看一下如何在eclipse中调试HBase的源代码。</p>
-<a id="more"></a>
-
-<h4 id="二-编译HBase的源代码">二.编译HBase的源代码</h4>
-<p>1.HBase源代码的获取<br>你可以直接从HBase的官方网站上下载HBase的包，<a href="http://hbase.apache.org/" target="_blank">HBase官方地址</a><br>你也可以使用svn把hbase的代码签出</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>svn co <span class="symbol">http:</span>/<span class="regexp">/svn.apache.org/repos</span><span class="regexp">/asf/hbase</span><span class="regexp">/tags/</span><span class="number">0</span>.<span class="number">94.2</span>/ hbase_sources
-</pre></td></tr></table></figure>
-
-<p>2.HBase源代码的编译<br>进入到HBase代码的目录下面，执行下面的命令</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>mvn clean <span class="keyword">install</span> mvn clean <span class="keyword">install</span> -DskipTests
-mvn eclipse clean eclipse:eclipse
-</pre></td></tr></table></figure>
-
-<p>执行完上面的命令后，就把HBase的源码导入到eclipse中去。在执行maven命令的时候注意使用maven包自带的settings.xml，不要使用其他settings.xml文件，会导致编译不过的。</p>
-<p>3.在eclipse中做相关的设置</p>
-<p>在eclipse的Run Configurations中设置启动类<br><img src="http://bolinyoung.qiniudn.com/hbase-start.png" alt="设置启动类HMaster"></p>
-<p>在eclipse的Run Configurations中设置启动参数<br><img src="http://bolinyoung.qiniudn.com/hbase-start-args.png" alt="设置启动参数"></p>
-<p>在eclipse的Run Configurations中把conf文件放到classpath中<br><img src="http://bolinyoung.qiniudn.com/hbase-start-conf.png" alt="把conf文件放到classpath中"></p>
-<p>4.点击Run运行<br>出现了下面的错误<br><img src="http://bolinyoung.qiniudn.com/hbase-xml-version.png" alt="xml版本校验出错"><br>观察出错日志，显示hbase-default.xml版本校验出错，搞不定，搜一把，有人说在hbase-site.xml增加下面的配置项</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">property</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">name</span>&gt;</span>hbase.defaults.for.version.skip<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">value</span>&gt;</span>true<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">description</span>&gt;</span>
-		Set to true to skip the 'hbase.defaults.for.version' check.
-		Setting this to true can be useful in contexts other than
-		the other side of a maven generation; i.e. running in an
-		ide. You'll want to set this boolean to true to avoid
-		seeing the RuntimException complaint: "hbase-default.xml file
-		seems to be for and old version of HBase (@@@VERSION@@@), this
-		version is X.X.X-SNAPSHOT"
-	<span class="tag">&lt;/<span class="title">description</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-</pre></td></tr></table></figure>
-
-<p>索性试一下，此错误消失了，又来一错误<br><img src="http://bolinyoung.qiniudn.com/hbase-zk-error.png" alt="HBase ZK ERROR"><br>这个错之前遇到过是由于zookeeper没启动导致，一直以为运行HMaster类，会自己启动zookeeper，所以一直在网上找答案，结果找到的答案都是错的，于是怀疑zookeeper在自己的电脑上压根就没有启动起来,所以需要想办法在本地启动zookeeper，我们看到hbase源代码中有一个HQuorumPeer类，这个类就是hbase-zookeeper的启动类，该类中有一个main方法，我们在eclipse中以application的方式启动。<br><img src="http://bolinyoung.qiniudn.com/hbase-zk-start.png" alt="hbase zk启动类"><br>把conf下面的配置文件设置到classpath中<br><img src="http://bolinyoung.qiniudn.com/hbase-zk-classpath.png" alt="设置conf到classpath"><br>这样我们就可以在eclipse中启动zookeeper啦。接下来我们再次启动HMaster<br><img src="http://bolinyoung.qiniudn.com/hbase-region-server-error.png" alt="启动HMaster控制台不断输出错误日志"><br>又出错了，看看错误日志，我们发现是RegionServer没有启动好，使用jps可以发现没有RegionServer的进程，虽然日志的级别是INFO的，回头一看确实没有启动过RegionServer，所以启动一下RegionServer啦，我们还是在eclipse中以application的方式去启动RegionServer<br><img src="http://bolinyoung.qiniudn.com/hbase-region-server.png" alt="HBase RegionServer的启动配置"><br>同样需要把conf文件加入到eclipse的classpath中，方法和前面一样，这里就不用再重复了。配置好就启动,然后发现HMaster的控制台INFO级别的日志停掉了。关于这个点我们稍微再深入一些，我们刚才的场景是启动了HMaster但是没有启动RegionServer，此时HMaster的控制台一直有INFO级别的日志输出，我们看一下ServerManager这个类中输出这段日志的代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-</pre></td><td class="code"><pre><span class="javadoc">/**
-   * Wait for the region servers to report in.
-   * We will wait until one of this condition is met:
-   *  - the master is stopped
-   *  - the 'hbase.master.wait.on.regionservers.maxtostart' number of
-   *    region servers is reached
-   *  - the 'hbase.master.wait.on.regionservers.mintostart' is reached AND
-   *   there have been no new region server in for
-   *      'hbase.master.wait.on.regionservers.interval' time AND
-   *   the 'hbase.master.wait.on.regionservers.timeout' is reached
-   *
-   *<span class="javadoctag"> @throws</span> InterruptedException
-   */</span>
-  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">waitForRegionServers</span>(MonitoredTask status)
-  <span class="keyword">throws</span> InterruptedException {
-    <span class="keyword">final</span> <span class="keyword">long</span> interval = <span class="keyword">this</span>.master.getConfiguration().
-      getLong(WAIT_ON_REGIONSERVERS_INTERVAL, <span class="number">1500</span>);
-    <span class="keyword">final</span> <span class="keyword">long</span> timeout = <span class="keyword">this</span>.master.getConfiguration().
-      getLong(WAIT_ON_REGIONSERVERS_TIMEOUT, <span class="number">4500</span>);
-    <span class="keyword">int</span> minToStart = <span class="keyword">this</span>.master.getConfiguration().
-      getInt(WAIT_ON_REGIONSERVERS_MINTOSTART, <span class="number">1</span>);
-    <span class="keyword">if</span> (minToStart &lt; <span class="number">1</span>) {
-      LOG.warn(String.format(
-        <span class="string">"The value of '%s' (%d) can not be less than 1, ignoring."</span>,
-        WAIT_ON_REGIONSERVERS_MINTOSTART, minToStart));
-      minToStart = <span class="number">1</span>;
-    }
-    <span class="keyword">int</span> maxToStart = <span class="keyword">this</span>.master.getConfiguration().
-      getInt(WAIT_ON_REGIONSERVERS_MAXTOSTART, Integer.MAX_VALUE);
-    <span class="keyword">if</span> (maxToStart &lt; minToStart) {
-        LOG.warn(String.format(
-            <span class="string">"The value of '%s' (%d) is set less than '%s' (%d), ignoring."</span>,
-            WAIT_ON_REGIONSERVERS_MAXTOSTART, maxToStart,
-            WAIT_ON_REGIONSERVERS_MINTOSTART, minToStart));
-        maxToStart = Integer.MAX_VALUE;
-    }
-
-    <span class="keyword">long</span> now =  System.currentTimeMillis();
-    <span class="keyword">final</span> <span class="keyword">long</span> startTime = now;
-    <span class="keyword">long</span> slept = <span class="number">0</span>;
-    <span class="keyword">long</span> lastLogTime = <span class="number">0</span>;
-    <span class="keyword">long</span> lastCountChange = startTime;
-    <span class="keyword">int</span> count = countOfRegionServers();
-    <span class="keyword">int</span> oldCount = <span class="number">0</span>;
-    <span class="keyword">while</span> (
-      !<span class="keyword">this</span>.master.isStopped() &&
-        count &lt; maxToStart &&
-        (lastCountChange+interval &gt; now || timeout &gt; slept || count &lt; minToStart)
-      ){
-
-      <span class="comment">// Log some info at every interval time or if there is a change</span>
-      <span class="keyword">if</span> (oldCount != count || lastLogTime+interval &lt; now){
-        lastLogTime = now;
-        String msg =
-          <span class="string">"Waiting for region servers count to settle; currently"</span>+
-            <span class="string">" checked in "</span> + count + <span class="string">", slept for "</span> + slept + <span class="string">" ms,"</span> +
-            <span class="string">" expecting minimum of "</span> + minToStart + <span class="string">", maximum of "</span>+ maxToStart+
-            <span class="string">", timeout of "</span>+timeout+<span class="string">" ms, interval of "</span>+interval+<span class="string">" ms."</span>;
-        LOG.info(msg);
-        status.setStatus(msg);
-      }
-
-      <span class="comment">// We sleep for some time</span>
-      <span class="keyword">final</span> <span class="keyword">long</span> sleepTime = <span class="number">50</span>;
-      Thread.sleep(sleepTime);
-      now =  System.currentTimeMillis();
-      slept = now - startTime;
-
-      oldCount = count;
-      count = countOfRegionServers();
-      <span class="keyword">if</span> (count != oldCount) {
-        lastCountChange = now;
-      }
-    }
-
-    LOG.info(<span class="string">"Finished waiting for region servers count to settle;"</span> +
-      <span class="string">" checked in "</span> + count + <span class="string">", slept for "</span> + slept + <span class="string">" ms,"</span> +
-      <span class="string">" expecting minimum of "</span> + minToStart + <span class="string">", maximum of "</span>+ maxToStart+<span class="string">","</span>+
-      <span class="string">" master is "</span>+ (<span class="keyword">this</span>.master.isStopped() ? <span class="string">"stopped."</span>: <span class="string">"running."</span>)
-    );
-  }
-</pre></td></tr></table></figure>
-
-<p>重点关注这段代码中的while循环，这段代码不断轮寻RegionServer数目，只有启动起来的RegionServer数目&gt;=hbase.master.wait.on.regionservers.mintostart这个while循环才能退出，不然while循环里面就会一直输出INFO的级别的日志，说没有RegionServer启动好，其实hbase.master.wait.on.regionservers.mintostart的默认值就是1.</p>
-<p>至此，Zookeeper，HMaster，HRegionServer都已经启动好了，这里所说的HRegionServer和上面所说的RegionServer指的是同一个东西。接下来我们访问<a href="http://localhost:60010/master-status" target="_blank">http://localhost:60010/master-status</a> 就能看到相关的信息。</p>
-<p>这样我们就可以在本地eclipse中debug一下HBase的源代码啦^=^。</p>
-<h4 id="三-最后总结">三.最后总结</h4>
-<p>我们发现在本地部署HBase，我们需要启动三个东西，Zookeeper,HMaster以及RegionServer。</p>
-<p>zookeeper通过HMaster负责协调整个HBase集群，同时zookeeper保存了hbase中-ROOT-表的地址和HMaster的地址。HRegionServer也会把自己以Ephemeral方式注册到Zookeeper中，使得HMaster可以随时感知到各个HRegionServer的健康状态。</p>
-<p>HMaster没有单点问题，HBase中可以启动多个HMaster，通过Zookeeper的Master Election机制保证总有一个Master运行，HMaster在功能上主要负责Table和Region的管理工作：</p>
-<ol>
-<li>管理用户对Table的增、删、改、查操作</li>
-<li>管理HRegionServer的负载均衡，调整Region分布</li>
-<li>在Region Split后，负责新Region的分配</li>
-<li>在HRegionServer停机后，负责失效HRegionServer 上的Regions迁移</li>
-</ol>
-<p>HRegionServer主要负责响应用户I/O请求，向HDFS文件系统中读写数据，是HBase中最核心的模块。<br>HRegionServer内部管理了一系列HRegion对象，每个HRegion对应了Table中的一个Region，HRegion中由多个HStore组成。每个HStore对应了Table中的一个Column Family的存储，可以看出每个Column Family其实就是一个集中的存储单元，因此最好将具备共同IO特性的column放在一个Column Family中，这样最高效。</p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>要想把HBase的源代码梳理清楚，需要在本地调试一下，可能直接看代码也能搞清楚，但是调试能让我们尽快搞清楚HBase的源代码，下面就来看一下如何在eclipse中调试HBase的源代码。</p>
-]]></summary>
-    
-      <category term="HBase" scheme="http://yangbolin.cn/tags/HBase/"/>
-    
-      <category term="大数据" scheme="http://yangbolin.cn/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
   </entry>
   

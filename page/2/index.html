@@ -55,6 +55,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/07/16/class-bytecode-constant-pool-num/">
+  <time datetime="2014-07-16T09:50:43.000Z">
+    Jul 16 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/07/16/class-bytecode-constant-pool-num/">JAVA字节码常量池中常量编号的疑问</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-问题描述">一.问题描述</h4>
+<p>最近在解析JAVA字节码的时候，发现常量池中常量编号不连续了，导致解析程序经常NPE，然后仔细测试了一下，发现常量类型如果是Long或者Double的话，就会导致常量池中常量的编号不连续了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/07/16/class-bytecode-constant-pool-num/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/07/07/spring-application-event/">
   <time datetime="2014-07-07T05:08:20.000Z">
     Jul 7 2014
@@ -413,46 +453,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/06/07/how-to-debug-hbase-source/">
-  <time datetime="2014-06-07T14:36:16.000Z">
-    Jun 7 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/06/07/how-to-debug-hbase-source/">如何在本地通过eclipse来调试HBase的源代码</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>要想把HBase的源代码梳理清楚，需要在本地调试一下，可能直接看代码也能搞清楚，但是调试能让我们尽快搞清楚HBase的源代码，下面就来看一下如何在eclipse中调试HBase的源代码。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/06/07/how-to-debug-hbase-source/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -479,7 +479,7 @@
 		
 			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
 		
-			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
 		
 			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>1</sup></a></li>
 		
@@ -530,6 +530,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2014/09/06/fission-thought/" title="裂变思想">裂变思想</a>
+      </li>
+    
+      <li>
         <a href="/2014/08/22/velocity-exception-analyze/" title="一次velocity异常的分析">一次velocity异常的分析</a>
       </li>
     
@@ -565,10 +569,6 @@
         <a href="/2014/07/16/asm-read-class-bytes/" title="使用ASM读取class的字节码">使用ASM读取class的字节码</a>
       </li>
     
-      <li>
-        <a href="/2014/07/16/class-bytecode-constant-pool-num/" title="JAVA字节码常量池中常量编号的疑问">JAVA字节码常量池中常量编号的疑问</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -599,7 +599,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>20</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>21</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		
