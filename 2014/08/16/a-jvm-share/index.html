@@ -87,18 +87,24 @@
 7
 8
 9
+10
+11
+12
 </pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticCode</span> {</span>
-	<span class="keyword">static</span> {
-		a = <span class="number">1</span>;
-	}
-	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>  a = <span class="number">0</span>;
-	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
-		System.out.println(StaticCode.a);
-	}
+
+    <span class="keyword">static</span> {
+        a = <span class="number">1</span>;
+    }
+
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>  a = <span class="number">0</span>;
+	
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
+        System.out.println(StaticCode.a);
+    }
 }
 </pre></td></tr></table></figure>
 
-<p>这段代码的输出结果是什么？<br>首先考虑这段代码会不会有编译的问题，提前使用了静态成员变量a。自己编译一下就知道了，这段代码不会有编译的问题。输出结果是1。自己运行一下就知道了。但是为啥结果是1呢？我们来分析一下字节码，看看为啥结果是1<br>使用javap -verbose来查看字节码，注意字节码中静态代码块<br><img src="http://bolinyoung.qiniudn.com/staticcode.png" alt="StaticCode中的静态代码块"><br>其实这个静态代码块对应的方法就是clinit方法。这个方法中有5条字节码指令，偏移量0和1处的字节码表示获取常量0并且赋值给静态成员变量i,这两个字节码指令从哪里来的呢？就是声明静态成员变量i时的赋值操作对应的字节码。这些字节码会排列在静态代码块本身字节码之前，因为静态成员变量的声明排在static代码块的前面。偏移量4和5出的字节码表示静态代码块中对静态成员变量赋值的字节码。</p>
+<p>这段代码的输出结果是什么？<br>首先考虑这段代码会不会有编译的问题，提前使用了静态成员变量a。自己编译一下就知道了，这段代码不会有编译的问题。输出结果是0。自己运行一下就知道了。但是为啥结果是0呢？我们来分析一下字节码，看看为啥结果是0<br>使用javap -verbose来查看字节码，注意字节码中静态代码块<br><img src="http://bolinyoung.qiniudn.com/staticcode-0.png" alt="StaticCode中的静态代码块"><br>其实这个静态代码块对应的方法就是clinit方法。这个方法中有5条字节码指令，偏移量0和1处的字节码表示获取常量1并且赋值给静态成员变量i,这两个字节码指令从哪里来的呢？就是声明静态代码块中对静态成员变量a的赋值操作。偏移量4和5处的字节码表示声明静态成员变量a时的赋值操作，此时这个赋值操作排在静态代码块中赋值操作的后面，因此输出结果为0。</p>
 <p>对于上述代码块，如果我们把static代码块的顺序静态成员变量声明的顺序改变一下</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
@@ -113,20 +119,21 @@
 11
 12
 </pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticCode</span> {</span>
-	
-	<span class="keyword">static</span> {
-		a = <span class="number">1</span>;
-	}
-	
+
 	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>  a = <span class="number">0</span>;
 	
-	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
-		System.out.println(StaticCode.a);
-	}
+    <span class="keyword">static</span> {
+        a = <span class="number">1</span>;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
+        System.out.println(StaticCode.a);
+    }
 }
 </pre></td></tr></table></figure>
 
-<p>此时输出结果为0,因为静态成员变量的声明排在静态代码块的后面，此时静态成员变量声明时的赋值字节码会出现静态代码块中赋值字节码的后面，再看看相关的字节码就能发现<br><img src="http://bolinyoung.qiniudn.com/staticcode.png" alt="改变顺序后的字节码"></p>
+<p>此时输出结果为1,因为静态成员变量的声明排在静态代码块的前面，此时静态成员变量声明时的赋值字节码会出现静态代码块中赋值字节码的后面，再看看相关的字节码就能发现<br><img src="http://bolinyoung.qiniudn.com/staticcode-0-latter.png" alt="改变顺序后的字节码"></p>
+<p>关于静态代码块中的字节码和静态成员变量赋值的字节码谁先执行谁后执行，取决于java代码中静态成员变量和静态代码块出现的先后顺序。</p>
 <p>再看一个对象实例化的例子</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2

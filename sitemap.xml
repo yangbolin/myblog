@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/08/16/a-jvm-share/</loc>
+    <lastmod>2014-08-16T07:44:15.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/09/06/fission-thought/</loc>
     <lastmod>2014-09-06T02:49:07.000Z</lastmod>
   </url>
@@ -9,11 +14,6 @@
   <url>
     <loc>http://yangbolin.cn/2014/08/22/velocity-exception-analyze/</loc>
     <lastmod>2014-08-22T14:05:14.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://yangbolin.cn/2014/08/16/a-jvm-share/</loc>
-    <lastmod>2014-08-16T07:44:15.000Z</lastmod>
   </url>
   
   <url>
