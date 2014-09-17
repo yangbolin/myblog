@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/06/13/linux-command/</loc>
+    <lastmod>2014-06-13T06:30:04.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/08/16/a-jvm-share/</loc>
     <lastmod>2014-08-16T07:44:15.000Z</lastmod>
   </url>
@@ -84,11 +89,6 @@
   <url>
     <loc>http://yangbolin.cn/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/</loc>
     <lastmod>2014-06-24T15:29:37.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://yangbolin.cn/2014/06/13/linux-command/</loc>
-    <lastmod>2014-06-13T06:30:04.000Z</lastmod>
   </url>
   
   <url>

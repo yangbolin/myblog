@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2014-09-09T03:47:15.306Z</updated>
+  <updated>2014-09-17T11:10:06.821Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -1598,17 +1598,22 @@ ctx.registerShutdownHook();
     <link href="http://yangbolin.cn/2014/06/13/linux-command/"/>
     <id>http://yangbolin.cn/2014/06/13/linux-command/</id>
     <published>2014-06-13T06:30:04.000Z</published>
-    <updated>2014-06-19T09:29:38.000Z</updated>
+    <updated>2014-09-17T11:08:53.000Z</updated>
     <content type="html"><![CDATA[<p>一些常用Linux命令的总结</p>
 <a id="more"></a>
 
 <ul>
-<li>lsof -p <pid> | grep xx<br>查看当前进程中有没有使用xx相关的东西，比如可以查看当前JVM有加载的某个jar包完整信息 ，包括版本。</li>
-<li>pmap <pid> | grep xx<br>查看当前进程中有没有使用xx相关的东西，比如可以查看当前JVM有加载的某个jar包完整信息 ，包括版本。</li>
-<li>df -hl<br>查看磁盘占用率</li>
+<li><p>lsof -p <pid> | grep xx<br>查看当前进程中有没有使用xx相关的东西，比如可以查看当前JVM有加载的某个jar包完整信息 ，包括版本。</p>
+</li>
+<li><p>pmap <pid> | grep xx<br>查看当前进程中有没有使用xx相关的东西，比如可以查看当前JVM有加载的某个jar包完整信息 ，包括版本。</p>
+</li>
+<li><p>df -hl<br>查看磁盘占用率</p>
+</li>
 <li><p>du -sh 文件目录<br>查看当前文件的大小</p>
 </li>
 <li><p>grep -R “xxx” .<br>在当前目录下查看包含xxx字符串的文件</p>
+</li>
+<li><p>sudo killall wpa_supplicant<br>Linux当无线网络断掉之后，发现重新链接无线网络一直链接不上，此时执行一下上面的命令就可以了，避免每次重启电脑。</p>
 </li>
 </ul>
 ]]></content>
