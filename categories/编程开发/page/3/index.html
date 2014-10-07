@@ -57,6 +57,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/04/15/spring-aop-practice/">
+  <time datetime="2014-04-15T11:58:15.000Z">
+    Apr 15 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/15/spring-aop-practice/">如何不用修改原来的代码呢？</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求描述">一.需求描述</h4>
+<p>最近遇到这样一个需求，有个数据计算的方法，我们需要优化一下，因为有些数据在一段时间内计算出的结果总是一样的，为了提高性能，我们把这些数据的计算结果缓存起来，这样下次计算的时候就先去缓存中查一下，要是缓存中存在，就直接把缓存中的数据返回，要是缓存中不存在就走原来的计算逻辑去计算，面对这个需求，我们需要做两件事情，在调用计算方法之前读取一下缓存，在调用方法之后把值写入缓存。这样的计算方法有10多个，相应的类也有10多个。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/15/spring-aop-practice/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/04/12/async-write-data/">
   <time datetime="2014-04-12T07:20:21.000Z">
     Apr 12 2014
@@ -126,13 +166,15 @@
 		
 			<li><a href="/tags/CSS/" title="CSS">CSS<sup>1</sup></a></li>
 		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>1</sup></a></li>
+		
 			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
 			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>16</sup></a></li>
 		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>6</sup></a></li>
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
 			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
 		
@@ -154,8 +196,6 @@
 		
 			<li><a href="/tags/web/" title="web">web<sup>1</sup></a></li>
 		
-			<li><a href="/tags/zookeeper/" title="zookeeper">zookeeper<sup>2</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -167,6 +207,14 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
+      </li>
+    
+      <li>
+        <a href="/2014/09/17/jvm-cmd/" title="JVM常用命令总结">JVM常用命令总结</a>
+      </li>
     
       <li>
         <a href="/2014/09/06/fission-thought/" title="裂变思想">裂变思想</a>
@@ -200,14 +248,6 @@
         <a href="/2014/07/23/ibatis-version-for-parametermap/" title="IBatis不同版本对parameterMap的处理">IBatis不同版本对parameterMap的处理</a>
       </li>
     
-      <li>
-        <a href="/2014/07/20/hbase-keyvalue-type/" title="HBase的基础类型KeyValue">HBase的基础类型KeyValue</a>
-      </li>
-    
-      <li>
-        <a href="/2014/07/16/asm-read-class-bytes/" title="使用ASM读取class的字节码">使用ASM读取class的字节码</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -220,7 +260,7 @@
 		<h3>分类</h3>
 		<ul class="clearfix">
 		
-			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>4</sup></a></li>
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
 		
 			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
 		
@@ -238,7 +278,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>21</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>22</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		

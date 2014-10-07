@@ -55,6 +55,86 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/04/21/sql-error-analyse/">
+  <time datetime="2014-04-21T11:26:01.000Z">
+    Apr 21 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/21/sql-error-analyse/">一个sql问题的排查</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-现象">一.现象</h4>
+<p>线上一台任务机对一张mysql表进行全表扫描，当扫描过程中有一行记录读出来做数据转换，发现有很多行被多次读出来，并且多次尝试去做数据转换，同时数据转换也就失败了，因此也就打出了error级别的日志。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/21/sql-error-analyse/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/19/ie-iframe-session-cookie/">
+  <time datetime="2014-04-19T10:13:16.000Z">
+    Apr 19 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/19/ie-iframe-session-cookie/">iframe在IE下面session失效了</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-问题">一.问题</h4>
+<p>记得之前做一个项目的时候，把我们自己web系统的中的一个表单提交页面嵌入到其他产品线web系统的一个页面中，在IE浏览器下面出现表单提交失败的场景，查看日志是由于csrfToken失效导致。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/19/ie-iframe-session-cookie/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/04/19/spring-ioc-aop-idea/">
   <time datetime="2014-04-19T07:56:47.000Z">
     Apr 19 2014
@@ -371,51 +451,13 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/08/java-parameter-reference/">
-  <time datetime="2014-04-08T14:05:56.000Z">
-    Apr 8 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/04/08/java-parameter-reference/">Java 函数参数引用思考</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h3 id="一-概述">一.概述</h3>
-<p>Java是一门纯粹的面向对象语言，除了8种基本类型意外，其他都是对象。函数是编程语言中的一个非常重要的概念，Java中的函数都不是孤立存在的，不像C或者JS你可以定义一个孤立的函数，有函数就有函数调用，在Java中函数参数就两种类型，要么函数参数是基本类型，要么函数参数是引用类型。函数调用就会涉及到的参数的传递，在Java中，参数传递就一种方式，既所谓值传递，其实就是传递变量值的拷贝，如果参数类型是基本类型，那么传递的就是基本类型参数值的一份拷贝，如果参数类型是引用类型，那么传递的就是引用值的一份拷贝，而不是引用对象的一份拷贝，其实用C语言的指针来说，传递的就是指针所指内存空间地址的一份拷贝，正所谓Java中虽然没有指针，但全是指针。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/08/java-parameter-reference/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
     <a href="/page/5/" class="prev">Prev</a>
   
+  
+    <a href="/page/7/" class="next">Next</a>
   
   <div class="clearfix"></div>
 </nav>
@@ -443,13 +485,15 @@
 		
 			<li><a href="/tags/CSS/" title="CSS">CSS<sup>1</sup></a></li>
 		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>1</sup></a></li>
+		
 			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
 			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>16</sup></a></li>
 		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>6</sup></a></li>
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
 			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
 		
@@ -471,8 +515,6 @@
 		
 			<li><a href="/tags/web/" title="web">web<sup>1</sup></a></li>
 		
-			<li><a href="/tags/zookeeper/" title="zookeeper">zookeeper<sup>2</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -484,6 +526,14 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
+      </li>
+    
+      <li>
+        <a href="/2014/09/17/jvm-cmd/" title="JVM常用命令总结">JVM常用命令总结</a>
+      </li>
     
       <li>
         <a href="/2014/09/06/fission-thought/" title="裂变思想">裂变思想</a>
@@ -517,14 +567,6 @@
         <a href="/2014/07/23/ibatis-version-for-parametermap/" title="IBatis不同版本对parameterMap的处理">IBatis不同版本对parameterMap的处理</a>
       </li>
     
-      <li>
-        <a href="/2014/07/20/hbase-keyvalue-type/" title="HBase的基础类型KeyValue">HBase的基础类型KeyValue</a>
-      </li>
-    
-      <li>
-        <a href="/2014/07/16/asm-read-class-bytes/" title="使用ASM读取class的字节码">使用ASM读取class的字节码</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -537,7 +579,7 @@
 		<h3>分类</h3>
 		<ul class="clearfix">
 		
-			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>4</sup></a></li>
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
 		
 			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
 		
@@ -555,7 +597,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>21</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>22</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		

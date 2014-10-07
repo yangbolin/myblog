@@ -2,6 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/09/17/jvm-cmd/</loc>
+    <lastmod>2014-09-17T11:38:19.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yangbolin.cn/2014/10/07/idempotency-and-db-lock/</loc>
+    <lastmod>2014-10-07T10:52:48.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/06/13/linux-command/</loc>
     <lastmod>2014-06-13T06:30:04.000Z</lastmod>
   </url>
