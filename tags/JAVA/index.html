@@ -57,6 +57,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/10/07/thread-local-analyze/">
+  <time datetime="2014-10-07T13:01:03.000Z">
+    Oct 7 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/07/thread-local-analyze/">JAVA线程本地存储之ThreadLocal的分析</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>ThreadLocal是JDK的一个线程本地存储的类，我们可以把一些线程私有的数据写在ThreadLocal中，这样这些数据只有一个线程可见，实现了所谓的栈封闭。这样存储一些线程私有的数据，我们就不用去费心考虑如何保证临界资源的互斥访问了，同时对于一个线程，这些私有数据也只做一次初始化。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/07/thread-local-analyze/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/06/19/how-to-aware-jvm-exit/">
   <time datetime="2014-06-19T14:42:58.000Z">
     Jun 19 2014
@@ -420,46 +460,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/17/final-local-variable-for-jvm/">
-  <time datetime="2014-05-17T10:08:12.000Z">
-    May 17 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/17/final-local-variable-for-jvm/">Java局部变量有没有final关键字对JVM性能影响不大</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>在写Java代码中我们经常使用final这个关键字，被final修饰的变量，编译器不允许我们修改它的值，如果是基本类型，编译器不允许我们在第一次赋值后再修改基本类型的值，如果是引用类型，编译器不允许我们在第一次赋值后再修改引用的指向，这都是编译器层面的限制，因为如果你试图去修改它，就会得到一个编译错误。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/17/final-local-variable-for-jvm/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -498,7 +498,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>16</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>17</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -533,6 +533,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
+      </li>
     
       <li>
         <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
@@ -570,10 +574,6 @@
         <a href="/2014/07/26/ut-failed-problems/" title="单元测试Failed的排查">单元测试Failed的排查</a>
       </li>
     
-      <li>
-        <a href="/2014/07/23/ibatis-version-for-parametermap/" title="IBatis不同版本对parameterMap的处理">IBatis不同版本对parameterMap的处理</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -604,7 +604,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>22</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>23</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		

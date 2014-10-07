@@ -55,6 +55,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/07/23/ibatis-version-for-parametermap/">
+  <time datetime="2014-07-23T11:58:04.000Z">
+    Jul 23 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/07/23/ibatis-version-for-parametermap/">IBatis不同版本对parameterMap的处理</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>今天在升级一个监控的中间件时，发现必须升级ibatis的版本到2.3.4,原来ibatis的版本是2.3.0,升级后，发现sqlmap的解析出问题了，对于parameterMap这个标签解析出错，原因是parameterMap对应class没法实例化，为什么原来没有问题，升级后就有问题了呢？这时候只能怀疑版本的问题,2.3.4和2.3.0在解析parameterMap时有所不同。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/07/23/ibatis-version-for-parametermap/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/07/20/hbase-keyvalue-type/">
   <time datetime="2014-07-20T08:22:39.000Z">
     Jul 20 2014
@@ -411,49 +451,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/06/17/sql-size/">
-  <time datetime="2014-06-17T13:52:39.000Z">
-    Jun 17 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/06/17/sql-size/">sql语句的大小</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>今天写了下面的sql语句</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> XX,YY <span class="keyword">from</span> tableXX <span class="keyword">where</span> XX <span class="keyword">in</span> (<span class="string">'aa'</span>,<span class="string">'bb'</span>,<span class="string">'cc'</span>)</span>
-</pre></td></tr></table></figure>
-
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/06/17/sql-size/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -494,7 +491,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>16</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>17</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -529,6 +526,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
+      </li>
     
       <li>
         <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
@@ -566,10 +567,6 @@
         <a href="/2014/07/26/ut-failed-problems/" title="单元测试Failed的排查">单元测试Failed的排查</a>
       </li>
     
-      <li>
-        <a href="/2014/07/23/ibatis-version-for-parametermap/" title="IBatis不同版本对parameterMap的处理">IBatis不同版本对parameterMap的处理</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -600,7 +597,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>22</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>23</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		

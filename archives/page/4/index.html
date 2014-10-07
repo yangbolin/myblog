@@ -55,6 +55,45 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/05/31/futuretask/">
+  <time datetime="2014-05-31T12:18:57.000Z">
+    May 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/31/futuretask/">FutureTask</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/31/futuretask/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/05/31/future-cancel-task/">
   <time datetime="2014-05-31T11:01:51.000Z">
     May 31 2014
@@ -418,46 +457,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/14/btrace-for-production-problem/">
-  <time datetime="2014-05-14T07:55:55.000Z">
-    May 14 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/14/btrace-for-production-problem/">在生产环境使用BTrace来解决问题</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-问题">一.问题</h4>
-<p>今天在自己应用中引入了一个新的中间件，发布到线上后，发现一个接口一直获取不到数据，此时找不到日志，因为代码中的日志输出不按常理出牌，误引入了某一中间件自定义的Logger导致日志很难找到，此时要是在测试环境，debug一下就搞定，但是线上不能这么搞，如何去查看一下本次调用接口返回的数据到底是什么呢？</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/14/btrace-for-production-problem/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -499,7 +498,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>16</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>17</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -534,6 +533,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
+      </li>
     
       <li>
         <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
@@ -571,10 +574,6 @@
         <a href="/2014/07/26/ut-failed-problems/" title="单元测试Failed的排查">单元测试Failed的排查</a>
       </li>
     
-      <li>
-        <a href="/2014/07/23/ibatis-version-for-parametermap/" title="IBatis不同版本对parameterMap的处理">IBatis不同版本对parameterMap的处理</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -605,7 +604,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>22</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>23</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		
