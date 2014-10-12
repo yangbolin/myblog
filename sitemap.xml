@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/10/12/btrace-for-exception/</loc>
+    <lastmod>2014-10-12T10:06:18.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/05/10/svn-command/</loc>
     <lastmod>2014-05-10T08:20:24.000Z</lastmod>
   </url>

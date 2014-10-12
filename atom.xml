@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2014-10-12T09:26:55.920Z</updated>
+  <updated>2014-10-12T10:08:13.099Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,19 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[使用BTrace监控方法入参]]></title>
+    <link href="http://yangbolin.cn/2014/10/12/btrace-for-exception/"/>
+    <id>http://yangbolin.cn/2014/10/12/btrace-for-exception/</id>
+    <published>2014-10-12T10:06:18.000Z</published>
+    <updated>2014-10-12T10:07:24.000Z</updated>
+    <content type="html"><![CDATA[]]></content>
+    
+    
+      <category term="BTrace" scheme="http://yangbolin.cn/tags/BTrace/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[JAVA线程本地存储之ThreadLocal的分析]]></title>
@@ -1812,109 +1825,6 @@ ctx.registerShutdownHook();
       <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
     
       <category term="编程语言" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[maven自己的仲裁机制]]></title>
-    <link href="http://yangbolin.cn/2014/06/18/maven-default-arbitration/"/>
-    <id>http://yangbolin.cn/2014/06/18/maven-default-arbitration/</id>
-    <published>2014-06-18T14:09:25.000Z</published>
-    <updated>2014-06-18T14:25:15.000Z</updated>
-    <content type="html"><![CDATA[<p>maven现在被广泛用来做项目管理的工具，我们经常在maven的pom文件中指定我们项目依赖的二方库，我们也会经常遇到jar包冲突，类冲突的问题。关于类冲突就是由于maven自己的仲裁机制，把应该引入的jar包给仲裁了，那么maven自己到底是如何仲裁jar包的呢？</p>
-<a id="more"></a>
-
-<p>假设我们在自己的pom.xml中引入下面的jar包</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-</pre></td><td class="code"><pre>    ...
-    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>AA<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>BB<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-    ....
-</pre></td></tr></table></figure>
-
-<p>AA间接依赖CC对应maven坐标如下</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-</pre></td><td class="code"><pre>    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>CC<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-</pre></td></tr></table></figure>
-
-<p>BB间接依赖CC对应maven坐标如下</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-</pre></td><td class="code"><pre>    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>CC<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.1<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-</pre></td></tr></table></figure>
-
-<p>此时maven编译的时候会进行仲裁，首先看依赖的路径，假设当前项目是X，对于CC有两条依赖路径,只是version不同，其他都一样。<br>1.X-&gt;AA-&gt;CC 1.0.0<br>2.X-&gt;BB-&gt;CC 1.0.1<br>发现两条路径的长度一样。接下来观察AA和BB在pom中声明的顺序，发现AA在BB的前面，此时CC使用1.0.0的版本。</p>
-<p>因此maven自己的仲裁机制是先看路径长度，路径长度一样再看声明顺序。</p>
-<p>如果我们书写下面的pom文件</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-</pre></td><td class="code"><pre>...
-    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>AA<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.xx.yy<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>AA<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0.1<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-...
-</pre></td></tr></table></figure>
-
-<p>按照上面的规则，路径相同，看声明顺序，因此1.0.0的版本被使用。</p>
-<p>注意:<br>maven仲裁的前置条件是artifactId和groupId一样。</p>
-]]></content>
-    <summary type="html"><![CDATA[<p>maven现在被广泛用来做项目管理的工具，我们经常在maven的pom文件中指定我们项目依赖的二方库，我们也会经常遇到jar包冲突，类冲突的问题。关于类冲突就是由于maven自己的仲裁机制，把应该引入的jar包给仲裁了，那么maven自己到底是如何仲裁jar包的呢？</p>
-]]></summary>
-    
-      <category term="maven" scheme="http://yangbolin.cn/tags/maven/"/>
-    
-      <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   

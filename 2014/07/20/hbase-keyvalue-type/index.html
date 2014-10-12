@@ -1,15 +1,388 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>HBase的基础类型KeyValue | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+HBase是面向列的存储数据的，最终的存储单元都是KeyValue的结构，HBase本身也定义了一个KeyValue的类型，这是HBase数据存储的基本类型。那么KeyValue本身会存储那些信息呢？">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="HBase的基础类型KeyValue"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/07/20/hbase-keyvalue-type/">
+  <time datetime="2014-07-20T08:22:39.000Z">
+    Jul 20 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">HBase的基础类型KeyValue</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>HBase是面向列的存储数据的，最终的存储单元都是KeyValue的结构，HBase本身也定义了一个KeyValue的类型，这是HBase数据存储的基本类型。那么KeyValue本身会存储那些信息呢？</p>
+<a id="more"></a>
+
+<p>从名字来看应该只有两个数据，一个是Key,一个是Value,的确如此，不过这里的Key是多个元素的聚合，有rowkey,列族，列名，时间戳以及key的类型，key的类型定义如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="code"><pre>  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">enum</span> Type {
+    Minimum((<span class="keyword">byte</span>)<span class="number">0</span>),
+    Put((<span class="keyword">byte</span>)<span class="number">4</span>),
+
+    Delete((<span class="keyword">byte</span>)<span class="number">8</span>),
+    DeleteColumn((<span class="keyword">byte</span>)<span class="number">12</span>),
+    DeleteFamily((<span class="keyword">byte</span>)<span class="number">14</span>),
+
+    <span class="comment">// Maximum is used when searching; you look from maximum on down.</span>
+    Maximum((<span class="keyword">byte</span>)<span class="number">255</span>);
+    ....
+  }
+</pre></td></tr></table></figure>
+
+<h4 id="二-KeyValue结构概述">二.KeyValue结构概述</h4>
+<p><img src="http://bolinyoung.qiniudn.com/HBase-key-value.png" alt="HBase的KeyValue"></p>
+<p>HBase的KeyValue内部维护着一个字节数组，然后通过不同的偏移量来获取不同的部分，前面说过KeyValue本身就两部分，Key&amp;&amp;Value,因此KeyLength标识KeyValue中Key在字节数组中所占的长度，ValueLength标识Value在字节数组中所占的长度。观察上图，我们看到从RowLength到KeyType都是KeyValue这个基本类型的Key,我们来看一下这个Key中包含那些东西，RowLength即rowkey的长度，RowKey即rowkey的内容，ColumnFamilyLength即列族的长度，ColumnFamily即列族的内容，ColumnQualifier即列的名称，TimeStamp即时间戳，KeyType即Key的类型，前面已经介绍过。</p>
+<p>我们看到从ColumnQualifier开始内容前面不在带有长度了，关于TimeStamp和KeyType很好理解，因为他们所占的字节数目是固定，时间戳是一个long型的数字，占固定、字节数目，KeyType看其定义就能知道占1个字节，此时就剩下ColumnQualifier了，列名所占的字节数目计算一下即可，KeyLength-RowLength-ColumnFamilyLength即可，其中TimeStamp以及KeyType所占的字节长度不计算到KeyLength中，虽然他们是Keyalue中key的一部分，原因就是他们的长度固定，没有必要单独表示。<br>下面我们看看KeyValue中计算列名所占字节数目的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="code"><pre>  <span class="comment">// 字节数组中用固定长度的字节数目表示内容所占的字节数目</span>
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEY_INFRASTRUCTURE_SIZE = ROW_LENGTH_SIZE
+      + FAMILY_LENGTH_SIZE + TIMESTAMP_TYPE_SIZE;
+      
+  ......
+  <span class="javadoc">/**
+   *<span class="javadoctag"> @return</span> Qualifier length
+   */</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQualifierLength</span>() {
+    <span class="keyword">return</span> getQualifierLength(getRowLength(),getFamilyLength());
+  }
+
+  <span class="javadoc">/**
+   *<span class="javadoctag"> @return</span> Qualifier length
+   */</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQualifierLength</span>(<span class="keyword">int</span> rlength, <span class="keyword">int</span> flength) {
+    <span class="comment">// KeyLength-表示长度的字节数目-rowKeyLength-familyLength即列名所占的字节数目</span>
+    <span class="keyword">return</span> getKeyLength() -
+      (KEY_INFRASTRUCTURE_SIZE + rlength + flength);
+  }
+</pre></td></tr></table></figure>
+
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/大数据/">大数据</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/HBase/">HBase</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="HBase的基础类型KeyValue">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>17</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+			<li><a href="/tags/sql/" title="sql">sql<sup>4</sup></a></li>
+		
+			<li><a href="/tags/svn/" title="svn">svn<sup>1</sup></a></li>
+		
+			<li><a href="/tags/velocity/" title="velocity">velocity<sup>1</sup></a></li>
+		
+			<li><a href="/tags/vim/" title="vim">vim<sup>1</sup></a></li>
+		
+			<li><a href="/tags/web/" title="web">web<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/12/btrace-for-exception/" title="使用BTrace监控方法入参">使用BTrace监控方法入参</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
+      </li>
+    
+      <li>
+        <a href="/2014/09/17/jvm-cmd/" title="JVM常用命令总结">JVM常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2014/09/06/fission-thought/" title="裂变思想">裂变思想</a>
+      </li>
+    
+      <li>
+        <a href="/2014/08/22/velocity-exception-analyze/" title="一次velocity异常的分析">一次velocity异常的分析</a>
+      </li>
+    
+      <li>
+        <a href="/2014/08/16/a-jvm-share/" title="一次JVM分享的相关记录">一次JVM分享的相关记录</a>
+      </li>
+    
+      <li>
+        <a href="/2014/07/27/how-to-use-asmifier/" title="如何使用ASMifier">如何使用ASMifier</a>
+      </li>
+    
+      <li>
+        <a href="/2014/07/26/jvm-byte-code-attention/" title="JVM字节码指令相关">JVM字节码指令相关</a>
+      </li>
+    
+      <li>
+        <a href="/2014/07/26/java-thread-model/" title="JAVA线程模型">JAVA线程模型</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>8</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>23</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2014 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

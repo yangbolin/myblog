@@ -1,15 +1,407 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>如何不用修改原来的代码呢？ | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.需求描述
+最近遇到这样一个需求，有个数据计算的方法，我们需要优化一下，因为有些数据在一段时间内计算出的结果总是一样的，为了提高性能，我们把这些数据的计算结果缓存起来，这样下次计算的时候就先去缓存中查一下，要是缓存中存在，就直接把缓存中的数据返回，要是缓存中不存在就走原来的计算逻辑去计算，面对这个需求，我们需要做两件事情，在调用计算方法之前读取一下缓存，在调用方法之后把值写入缓存。这样的计算方法有10多个，相应的类也有10多个。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="如何不用修改原来的代码呢？"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/15/spring-aop-practice/">
+  <time datetime="2014-04-15T11:58:15.000Z">
+    Apr 15 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">如何不用修改原来的代码呢？</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求描述">一.需求描述</h4>
+<p>最近遇到这样一个需求，有个数据计算的方法，我们需要优化一下，因为有些数据在一段时间内计算出的结果总是一样的，为了提高性能，我们把这些数据的计算结果缓存起来，这样下次计算的时候就先去缓存中查一下，要是缓存中存在，就直接把缓存中的数据返回，要是缓存中不存在就走原来的计算逻辑去计算，面对这个需求，我们需要做两件事情，在调用计算方法之前读取一下缓存，在调用方法之后把值写入缓存。这样的计算方法有10多个，相应的类也有10多个。</p>
+<a id="more"></a>
+
+<h4 id="二-思路分析">二.思路分析</h4>
+<p>面对这样的需求，绝对不能去修改10多个类，首先这样做有很多工作量，其次你所做的事情都是Repeat Yourself,没意义的。其实这种需求，我们最容易想到的就是AOP理念了，定义两个切面，方法执行前执行一下，方法返回前执行一下就好，为了好描述，我们暂且认为读缓存的切面是A,写缓存的切面是B,仔细分析一下，我们执行完切面A后，可能不需要再继续执行原来的计算方法了，直接返回就完事了，要是我们把读缓存的单独抽象出一个切面来，我们在这个切面中根本没法控制不去执行被拦截的计算方法，因此我们不能把读取缓存这个逻辑单独抽象成一个Spring AOP的切面，所以上面抽象出A,B切面的思路不可行，这时候我们需要正对这些方法定义一个统一的MethodInterceptor去拦截一下这个方法，在执行方法之前去读一下缓存，执行方法之后写一下缓存，这样写出来的伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XXXMethodInterceptor</span> <span class="keyword">implements</span> <span class="title">MethodInterceptor</span> {</span>
+
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String METHOD_NAME = <span class="string">"xxxx"</span>;
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> Object <span class="title">invoke</span>(MethodInvocation arg) <span class="keyword">throws</span> Throwable {
+        <span class="comment">// 对xxxx方法做拦截</span>
+        <span class="keyword">if</span> (METHOD_NAME.equals(arg.getMethod().getName())) {
+                <span class="comment">// 读取缓存，要是缓存中有值，直接返回</span>
+                Object cacheResult = readFromCache();
+                <span class="keyword">if</span> (cacheResult != <span class="keyword">null</span>) {
+                    <span class="keyword">return</span> cacheResult;
+                }
+                <span class="comment">// 调用原来的方法</span>
+                Object result = arg.proceed();
+                <span class="comment">// 写缓存,当然有些计算结果是不用写缓存的</span>
+                writeCache(result);
+                <span class="comment">// 返回结果</span>
+                <span class="keyword">return</span> resultFromDataSource;
+            }
+        }
+        <span class="keyword">return</span> arg.proceed();
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>这样我们的方法拦截器就定义好了，如何把它织入到原来的代码逻辑中，我们使用Spring的ProxyFactoryBean,这是一个代理的工厂bean,它可以返回被代理的bean，同时把我们的拦截逻辑织入到代理bean中，生成代理对象的时候如果我们的类实现了接口，就会使用jdk的动态代理，重新生成一个代理类，要是我们的类没有实现接口，就会使用cglib动态去修改字节码。下面我们来看看如何织入我们的拦截逻辑</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="code"><pre><span class="comment">&lt;!-- 定义抽象的代理bean --&gt;</span>
+<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"abstractProxy"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.aop.framework.ProxyFactoryBean"</span> <span class="attribute">abstract</span>=<span class="value">"true"</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"interceptorNames"</span>&gt;</span>
+		<span class="tag">&lt;<span class="title">list</span>&gt;</span>
+			<span class="tag">&lt;<span class="title">value</span>&gt;</span>xXXXMethodInterceptor<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+		<span class="tag">&lt;/<span class="title">list</span>&gt;</span>
+	<span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+<span class="comment">&lt;!-- 拦截器的定义 --&gt;</span>
+<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"xXXXMethodInterceptor"</span> <span class="attribute">class</span>=<span class="value">"xxxx.xxx.XXXMethodInterceptor"</span> /&gt;</span>
+<span class="comment">&lt;!-- 新定义一个bean 织入我们的拦截器 --&gt;</span>
+<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"xxxx"</span> <span class="attribute">parent</span>=<span class="value">"abstractProxy"</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"target"</span>&gt;</span>
+		<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"xxxxxxx.xxxxx"</span> /&gt;</span>
+    <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>注意:</p>
+<ul>
+<li>1.我们可以在ProxyFactoryBean中定义多个拦截器，目前只是定义了一个方法的拦截器</li>
+<li>2.在写Spring配置文件的时候注意抽象bean的灵活使用</li>
+</ul>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/编程开发/">编程开发</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Spring/">Spring</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="如何不用修改原来的代码呢？">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>1</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>17</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+			<li><a href="/tags/sql/" title="sql">sql<sup>4</sup></a></li>
+		
+			<li><a href="/tags/svn/" title="svn">svn<sup>1</sup></a></li>
+		
+			<li><a href="/tags/velocity/" title="velocity">velocity<sup>1</sup></a></li>
+		
+			<li><a href="/tags/vim/" title="vim">vim<sup>1</sup></a></li>
+		
+			<li><a href="/tags/web/" title="web">web<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/12/btrace-for-exception/" title="使用BTrace监控方法入参">使用BTrace监控方法入参</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
+      </li>
+    
+      <li>
+        <a href="/2014/09/17/jvm-cmd/" title="JVM常用命令总结">JVM常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2014/09/06/fission-thought/" title="裂变思想">裂变思想</a>
+      </li>
+    
+      <li>
+        <a href="/2014/08/22/velocity-exception-analyze/" title="一次velocity异常的分析">一次velocity异常的分析</a>
+      </li>
+    
+      <li>
+        <a href="/2014/08/16/a-jvm-share/" title="一次JVM分享的相关记录">一次JVM分享的相关记录</a>
+      </li>
+    
+      <li>
+        <a href="/2014/07/27/how-to-use-asmifier/" title="如何使用ASMifier">如何使用ASMifier</a>
+      </li>
+    
+      <li>
+        <a href="/2014/07/26/jvm-byte-code-attention/" title="JVM字节码指令相关">JVM字节码指令相关</a>
+      </li>
+    
+      <li>
+        <a href="/2014/07/26/java-thread-model/" title="JAVA线程模型">JAVA线程模型</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>8</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>23</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2014 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>
