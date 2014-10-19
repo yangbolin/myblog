@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/10/19/project-accumulation-1/</loc>
+    <lastmod>2014-10-19T08:21:50.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/05/14/btrace-for-production-problem/</loc>
     <lastmod>2014-05-14T07:55:55.000Z</lastmod>
   </url>

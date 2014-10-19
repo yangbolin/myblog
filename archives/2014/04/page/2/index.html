@@ -286,7 +286,7 @@
 		
 			<li><a href="/tags/CSS/" title="CSS">CSS<sup>1</sup></a></li>
 		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>1</sup></a></li>
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>2</sup></a></li>
 		
 			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
 		
@@ -329,6 +329,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2014/10/19/project-accumulation-1/" title="项目中的点点滴滴">项目中的点点滴滴</a>
+      </li>
+    
+      <li>
         <a href="/2014/10/12/btrace-for-exception/" title="使用BTrace监控方法入参">使用BTrace监控方法入参</a>
       </li>
     
@@ -364,10 +368,6 @@
         <a href="/2014/07/26/jvm-byte-code-attention/" title="JVM字节码指令相关">JVM字节码指令相关</a>
       </li>
     
-      <li>
-        <a href="/2014/07/26/java-thread-model/" title="JAVA线程模型">JAVA线程模型</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -375,37 +375,17 @@
 
     
       
-      
+      <% if (site.categories.length){ %>
 <div class="widget categorieslist">
-		<h3>分类</h3>
+		<h3><%= __('分类') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
-		
-			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
-		
-			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
-		
-			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>2</sup></a></li>
-		
-			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
-		
-			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>9</sup></a></li>
-		
-			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
-		
-			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
-		
-			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
-		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>23</sup></a></li>
-		
-			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
-		
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       

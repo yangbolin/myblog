@@ -57,6 +57,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/10/19/project-accumulation-1/">
+  <time datetime="2014-10-19T08:21:50.000Z">
+    Oct 19 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/19/project-accumulation-1/">项目中的点点滴滴</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>最近一直在忙项目中的事情，不过在整个开发过程中自己也有一些体会，写写这些体会，就当是自己的经验了，这里不会涉及到太深的原理，只是记录一些技巧以及一些值得注意的地方，形成一些编程的思想，理念，可以更好地运用到后续的项目之中。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/19/project-accumulation-1/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/10/07/thread-local-analyze/">
   <time datetime="2014-10-07T13:01:03.000Z">
     Oct 7 2014
@@ -412,46 +452,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/01/sqlmap-load-by-spring-container/">
-  <time datetime="2014-07-01T12:10:20.000Z">
-    Jul 1 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/01/sqlmap-load-by-spring-container/">sqlmap被Spring容器加载了</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-现象">一.现象</h4>
-<p>最近发布需求升级一个中间件，一个web应用在启动的时候，偶尔会会报下面的错误，报错的规律无法跟踪，导致应用启动失败。<br><img src="http://bolinyoung.qiniudn.com/ibatis-spring.png" alt="ibatis-psring"><br>有时候启动应用就会出现上面的异常，有时候启动应用没有异常，在发布的时候要是机器启动失败，我们就不断重启，直到机器重启成功。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/01/sqlmap-load-by-spring-container/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -485,7 +485,7 @@
 		
 			<li><a href="/tags/CSS/" title="CSS">CSS<sup>1</sup></a></li>
 		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>1</sup></a></li>
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>2</sup></a></li>
 		
 			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
 		
@@ -528,6 +528,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2014/10/19/project-accumulation-1/" title="项目中的点点滴滴">项目中的点点滴滴</a>
+      </li>
+    
+      <li>
         <a href="/2014/10/12/btrace-for-exception/" title="使用BTrace监控方法入参">使用BTrace监控方法入参</a>
       </li>
     
@@ -563,10 +567,6 @@
         <a href="/2014/07/26/jvm-byte-code-attention/" title="JVM字节码指令相关">JVM字节码指令相关</a>
       </li>
     
-      <li>
-        <a href="/2014/07/26/java-thread-model/" title="JAVA线程模型">JAVA线程模型</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -574,37 +574,17 @@
 
     
       
-      
+      <% if (site.categories.length){ %>
 <div class="widget categorieslist">
-		<h3>分类</h3>
+		<h3><%= __('分类') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
-		
-			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
-		
-			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
-		
-			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>2</sup></a></li>
-		
-			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
-		
-			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>9</sup></a></li>
-		
-			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
-		
-			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
-		
-			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
-		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>23</sup></a></li>
-		
-			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
-		
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
