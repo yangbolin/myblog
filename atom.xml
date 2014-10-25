@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2014-10-25T13:36:10.747Z</updated>
+  <updated>2014-10-25T13:44:53.650Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -596,7 +596,7 @@ format.format(calendar.getTime());
     <link href="http://yangbolin.cn/2014/10/12/btrace-for-exception/"/>
     <id>http://yangbolin.cn/2014/10/12/btrace-for-exception/</id>
     <published>2014-10-12T10:06:18.000Z</published>
-    <updated>2014-10-12T10:48:35.000Z</updated>
+    <updated>2014-10-25T13:44:24.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一-现象">一.现象</h4>
 <p>昨天在生成环境出现一个类的方法被调用然后出现了异常，这个异常没有被catch而是直接抛给上层的调用，我们想知道抛异常时调用该方法的参数是什么样子的，然后根据这个参数分析问题聚图出现在什么地方。</p>
 <a id="more"></a>
@@ -725,7 +725,7 @@ format.format(calendar.getTime());
 <span class="annotation">@BTrace</span>
 <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraceMethodArgsAndReturn</span>{</span>
 
-	<span class="comment">// 方法返回时的监控</span>
+        <span class="comment">// 方法返回时的监控</span>
         <span class="annotation">@OnMethod</span>(
         clazz=<span class="string">"xxx.xxxUtil"</span>,
         method=<span class="string">"decodeXxx"</span>,
@@ -743,7 +743,7 @@ format.format(calendar.getTime());
                 println(strcat(<span class="string">"result is:"</span>,str(result)));
         }
         <span class="comment">// 进入方法的监控</span>
-<span class="annotation">@OnMethod</span>(
+        <span class="annotation">@OnMethod</span>(
         clazz=<span class="string">"xxx.xxxUtil"</span>,
         method=<span class="string">"decodeXxx"</span>
         )

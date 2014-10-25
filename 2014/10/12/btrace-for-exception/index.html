@@ -193,7 +193,7 @@
 <span class="annotation">@BTrace</span>
 <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraceMethodArgsAndReturn</span>{</span>
 
-	<span class="comment">// 方法返回时的监控</span>
+        <span class="comment">// 方法返回时的监控</span>
         <span class="annotation">@OnMethod</span>(
         clazz=<span class="string">"xxx.xxxUtil"</span>,
         method=<span class="string">"decodeXxx"</span>,
@@ -211,7 +211,7 @@
                 println(strcat(<span class="string">"result is:"</span>,str(result)));
         }
         <span class="comment">// 进入方法的监控</span>
-<span class="annotation">@OnMethod</span>(
+        <span class="annotation">@OnMethod</span>(
         clazz=<span class="string">"xxx.xxxUtil"</span>,
         method=<span class="string">"decodeXxx"</span>
         )

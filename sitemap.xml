@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/10/12/btrace-for-exception/</loc>
+    <lastmod>2014-10-12T10:06:18.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/10/25/open-call-to-avoid-deadlock/</loc>
     <lastmod>2014-10-25T13:00:45.000Z</lastmod>
   </url>
@@ -14,11 +19,6 @@
   <url>
     <loc>http://yangbolin.cn/2014/05/14/btrace-for-production-problem/</loc>
     <lastmod>2014-05-14T07:55:55.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://yangbolin.cn/2014/10/12/btrace-for-exception/</loc>
-    <lastmod>2014-10-12T10:06:18.000Z</lastmod>
   </url>
   
   <url>
