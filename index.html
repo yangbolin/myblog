@@ -55,6 +55,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/10/25/open-call-to-avoid-deadlock/">
+  <time datetime="2014-10-25T13:00:45.000Z">
+    Oct 25 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/25/open-call-to-avoid-deadlock/">通过开放调用来避免死锁</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在编写并发程序的时候，我们经常会在一次业务逻辑处理过程中获取多个锁，然后做一些操作，如果这多个锁的获取顺序和其他地方的获取顺序不同的话，很容易发生死锁。为了避免这种死锁，我们必须保证获取多个锁的顺序一致，或者方法调用为开放调用，即调用某个方法时不需要持有锁。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/25/open-call-to-avoid-deadlock/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/10/19/project-accumulation-1/">
   <time datetime="2014-10-19T08:21:50.000Z">
     Oct 19 2014
@@ -411,45 +451,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/26/jvm-byte-code-attention/">
-  <time datetime="2014-07-26T11:46:08.000Z">
-    Jul 26 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/26/jvm-byte-code-attention/">JVM字节码指令相关</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>JAVA代码中的每个方法都会被编译成一系列的JVM字节码指令，这些字节码指令会被JVM所执行，从而产生相应的数据，我们通常可以用javap -verbose来查看一个方法的字节码指令。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/26/jvm-byte-code-attention/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -482,6 +483,8 @@
 		
 			<li><a href="/tags/CSS/" title="CSS">CSS<sup>1</sup></a></li>
 		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
 			<li><a href="/tags/Experience/" title="Experience">Experience<sup>2</sup></a></li>
 		
 			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
@@ -510,8 +513,6 @@
 		
 			<li><a href="/tags/vim/" title="vim">vim<sup>1</sup></a></li>
 		
-			<li><a href="/tags/web/" title="web">web<sup>1</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -523,6 +524,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/25/open-call-to-avoid-deadlock/" title="通过开放调用来避免死锁">通过开放调用来避免死锁</a>
+      </li>
     
       <li>
         <a href="/2014/10/19/project-accumulation-1/" title="项目中的点点滴滴">项目中的点点滴滴</a>
@@ -560,10 +565,6 @@
         <a href="/2014/07/27/how-to-use-asmifier/" title="如何使用ASMifier">如何使用ASMifier</a>
       </li>
     
-      <li>
-        <a href="/2014/07/26/jvm-byte-code-attention/" title="JVM字节码指令相关">JVM字节码指令相关</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -571,37 +572,17 @@
 
     
       
-      
+      <% if (site.categories.length){ %>
 <div class="widget categorieslist">
-		<h3>分类</h3>
+		<h3><%= __('分类') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
-		
-			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
-		
-			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
-		
-			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>2</sup></a></li>
-		
-			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
-		
-			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>9</sup></a></li>
-		
-			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
-		
-			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
-		
-			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
-		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>24</sup></a></li>
-		
-			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
-		
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
