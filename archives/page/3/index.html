@@ -55,6 +55,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/07/01/sqlmap-load-by-spring-container/">
+  <time datetime="2014-07-01T12:10:20.000Z">
+    Jul 1 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/07/01/sqlmap-load-by-spring-container/">sqlmap被Spring容器加载了</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-现象">一.现象</h4>
+<p>最近发布需求升级一个中间件，一个web应用在启动的时候，偶尔会会报下面的错误，报错的规律无法跟踪，导致应用启动失败。<br><img src="http://bolinyoung.qiniudn.com/ibatis-spring.png" alt="ibatis-psring"><br>有时候启动应用就会出现上面的异常，有时候启动应用没有异常，在发布的时候要是机器启动失败，我们就不断重启，直到机器重启成功。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/07/01/sqlmap-load-by-spring-container/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">
   <time datetime="2014-06-24T15:29:37.000Z">
     Jun 24 2014
@@ -411,46 +451,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/06/03/sql-join/">
-  <time datetime="2014-06-03T11:42:36.000Z">
-    Jun 3 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/06/03/sql-join/">SQL的JOIN总结</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>关系型数据库最大的优点就是关联查询，既所谓的JOIN，不像HBase这种Nosql的数据库，对于表和表的JOIN不怎么支持，关于SQL中的JOIN比较多，也不太好记忆，为了在后续开发中对SQL中的JOIN灵活使用，这里总结一些SQL中的一些JOIN。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/06/03/sql-join/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -477,6 +477,8 @@
 		<ul class="clearfix">
 		
 			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>1</sup></a></li>
 		
 			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
 		
@@ -514,8 +516,6 @@
 		
 			<li><a href="/tags/velocity/" title="velocity">velocity<sup>1</sup></a></li>
 		
-			<li><a href="/tags/vim/" title="vim">vim<sup>1</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -527,6 +527,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
     
       <li>
         <a href="/2014/10/25/open-call-to-avoid-deadlock/" title="通过开放调用来避免死锁">通过开放调用来避免死锁</a>
@@ -564,10 +568,6 @@
         <a href="/2014/08/16/a-jvm-share/" title="一次JVM分享的相关记录">一次JVM分享的相关记录</a>
       </li>
     
-      <li>
-        <a href="/2014/07/27/how-to-use-asmifier/" title="如何使用ASMifier">如何使用ASMifier</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -590,7 +590,7 @@
 		
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
-			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>1</sup></a></li>
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>9</sup></a></li>
 		

@@ -55,6 +55,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/10/25/akka-start/">
+  <time datetime="2014-10-25T14:35:44.000Z">
+    Oct 25 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/25/akka-start/">Akka入门</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>为了提高一个数据计算平台的吞吐了，最近抽空看了看akka，之前听同事说akka能够提高并发吞吐量，高容错，很稳定，今天抽时间先简单看了相关的文档，写了个简单的例子，主要演示如何使用akka，当然我们也可以搭建一个akka的集群。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/25/akka-start/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/10/25/open-call-to-avoid-deadlock/">
   <time datetime="2014-10-25T13:00:45.000Z">
     Oct 25 2014
@@ -411,46 +451,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/27/how-to-use-asmifier/">
-  <time datetime="2014-07-27T05:53:45.000Z">
-    Jul 27 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/27/how-to-use-asmifier/">如何使用ASMifier</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>ASM这个字节码处理框架，不仅能够读字节码，而且还能修改字节码，我们经常是先写好JAVA代码，然后编译(IDE或者javac)生成class文件，最后classloader再把相应的class文件加载到内存，但是有了ASM后，我们可以直接使用ASM生成class文件的字节数组，即面向字节码写JAVA代码，这样可以让JVM动态去加载一个类，但是这个类的class文件并不存在磁盘上，也就是说这个类的class文件是在内存中构建出来的。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/27/how-to-use-asmifier/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -474,6 +474,8 @@
 		<ul class="clearfix">
 		
 			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>1</sup></a></li>
 		
 			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
 		
@@ -511,8 +513,6 @@
 		
 			<li><a href="/tags/velocity/" title="velocity">velocity<sup>1</sup></a></li>
 		
-			<li><a href="/tags/vim/" title="vim">vim<sup>1</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -524,6 +524,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
     
       <li>
         <a href="/2014/10/25/open-call-to-avoid-deadlock/" title="通过开放调用来避免死锁">通过开放调用来避免死锁</a>
@@ -561,10 +565,6 @@
         <a href="/2014/08/16/a-jvm-share/" title="一次JVM分享的相关记录">一次JVM分享的相关记录</a>
       </li>
     
-      <li>
-        <a href="/2014/07/27/how-to-use-asmifier/" title="如何使用ASMifier">如何使用ASMifier</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -587,7 +587,7 @@
 		
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
-			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>1</sup></a></li>
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>9</sup></a></li>
 		
