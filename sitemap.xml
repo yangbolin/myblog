@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/06/13/linux-command/</loc>
+    <lastmod>2014-06-13T06:30:04.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/about/index.html</loc>
     <lastmod>2014-10-26T12:33:25.000Z</lastmod>
   </url>
@@ -54,11 +59,6 @@
   <url>
     <loc>http://yangbolin.cn/2014/10/07/idempotency-and-db-lock/</loc>
     <lastmod>2014-10-07T10:52:48.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://yangbolin.cn/2014/06/13/linux-command/</loc>
-    <lastmod>2014-06-13T06:30:04.000Z</lastmod>
   </url>
   
   <url>

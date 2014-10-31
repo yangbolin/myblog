@@ -187,91 +187,33 @@ var duoshuoQuery = {short_name:"bolin"};
 
     
       
-      
+      <% if (site.posts.length){ %>
 <div class="widget recent-posts">
-  <h3 class="title">最新文章</h3>
+  <h3 class="title"><%= __('最新文章') %></h3>
   <ul class="clearfix">
-    
+    <% site.posts.sort('date', -1).limit(10).each(function(post){ %>
       <li>
-        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+        <a href="<%= config.root %><%= post.path %>" title="<%= post.title %>"><%= post.title %></a>
       </li>
-    
-      <li>
-        <a href="/2014/10/25/open-call-to-avoid-deadlock/" title="通过开放调用来避免死锁">通过开放调用来避免死锁</a>
-      </li>
-    
-      <li>
-        <a href="/2014/10/19/project-accumulation-1/" title="项目中的点点滴滴">项目中的点点滴滴</a>
-      </li>
-    
-      <li>
-        <a href="/2014/10/12/btrace-for-exception/" title="使用BTrace监控方法入参">使用BTrace监控方法入参</a>
-      </li>
-    
-      <li>
-        <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
-      </li>
-    
-      <li>
-        <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
-      </li>
-    
-      <li>
-        <a href="/2014/09/17/jvm-cmd/" title="JVM常用命令总结">JVM常用命令总结</a>
-      </li>
-    
-      <li>
-        <a href="/2014/09/06/fission-thought/" title="裂变思想">裂变思想</a>
-      </li>
-    
-      <li>
-        <a href="/2014/08/22/velocity-exception-analyze/" title="一次velocity异常的分析">一次velocity异常的分析</a>
-      </li>
-    
-      <li>
-        <a href="/2014/08/16/a-jvm-share/" title="一次JVM分享的相关记录">一次JVM分享的相关记录</a>
-      </li>
-    
+    <% }); %>
   </ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
-      
+      <% if (site.categories.length){ %>
 <div class="widget categorieslist">
-		<h3>分类</h3>
+		<h3><%= __('分类') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
-		
-			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
-		
-			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
-		
-			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>2</sup></a></li>
-		
-			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
-		
-			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
-		
-			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>9</sup></a></li>
-		
-			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
-		
-			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
-		
-			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
-		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>24</sup></a></li>
-		
-			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
-		
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
