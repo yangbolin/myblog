@@ -59,6 +59,86 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/08/22/velocity-exception-analyze/">
+  <time datetime="2014-08-22T14:05:14.000Z">
+    Aug 22 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/08/22/velocity-exception-analyze/">一次velocity异常的分析</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-现象">一.现象</h4>
+<p>最近在使用velocity模板的时候RuntimeInstance的1103行代码出现了NPE,如下图所示<br><img src="http://bolinyoung.qiniudn.com/velocity-npe.png" alt="velocity-npe"><br>该行代码一直在抛NPE。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/08/22/velocity-exception-analyze/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/08/16/a-jvm-share/">
+  <time datetime="2014-08-16T07:44:15.000Z">
+    Aug 16 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/08/16/a-jvm-share/">一次JVM分享的相关记录</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>最近看见公司一位前辈有分享JVM相关的知识，自己特地从跑过去听了一下，感觉讲的不是很深入，但是相对来说还是不错的，本文就自己听到的一些东西做一个简单的总结。平时我们大多数都是用JAVA写代码,很多人学JAVA都是从HelloWorld开始，但是从你写HelloWorld代码到最终输出HelloWorld到底发生那些事情呢？要想清楚的回答这个问题，并不是很容易，你需要对JVM有一个清晰的了解后，才能说清楚这个问题，这只是一个引子，本文也不去挑战这个问题，这里主要记录一下自己从这个分享中听到的一些感兴趣的东西。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/08/16/a-jvm-share/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/07/27/how-to-use-asmifier/">
   <time datetime="2014-07-27T05:53:45.000Z">
     Jul 27 2014
@@ -372,88 +452,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/07/spring-application-event/">
-  <time datetime="2014-07-07T05:08:20.000Z">
-    Jul 7 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/07/spring-application-event/">Spring容器的事件机制</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>Spring容器暴漏了很多扩展点给框架的使用者，让框架的使用者能够干涉一些容器内部的事情，也让框架的使用能够感知到容器内部发生了什么事情，比如Spring容器在初始化完后，就会广播一个容器初始化完成的事件，然后事件的监听者监听到这个事件后做相应的事情，这也是Spring容器的一个非常有用的扩展点。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/07/spring-application-event/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/01/how-to-read-gc-log/">
-  <time datetime="2014-07-01T15:55:05.000Z">
-    Jul 1 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/01/how-to-read-gc-log/">如何读懂JVM GC日志</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>我们经常会在线上观察JVM运行时GC日志，其实GC日志中有很多信息可以挖掘，比如下面的GC日志信息</p>
-<blockquote>
-<p>[GC [DefNew: 34538K-&gt;2311K(36352K), 0.0232439 secs] 45898K-&gt;15874K(520320K), 0.0233874 secs]<br>[Full GC [Tenured: 313563K-&gt;15402K(483968K), 0.2368177 secs]<br>343563K-&gt;18402K(520320K), [Perm : 28671K-&gt;28635K(28672K)], 0.2371537 secs]</p>
-</blockquote>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/01/how-to-read-gc-log/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -493,7 +491,7 @@
 		
 			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
 		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>2</sup></a></li>
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
 		
 			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
 		
@@ -511,13 +509,13 @@
 		
 			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
 		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
 			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
 		
 			<li><a href="/tags/sql/" title="sql">sql<sup>4</sup></a></li>
 		
 			<li><a href="/tags/svn/" title="svn">svn<sup>1</sup></a></li>
-		
-			<li><a href="/tags/velocity/" title="velocity">velocity<sup>1</sup></a></li>
 		
 		</ul>
 </div>
@@ -530,6 +528,14 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
     
       <li>
         <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
@@ -561,14 +567,6 @@
     
       <li>
         <a href="/2014/09/06/fission-thought/" title="裂变思想">裂变思想</a>
-      </li>
-    
-      <li>
-        <a href="/2014/08/22/velocity-exception-analyze/" title="一次velocity异常的分析">一次velocity异常的分析</a>
-      </li>
-    
-      <li>
-        <a href="/2014/08/16/a-jvm-share/" title="一次JVM分享的相关记录">一次JVM分享的相关记录</a>
       </li>
     
   </ul>
@@ -603,7 +601,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>24</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>26</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		

@@ -4,17 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>聊聊一致性哈希算法 | BolinYoung&#39;s Blog</title>
+  <title>使用事务的一个注意点 | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="一.一致性哈希算法要解决什么问题
-假设我们有N个缓存空间，我们现在要把对象存储到到这个N个缓存空间中，我们可以定义这样的哈希函数
-
-hash(object) mod N">
+  <meta name="description" content="最近在代码中配置了一个事务，事务的意思就是当前这件事情要么全部正常做完，要么全部不做。为了避免数据库中出现脏数据，我给XXX类的ff方法配置了事务。在ff方法主要做下面这几件事情">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta property="og:title" content="聊聊一致性哈希算法"/>
+  <meta property="og:title" content="使用事务的一个注意点"/>
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -56,65 +53,38 @@ hash(object) mod N">
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/05/10/consistent-hashing/">
-  <time datetime="2014-05-10T14:03:25.000Z">
-    May 10 2014
+      <a href="/2014/10/31/transaction-attention/">
+  <time datetime="2014-10-31T09:12:19.000Z">
+    Oct 31 2014
   </time>
 </a>
     
     
   
-    <h1 class="title">聊聊一致性哈希算法</h1>
+    <h1 class="title">使用事务的一个注意点</h1>
   
 
   </header>
   
   <div class="entry">
     
-      <h4 id="一-一致性哈希算法要解决什么问题">一.一致性哈希算法要解决什么问题</h4>
-<p>假设我们有N个缓存空间，我们现在要把对象存储到到这个N个缓存空间中，我们可以定义这样的哈希函数</p>
-<blockquote>
-<p>hash(object) mod N</p>
-</blockquote>
+      <p>最近在代码中配置了一个事务，事务的意思就是当前这件事情要么全部正常做完，要么全部不做。为了避免数据库中出现脏数据，我给XXX类的ff方法配置了事务。在ff方法主要做下面这几件事情</p>
 <a id="more"></a>
 
-<p>每次存储对象的时候，计算一下这个哈希函数的值，这个值在[0,N)之间，这样我们就可以知道当前这个对象需要存储在那个缓存空间中了。</p>
-<p>基于上面的解决方案，我们考虑如果缓存空间增加1个的话，我们该怎么处理，此时我们的哈希函数就变成了</p>
-<blockquote>
-<p>hash(object) mod (N + 1)</p>
-</blockquote>
-<p>哈希函数的变动意味着什么呢？意味着所有的对象需要重新哈希，这个代价太高了，会导致系统不可用的时间大大增加。</p>
-<p>我们再考虑如果缓存空间有一个不可用啦，此时我们的哈希函数就变成了</p>
-<blockquote>
-<p>hash(object) mod (N - 1)</p>
-</blockquote>
-<p>哈希函数同样发生了变化，哈希函数的变化就意味着你之前存储的所有对象都要进行再次哈希。</p>
-<p>上面这两种情况都是在实际生产环境中经常发生的，要是我们采用上面的解决方案，我们就没法把系统的稳定性保持在4个9。因此一致性哈希算法出现了，该算法能够保证缓存空间增加和减少的时候把再哈希的范围缩到最小。</p>
-<h4 id="二-哈希空间">二.哈希空间</h4>
-<p>这里的哈希空间是指哈希函数值域形成的取值空间，一般情况下哈希函数的值域在[0,2^32)，我们把这个值域想象成一个环形的空间，这个环形的空间就是我们这里一致性哈希算法的对应的哈希空间。至于为什么这里需要把它想象成一个环，就是为了后面对象和存储空间的映射。关于哈希空间如下图所示</p>
-<p><img src="http://bolinyoung.qiniudn.com/hashspace.png" alt="哈希空间"></p>
-<p>接下来对象和对象的存储空间都是需要向这个哈希空间来映射的。</p>
-<h4 id="三-把对象映射到哈希空间">三.把对象映射到哈希空间</h4>
-<p>假设这里有四个对象，object1,object2,object3,object4,我们现在需要通过哈希函数把这个四个对象映射到我们前面提到的哈希空间中。<br>hash(object1) mod N = key1<br>hash(object2) mod N = key2<br>hash(object3) mod N = key3<br>hash(object4) mod N = key4<br>如下图所示，我们把四个对象映射到我们上面提到的哈希空间中<br><img src="http://bolinyoung.qiniudn.com/object2hashspace.png" alt="对象映射到哈希空间"><br>这样我们的对象就在哈希空间中找到了自己的位置。</p>
-<h4 id="四-把缓存空间映射到哈希空间">四.把缓存空间映射到哈希空间</h4>
-<p>假设我们有三个缓存空间，cacheA,cacheB,cacheC,现在我们把这个三个缓存空间映射到哈希空间中<br>hash(cacheA) mod N = keyA<br>hash(cacheB) mod N = keyB<br>hash(cacheC) mod N = keyC<br><img src="http://bolinyoung.qiniudn.com/cache2hashspace.png" alt="缓存空间映射到哈希空间"><br>这样我们的缓存空间在哈希空间中也找到了自己的位置。</p>
-<h4 id="五-把对象映射到缓存空间">五.把对象映射到缓存空间</h4>
-<p>我们的目的不是映射到哈希空间，而是把对象映射到缓存空间，目前对象和缓存空间都映射到了哈希空间，现在我们需要把对象映射到缓存空间，如何处理呢？我们可以把哈希空间顺时针绕一圈，遍历哈希空间中的object,找到离object最近的cache，然后把这个object放在这个cache上面，这样即可完成object到cache的映射。如下图所示：<br><img src="http://bolinyoung.qiniudn.com/object2cache.png" alt="对象映射到缓存空间"><br>此时此刻，我们的对象已经和缓存空间之间建立了关系，并且对象已经找到自己应该前往那个缓存空间了。</p>
-<h4 id="六-增加一个缓存空间">六.增加一个缓存空间</h4>
-<p>现在我们考虑增加一个缓存空间cacheD<br><img src="http://bolinyoung.qiniudn.com/addcache.png" alt="增加一个缓存空间"><br>我们看到增加一个缓存空间cacheD后，我们需要重新映射的对象只有object2,其他三个对象都不需要重新映射。</p>
-<h4 id="七-删除一个缓存空间">七.删除一个缓存空间</h4>
-<p>现在我们考虑删除一个缓存空间cacheB<br><img src="http://bolinyoung.qiniudn.com/removecache.png" alt="删除一个缓存空间"><br>删除缓存空间cacheB后，我们只需要把object4做重新映射即可。</p>
-<h4 id="八-解决负载均衡的问题">八.解决负载均衡的问题</h4>
-<p>要是我们的缓存空间数目不多，但是哈希空间很大，这会导致object不均衡地存储到缓存空间中，因此我们引入虚拟节点来解决这个问题，针对每个缓存空间，我们可以引入多个虚拟节点，v1…vn,所有映射到这几个虚拟节点的对象都会存储到同一个物理节点上。<br><img src="http://bolinyoung.qiniudn.com/virtualnode.png" alt="虚拟节点的引入"></p>
-<p>这里的cacheA引入了两个虚拟节点vA1和vA2<br>这里的cacheB引入了两个虚拟节点vB1和vB2<br>这里的cacheC引入了两个虚拟节点vC1和vC2</p>
-<p>虚拟节点不会存储对象，正真存储对象的是物理节点。</p>
-<h4 id="九-为什么叫一致性哈希算法">九.为什么叫一致性哈希算法</h4>
 <ul>
-<li>存储对象和存储空间使用相同的哈希空间</li>
-<li>存储空间的数目变化不会导致哈希函数的变化</li>
+<li>1.从数据库中读出一批数据dataList1，此时dataList1已经存在于内存中了。</li>
+<li>2.修改这一批数据，此时的修改不会写到数据库，因为事务暂时还没有提交。</li>
+<li>3.根据dataList1中的数据进行判断，然后再写数据库。</li>
 </ul>
-<h4 id="十-参考资料">十.参考资料</h4>
-<p><a href="http://www.codeproject.com/Articles/56138/Consistent-hashing" target="_blank">一致性哈希算法</a></p>
+<p>这么处理有问题，因为dataList1在2结束后，会发生变化，但是内存中的dataList1感知不到，也就是说3处用的dataList1还是老数据，不是2修改后的数据，因此3处的判断条件会出现问题，因为3处用到的dataList1不是事务中最新的数据。</p>
+<p>修复后的步骤如下：</p>
+<ul>
+<li>1.从数据库中读出一批数据dataList1，此时dataList1已经存在于内存中了。</li>
+<li>2.修改这一批数据，此时的修改不会写到数据库，因为事务暂时还没有提交。</li>
+<li>3.从数据库中再读取一次dataList1。</li>
+<li>4.根据dataList1中的数据进行判断，然后再写数据库。</li>
+</ul>
+<p>注意：<br>事务中对数据库进行读写操作，此时写入的数据不会写到数据库中，但是能从事务中读取到最新的数据，如果要基于某些数据做判断，最好保证判断时这些数据在事务中是最新的，不要沿用一开始就加载到内存中的那批数据，因为一开始的数据不是最新的。</p>
 
     
   </div>
@@ -127,7 +97,7 @@ hash(object) mod N">
 
       
   <div class="tags">
-    <a class="tags-link" href="/tags/Algorithm/">Algorithm</a>
+    <a class="tags-link" href="/tags/Experience/">Experience</a>
   </div>
 
     
@@ -138,7 +108,7 @@ hash(object) mod N">
 
 <section id="comment">
   <h1 class="title">Comments</h1>
-  <div class="ds-thread" data-title="聊聊一致性哈希算法">
+  <div class="ds-thread" data-title="使用事务的一个注意点">
   </div>
 <!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
 <script type="text/javascript">

@@ -2,6 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/10/31/transaction-attention/</loc>
+    <lastmod>2014-10-31T09:12:19.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yangbolin.cn/2014/10/31/log4j-additivity/</loc>
+    <lastmod>2014-10-31T09:10:37.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/06/13/linux-command/</loc>
     <lastmod>2014-06-13T06:30:04.000Z</lastmod>
   </url>

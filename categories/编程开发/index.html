@@ -61,6 +61,85 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/10/31/transaction-attention/">
+  <time datetime="2014-10-31T09:12:19.000Z">
+    Oct 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/31/transaction-attention/">使用事务的一个注意点</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近在代码中配置了一个事务，事务的意思就是当前这件事情要么全部正常做完，要么全部不做。为了避免数据库中出现脏数据，我给XXX类的ff方法配置了事务。在ff方法主要做下面这几件事情</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/31/transaction-attention/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/10/31/log4j-additivity/">
+  <time datetime="2014-10-31T09:10:37.000Z">
+    Oct 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/31/log4j-additivity/">关于log4j的additivity</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-问题描述">一.问题描述</h4>
+<p>最近优化了一下一个应用的日志，但是优化后的结果不是自己想要的，简单说指定的log部分输出到了root中的appender中，部分输出到自己指定的log中。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/31/log4j-additivity/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/10/19/project-accumulation-1/">
   <time datetime="2014-10-19T08:21:50.000Z">
     Oct 19 2014
@@ -376,86 +455,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/16/asm-read-class-bytes/">
-  <time datetime="2014-07-16T12:18:54.000Z">
-    Jul 16 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/16/asm-read-class-bytes/">使用ASM读取class的字节码</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>我们平时写的JAVA代码经过编译后就是class文件，class文件其实有非常严谨的结构，具体可以参考<a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.1" target="_blank">JVM class文件格式规范</a>,认真读完这个规范，只要你按照这个规范来解析class文件，你就一定能写个javap出来。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/16/asm-read-class-bytes/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/07/spring-application-event/">
-  <time datetime="2014-07-07T05:08:20.000Z">
-    Jul 7 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/07/spring-application-event/">Spring容器的事件机制</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>Spring容器暴漏了很多扩展点给框架的使用者，让框架的使用者能够干涉一些容器内部的事情，也让框架的使用能够感知到容器内部发生了什么事情，比如Spring容器在初始化完后，就会广播一个容器初始化完成的事件，然后事件的监听者监听到这个事件后做相应的事情，这也是Spring容器的一个非常有用的扩展点。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/07/spring-application-event/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -493,7 +492,7 @@
 		
 			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
 		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>2</sup></a></li>
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
 		
 			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
 		
@@ -511,13 +510,13 @@
 		
 			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
 		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
 			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
 		
 			<li><a href="/tags/sql/" title="sql">sql<sup>4</sup></a></li>
 		
 			<li><a href="/tags/svn/" title="svn">svn<sup>1</sup></a></li>
-		
-			<li><a href="/tags/velocity/" title="velocity">velocity<sup>1</sup></a></li>
 		
 		</ul>
 </div>
@@ -530,6 +529,14 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
     
       <li>
         <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
@@ -561,14 +568,6 @@
     
       <li>
         <a href="/2014/09/06/fission-thought/" title="裂变思想">裂变思想</a>
-      </li>
-    
-      <li>
-        <a href="/2014/08/22/velocity-exception-analyze/" title="一次velocity异常的分析">一次velocity异常的分析</a>
-      </li>
-    
-      <li>
-        <a href="/2014/08/16/a-jvm-share/" title="一次JVM分享的相关记录">一次JVM分享的相关记录</a>
       </li>
     
   </ul>
@@ -603,7 +602,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>24</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>26</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		
