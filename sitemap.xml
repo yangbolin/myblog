@@ -2,6 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2014/11/17/akka-spring/</loc>
+    <lastmod>2014-11-17T14:08:04.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yangbolin.cn/2014/11/17/servlet-extend/</loc>
+    <lastmod>2014-11-17T14:43:31.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/10/12/btrace-for-exception/</loc>
     <lastmod>2014-10-12T10:06:18.000Z</lastmod>
   </url>

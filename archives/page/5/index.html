@@ -59,6 +59,95 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/05/27/java-generic-extends/">
+  <time datetime="2014-05-27T12:43:57.000Z">
+    May 27 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/27/java-generic-extends/">接口中使用泛型参数的思考</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>今天在使用一个别人提供的接口时，发现该接口的定义如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">xxxService</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">BasicModel</span>&gt; {</span>
+    <span class="keyword">public</span> T getXXX();
+    <span class="keyword">public</span> T countXXX();
+}
+</pre></td></tr></table></figure>
+
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/27/java-generic-extends/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/18/java-annotation-summarize/">
+  <time datetime="2014-05-18T08:51:38.000Z">
+    May 18 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/18/java-annotation-summarize/">Java 注解总结</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在写JAVA代码的时候，我们经常会使用注解来简化代码，这些注解是需要我们自己定义的，当然JAVA本身也提供了一些标准注解。同时我们也建议大家在自己的代码中定义自己的注解，为了能够在代码中灵活使用注解，这里总结一下注解相关的东西。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/18/java-annotation-summarize/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/05/17/misunderstand-for-future-of-executorservice/">
   <time datetime="2014-05-17T12:54:15.000Z">
     May 17 2014
@@ -373,89 +462,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/10/consistent-hashing/">
-  <time datetime="2014-05-10T14:03:25.000Z">
-    May 10 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/10/consistent-hashing/">聊聊一致性哈希算法</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-一致性哈希算法要解决什么问题">一.一致性哈希算法要解决什么问题</h4>
-<p>假设我们有N个缓存空间，我们现在要把对象存储到到这个N个缓存空间中，我们可以定义这样的哈希函数</p>
-<blockquote>
-<p>hash(object) mod N</p>
-</blockquote>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/10/consistent-hashing/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/10/svn-command/">
-  <time datetime="2014-05-10T08:20:24.000Z">
-    May 10 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/10/svn-command/">谈谈几个svn命令</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>很多公司目前都在使用svn来管理代码，当然要是你的开发环境不是Linux或许你不知到这几个命令你一样可以开发，但是要是你的开发环境是Linux，那你就需要了解这几个开发命令。关于代码的签出，提交我们就暂时不用考虑了，这些命令太简单。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/10/svn-command/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -483,7 +489,7 @@
 		
 			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
 		
-			<li><a href="/tags/Akka/" title="Akka">Akka<sup>1</sup></a></li>
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
 		
 			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
 		
@@ -517,9 +523,9 @@
 		
 			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
 		
-			<li><a href="/tags/sql/" title="sql">sql<sup>4</sup></a></li>
+			<li><a href="/tags/servlet/" title="servlet">servlet<sup>1</sup></a></li>
 		
-			<li><a href="/tags/svn/" title="svn">svn<sup>1</sup></a></li>
+			<li><a href="/tags/sql/" title="sql">sql<sup>4</sup></a></li>
 		
 		</ul>
 </div>
@@ -532,6 +538,14 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
     
       <li>
         <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
@@ -565,14 +579,6 @@
         <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
       </li>
     
-      <li>
-        <a href="/2014/09/17/jvm-cmd/" title="JVM常用命令总结">JVM常用命令总结</a>
-      </li>
-    
-      <li>
-        <a href="/2014/09/06/fission-thought/" title="裂变思想">裂变思想</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -587,7 +593,7 @@
 		
 			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
 		
-			<li><a href="/categories/web开发/" title="web开发">web开发<sup>1</sup></a></li>
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
 		
 			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
 		
