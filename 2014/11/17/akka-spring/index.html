@@ -74,6 +74,7 @@
 <a id="more"></a>
 
 <h4 id="二-如何从Spring容器中获取actor">二.如何从Spring容器中获取actor</h4>
+<p>1.用于从Spring容器中获取actor</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
 3
@@ -95,9 +96,7 @@
 19
 20
 21
-22
-</pre></td><td class="code"><pre><span class="comment">// 用于从Spring容器中获取actor</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringActorProducer</span> <span class="keyword">implements</span> <span class="title">IndirectActorProducer</span> {</span>
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringActorProducer</span> <span class="keyword">implements</span> <span class="title">IndirectActorProducer</span> {</span>
 
     <span class="keyword">final</span> ApplicationContext applicationContext;
     <span class="keyword">final</span> String             actorBeanName;
@@ -120,6 +119,7 @@
 }
 </pre></td></tr></table></figure>
 
+<p>2.扩展actor的创建</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
 3
@@ -162,10 +162,7 @@
 40
 41
 42
-43
-44
-</pre></td><td class="code"><pre>// 扩展actor的创建
-public class SpringExtension extends AbstractExtensionId&lt;SpringExtension.SpringExt&gt; {
+</pre></td><td class="code"><pre>public class SpringExtension extends AbstractExtensionId&lt;SpringExtension.SpringExt&gt; {
 
     /**
      * The identifier used to access the SpringExtension.
@@ -203,13 +200,13 @@ public class SpringExtension extends AbstractExtensionId&lt;SpringExtension.Spri
          * @return a Props that will create the named actor bean using Spring
          */
         public Props props(String actorBeanName) {
-	    // 注意这里使用了从Spring容器中获取actor的类SpringActorProducer
             return Props.create(SpringActorProducer.class, applicationContext, actorBeanName);
         }
     }
 }
 </pre></td></tr></table></figure>
 
+<p>3.示例actor以及actor依赖的service</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
 3
@@ -289,6 +286,7 @@ class CountingActor extends UntypedActor {
 </pre></td></tr></table></figure>
 
 <p>CountingActor依赖了CountingService，CountingService到时候会被注入到CountingActor中。</p>
+<p>4.配置文件</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre>1
 2
 3
@@ -323,7 +321,7 @@ class CountingActor extends UntypedActor {
 <span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
 </pre></td></tr></table></figure>
 
-<p>如何使用</p>
+<p>5.如何使用</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
 3
