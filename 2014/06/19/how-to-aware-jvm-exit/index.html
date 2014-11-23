@@ -326,19 +326,55 @@ var duoshuoQuery = {short_name:"bolin"};
 
     
       
-      <% if (site.posts.length){ %>
+      
 <div class="widget recent-posts">
-  <h3 class="title"><%= __('最新文章') %></h3>
+  <h3 class="title">最新文章</h3>
   <ul class="clearfix">
-    <% site.posts.sort('date', -1).limit(10).each(function(post){ %>
+    
       <li>
-        <a href="<%= config.root %><%= post.path %>" title="<%= post.title %>"><%= post.title %></a>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
-    <% }); %>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/open-call-to-avoid-deadlock/" title="通过开放调用来避免死锁">通过开放调用来避免死锁</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/19/project-accumulation-1/" title="项目中的点点滴滴">项目中的点点滴滴</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/12/btrace-for-exception/" title="使用BTrace监控方法入参">使用BTrace监控方法入参</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
+      </li>
+    
   </ul>
 </div>
 <div class="widget-seperator"></div>
-<% } %>
+
 
     
       
