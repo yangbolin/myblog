@@ -100,6 +100,10 @@
 </li>
 <li><p>iconv -fgbk -tutf8 xxx.log<br>查看有乱码的日志文件</p>
 </li>
+<li><p>find <code>pwd</code> -iname “*java” -type f -exec iconv -f UTF-8 -t GBK {} -o {} \;<br>对.java文件进行编码转换。</p>
+</li>
+<li><p>find . -iname “*.svn” -type d | xargs rm -rf<br>删除.svn目录</p>
+</li>
 </ul>
 
     
