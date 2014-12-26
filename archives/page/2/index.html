@@ -59,6 +59,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/10/07/idempotency-and-db-lock/">
+  <time datetime="2014-10-07T10:52:48.000Z">
+    Oct 7 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/07/idempotency-and-db-lock/">幂等性&amp;&amp;数据库的锁</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-幂等性">一.幂等性</h4>
+<p>幂等性是高等代数中的概念，这里不是讨论数学上幂等性的概念，而是讨论程序中幂等性。幂等性是系统的接口对外一种承诺(而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的. 声明为幂等的接口会认为外部调用失败是常态, 并且失败之后必然会有重试.</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/07/idempotency-and-db-lock/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/09/17/jvm-cmd/">
   <time datetime="2014-09-17T11:38:19.000Z">
     Sep 17 2014
@@ -412,46 +452,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/20/hbase-keyvalue-type/">
-  <time datetime="2014-07-20T08:22:39.000Z">
-    Jul 20 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/20/hbase-keyvalue-type/">HBase的基础类型KeyValue</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>HBase是面向列的存储数据的，最终的存储单元都是KeyValue的结构，HBase本身也定义了一个KeyValue的类型，这是HBase数据存储的基本类型。那么KeyValue本身会存储那些信息呢？</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/20/hbase-keyvalue-type/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -497,7 +497,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>17</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>18</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -528,6 +528,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
     
       <li>
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
@@ -565,10 +569,6 @@
         <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
       </li>
     
-      <li>
-        <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -601,7 +601,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>26</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>27</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		

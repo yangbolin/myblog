@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/05/31/future-cancel-task/">
+  <time datetime="2014-05-31T11:01:51.000Z">
+    May 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/31/future-cancel-task/">通过Future来取消任务</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在多线程程序中，我们经常使用Future来获取线程的执行结果，我们想线程的执行是异步的，因此要想获取线程执行结束后的结果，我们就需要等线程执行结束，这是一种主动获取线程执行结果的方法，当然你也可以让线程拿到结果后通知你。在使用Future的时候我们经常会设置一个超时时间，要是过了这个超时时间，线程的结果还没返回，那么我们经常就会忽略这个结果，但是这个获取结果的线程怎么办呢？让他自生自灭？我看代码中经常有这种写法，让这样的线程自生自灭。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/31/future-cancel-task/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/05/27/java-generic-extends/">
   <time datetime="2014-05-27T12:43:57.000Z">
     May 27 2014
@@ -424,46 +464,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">
-  <time datetime="2014-05-11T13:11:11.000Z">
-    May 11 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">CountDownLatch和CyclicBarrier</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>在编写并发程序的时候，我们经常遇到这样的事情，就是当N个线程都走到某一步后再继续做其他事情，都走到某一步包含这N个线程都运行结束这种场景。我们可以使用线程同步的思想来解决这类问题，在C语言中中我们经常使用信号量来解决此类问题。当然要是你自己使用线程同步来解决个问题，你需要做很多事情，不过jdk提供了一些封装好的类帮助我们解决此类问题，这里我们来看如何使用juc包中提供的CountDownLatch和CyclicBarrier来解决这类问题。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/11/countdownlatch-and-cyclicbarrier/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -509,7 +509,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>17</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>18</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -540,6 +540,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
     
       <li>
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
@@ -577,10 +581,6 @@
         <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
       </li>
     
-      <li>
-        <a href="/2014/10/07/idempotency-and-db-lock/" title="幂等性&amp;&amp;数据库的锁">幂等性&amp;&amp;数据库的锁</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -613,7 +613,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>26</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>27</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
 		
