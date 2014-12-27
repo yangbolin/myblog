@@ -1,15 +1,675 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>Archives: 2014 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="Coder @Alibaba">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content">
+
+
+<h2 class="archives-title"><span>2014</span></h2>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/21/sql-error-analyse/">
+  <time datetime="2014-04-21T11:26:01.000Z">
+    Apr 21 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/21/sql-error-analyse/">一个sql问题的排查</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-现象">一.现象</h4>
+<p>线上一台任务机对一张mysql表进行全表扫描，当扫描过程中有一行记录读出来做数据转换，发现有很多行被多次读出来，并且多次尝试去做数据转换，同时数据转换也就失败了，因此也就打出了error级别的日志。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/21/sql-error-analyse/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/19/ie-iframe-session-cookie/">
+  <time datetime="2014-04-19T10:13:16.000Z">
+    Apr 19 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/19/ie-iframe-session-cookie/">iframe在IE下面session失效了</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-问题">一.问题</h4>
+<p>记得之前做一个项目的时候，把我们自己web系统的中的一个表单提交页面嵌入到其他产品线web系统的一个页面中，在IE浏览器下面出现表单提交失败的场景，查看日志是由于csrfToken失效导致。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/19/ie-iframe-session-cookie/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/19/spring-ioc-aop-idea/">
+  <time datetime="2014-04-19T07:56:47.000Z">
+    Apr 19 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/19/spring-ioc-aop-idea/">谈谈自己对Spring IOC 和 AOP理解</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-谈谈自己对IOC的理解">一.谈谈自己对IOC的理解</h4>
+<p>Spring提供了一个容器，把我们业务代码中需要的一些bean都管理起来，这个Spring容器负责管理这些bean的生命周期，同时保证被依赖的bean能够正确找到自己所属的bean,能够根据代码中的依赖关系正确的实例化一个bean。要是没有Spring容器，我们就需要自己去创建bean，同时设置bean所依赖的bean，Spring容器把这些事情从业务代码中剥</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/19/spring-ioc-aop-idea/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/16/css-screen-scroll/">
+  <time datetime="2014-04-16T10:56:55.000Z">
+    Apr 16 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/16/css-screen-scroll/">实现页面区块随屏幕滚动的效果</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求描述">一.需求描述</h4>
+<p>为了提升用户体验，我们经常需要在页面上显示一块内容，这块内容当屏幕向下滚动到一定位置后就展示出来，然后随着屏幕一起上下滚动，当屏幕向上滚动到一定程度，这块内容就消失，这样这块内容在就会有时候消失，有时候随着屏幕一起滚动。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/16/css-screen-scroll/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/15/spring-aop-practice/">
+  <time datetime="2014-04-15T11:58:15.000Z">
+    Apr 15 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/15/spring-aop-practice/">如何不用修改原来的代码呢？</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求描述">一.需求描述</h4>
+<p>最近遇到这样一个需求，有个数据计算的方法，我们需要优化一下，因为有些数据在一段时间内计算出的结果总是一样的，为了提高性能，我们把这些数据的计算结果缓存起来，这样下次计算的时候就先去缓存中查一下，要是缓存中存在，就直接把缓存中的数据返回，要是缓存中不存在就走原来的计算逻辑去计算，面对这个需求，我们需要做两件事情，在调用计算方法之前读取一下缓存，在调用方法之后把值写入缓存。这样的计算方法有10多个，相应的类也有10多个。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/15/spring-aop-practice/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/13/linux-c-thread/">
+  <time datetime="2014-04-13T14:49:13.000Z">
+    Apr 13 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/13/linux-c-thread/">Linux下面使用C语言写多线程程序</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在Linux系统中编写多线程程序，需要使用Linux系统本身的一个库函数来创建线程</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/13/linux-c-thread/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/13/sql-group-by/">
+  <time datetime="2014-04-13T12:39:50.000Z">
+    Apr 13 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/13/sql-group-by/">谈谈sql语句中的group by</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>我们经常使用sql语句来从数据库中查询一批数据出来，有时候我们需要把查询出来的数据分组，然后进行其他操作，比如统计，在实现这个需求的时候我们就会用到group by，从字面来解释按照XX来分组，到底按照什么来分组，需要我们在写sql语句的时候显式地指定，可以指定一个字段，也可以指定多个字段，通常group by和sql的函数结合起来使用。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/13/sql-group-by/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/13/jquery-placeholder/">
+  <time datetime="2014-04-13T09:30:00.000Z">
+    Apr 13 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/13/jquery-placeholder/">使用jQuery来模拟input的placeholder</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求描述">一.需求描述</h4>
+<p>我们在写HTML代码的时候后，经常遇到input元素，在使用input元素的时候，我们有时需要利用input的placeholder属性来告诉用户在这个输入框中应该输入什么内容，提升用户体验。不幸的是，IE系列的浏览器不支持placeholder属性，那么要想在IE系列的浏览器中提升用户体验，只能利用jquery来模拟了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/13/jquery-placeholder/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/12/async-write-data/">
+  <time datetime="2014-04-12T07:20:21.000Z">
+    Apr 12 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/12/async-write-data/">一个数据产品中异步写数据的实现思路</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求描述">一.需求描述</h4>
+<p>最近在开发一个大数据产品，这个数据产品主要是快速产出用户需要的数据，每次用户调我们数据产品提供的接口后，我们都会把接口的返回值存储到HBase和缓存，存储到HBase目的是后续做一些统计用，存储到缓存的目的加速数据产品的计算速度，因为某些数据在一段时间内计算的结果都是一样的。这个需求可以简单描述成这样，把数据产品的计算结果写缓存和HBase。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/12/async-write-data/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/09/hbase-idea/">
+  <time datetime="2014-04-09T11:25:55.000Z">
+    Apr 9 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/09/hbase-idea/">HBase理解</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="一-概述">一.概述</h3>
+<p>在互联网应用中，经常需要存储大量的用户数据，然后对这些数据进行加工，分析最终产出对用户有价值的数据，关于数据的存储，我们可以选择文件，缓存以及数据库等，在数据库我们经常使用关系型数据库(mysql,oracle等)来存储，当数据达到一定量就需要进行分表分库，以便提高数据库的查询效率，例如在mysql中当表记录行数超过400万的时候，通常就需要分表。但是如果我们存储数据的时候选择的是HBase，这时候就不用分表，HBase中的表可以支撑上亿行，上百万列，这些数据最终存储都是分布在多台机器上的，因此HBase可以存储大量的数据，但是HBase就不具备关系型数据库的关联查询，就是说在HBase中不存在表和表的JOIN查询，关系型的查询是关系型数据库天生的优势，这样在HBase中存储的数据一定是一些弱关系的数据，要是数据之间有很强的关系，那就不太适合存储在HBase中了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/09/hbase-idea/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/2014/page/6/" class="prev">Prev</a>
+  
+  
+    <a href="/archives/2014/page/8/" class="next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>18</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+			<li><a href="/tags/servlet/" title="servlet">servlet<sup>1</sup></a></li>
+		
+			<li><a href="/tags/sql/" title="sql">sql<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/open-call-to-avoid-deadlock/" title="通过开放调用来避免死锁">通过开放调用来避免死锁</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/19/project-accumulation-1/" title="项目中的点点滴滴">项目中的点点滴滴</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/12/btrace-for-exception/" title="使用BTrace监控方法入参">使用BTrace监控方法入参</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>9</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>27</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2014 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>
