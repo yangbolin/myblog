@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2014-12-26T16:03:48.187Z</updated>
+  <updated>2014-12-27T02:30:41.291Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yangbolin.cn/2014/12/26/short-ref-equal/"/>
     <id>http://yangbolin.cn/2014/12/26/short-ref-equal/</id>
     <published>2014-12-26T15:02:20.000Z</published>
-    <updated>2014-12-26T16:03:31.000Z</updated>
+    <updated>2014-12-27T02:30:27.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一-背景">一.背景</h4>
 <p>今天和同事一起分析线下问题，发现代码中有个笔误，对两个Short类型的对象使用==来比较，结果是比较表达式一直为false，导致一个bug的产生。</p>
 <a id="more"></a>
@@ -234,7 +234,7 @@
 <p>看完valueOf的实现，你就明白这一切了，首先使用=赋值的时候会调用valueOf(S)这个方法，S标识short，在这方法中如果要赋予的值在[-127,128]这个区间内，那么直接取缓存中的值，缓存中缓存了[-127,128]这个区间内的所有Short对象，如果Short的值在这个区间内，你使用=赋值，直接取缓存，至此上面的问题就不言而喻了。</p>
 <h4 id="三-总结">三.总结</h4>
 <blockquote>
-<p>1.写代码的时候最好不要使用==来比较任何类型的引用，除非是基本类型，不然很容易出问题，导致某些场景下面没问题，某些场景下面有问题。<br>2.学会看字节码很重要，不要你又要记忆所谓的装箱拆箱了。</p>
+<p>1.写代码的时候最好不要使用==来比较任何类型的引用，除非是基本类型，不然很容易出问题，导致某些场景下面没问题，某些场景下面有问题。<br>2.Long类型也有类似的机制。</p>
 </blockquote>
 ]]></content>
     <summary type="html"><![CDATA[<h4 id="一-背景">一.背景</h4>
