@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-01-02T14:10:41.924Z</updated>
+  <updated>2015-01-02T14:18:29.971Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -696,7 +696,7 @@ Future&lt;Object&gt; future = Patterns.ask(bootstrapAnalyzeActor, bootstrapAnaly
     <link href="http://yangbolin.cn/2014/10/31/transaction-attention/"/>
     <id>http://yangbolin.cn/2014/10/31/transaction-attention/</id>
     <published>2014-10-31T09:12:19.000Z</published>
-    <updated>2014-10-31T09:59:37.000Z</updated>
+    <updated>2015-01-02T14:17:59.000Z</updated>
     <content type="html"><![CDATA[<p>最近在代码中配置了一个事务，事务的意思就是当前这件事情要么全部正常做完，要么全部不做。为了避免数据库中出现脏数据，我给XXX类的ff方法配置了事务。在ff方法主要做下面这几件事情</p>
 <a id="more"></a>
 
@@ -714,6 +714,7 @@ Future&lt;Object&gt; future = Patterns.ask(bootstrapAnalyzeActor, bootstrapAnaly
 <li>4.根据dataList1中的数据进行判断，然后再写数据库。</li>
 </ul>
 <p>注意：<br>事务中对数据库进行读写操作，此时写入的数据不会写到数据库中，但是能从事务中读取到最新的数据，如果要基于某些数据做判断，最好保证判断时这些数据在事务中是最新的，不要沿用一开始就加载到内存中的那批数据，因为一开始的数据不是最新的。</p>
+<p>在事务中切忌发消息给其他系统，因为这个逻辑不对，事务可能会回滚，因为数据出错啥的，但是发出去的消息没法回滚，因此一旦在事务中发消息就会破坏事务的一致性。自己在事务中发了一个消息给外部系统，事务还没有提交，外部系统收到消息后找我来查询刚才事务中产生的数据，查询DB当然就查询不到了，因为事务还没有提交，消息就已经出去了，以后在事务中切忌发消息给外部系统。</p>
 ]]></content>
     <summary type="html"><![CDATA[<p>最近在代码中配置了一个事务，事务的意思就是当前这件事情要么全部正常做完，要么全部不做。为了避免数据库中出现脏数据，我给XXX类的ff方法配置了事务。在ff方法主要做下面这几件事情</p>
 ]]></summary>
