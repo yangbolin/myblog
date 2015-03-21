@@ -8,7 +8,7 @@
   <meta name="author" content="BolinYoung">
   
   <meta name="description" content="一.概述
-最近在做字节码分析的时候，发现字节码中出现了access\$000的方法，这个方法不是开发工程师写的，是编译器生成的，那么编译器生成这个方法是为了解决什么问题呢？我们知道编译会为静态代码块生成执行的方法，在类没有构造函数时为类生成缺省构造函数，这个access\$000究竟是在什么场景下面用的呢？仔细分析包含access\$000的类，发现该类中存在内部类，结合google搜索，原来acess\$000是为了解决内部类访问外部类的成员，包括成员变量和成员方法。">
+最近在做字节码分析的时候，发现字节码中出现了access$000的方法，这个方法不是开发工程师写的，是编译器生成的，那么编译器生成这个方法是为了解决什么问题呢？我们知道编译会为静态代码块生成执行的方法，在类没有构造函数时为类生成缺省构造函数，这个access$000究竟是在什么场景下面用的呢？仔细分析包含access$000的类，发现该类中存在内部类，结合google搜索，原来acess$000是为了解决内部类访问外部类的成员，包括成员变量和成员方法。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -70,7 +70,7 @@
   <div class="entry">
     
       <h4 id="一-概述">一.概述</h4>
-<p>最近在做字节码分析的时候，发现字节码中出现了access\$000的方法，这个方法不是开发工程师写的，是编译器生成的，那么编译器生成这个方法是为了解决什么问题呢？我们知道编译会为静态代码块生成执行的方法，在类没有构造函数时为类生成缺省构造函数，这个access\$000究竟是在什么场景下面用的呢？仔细分析包含access\$000的类，发现该类中存在内部类，结合google搜索，原来acess\$000是为了解决内部类访问外部类的成员，包括成员变量和成员方法。</p>
+<p>最近在做字节码分析的时候，发现字节码中出现了access$000的方法，这个方法不是开发工程师写的，是编译器生成的，那么编译器生成这个方法是为了解决什么问题呢？我们知道编译会为静态代码块生成执行的方法，在类没有构造函数时为类生成缺省构造函数，这个access$000究竟是在什么场景下面用的呢？仔细分析包含access$000的类，发现该类中存在内部类，结合google搜索，原来acess$000是为了解决内部类访问外部类的成员，包括成员变量和成员方法。</p>
 <a id="more"></a>
 
 <h4 id="二-深入分析">二.深入分析</h4>
@@ -113,10 +113,10 @@
 }
 </pre></td></tr></table></figure>
 
-<p>然后我们先看内部类的字节码<br><img src="http://bolinyoung.qiniudn.com/inner-call.png" alt="内部类字节码"><br>我们看到内部类的字节码中调用了access\$000和access\$100这两个方法，这两个方法都是Outer这个类的静态成员方法，同时带有一个Outer类型的参数。那么我们看看Outer这个类的字节码到底是什么样子<br><img src="http://bolinyoung.qiniudn.com/outer-code.png" alt="外部类的字节码"><br>果然外部类中存在两个这样的方法，我们先看一下access\$000这个方法的实现，该方法先用aload_0把方法参数入栈，然后调用栈顶元素的f方法，即Outer的f方法，因为内部类中有地方通过外部类的this引用调用Outer的f()方法。access$\100这个方法，很明显在访问Outer的成员变量x。</p>
-<p>至此疑问都清楚了，原来access\$xxx是编译器生成的，用来解决内部类访问外部类的成员。</p>
+<p>然后我们先看内部类的字节码<br><img src="http://bolinyoung.qiniudn.com/inner-call.png" alt="内部类字节码"><br>我们看到内部类的字节码中调用了access$000和access$100这两个方法，这两个方法都是Outer这个类的静态成员方法，同时带有一个Outer类型的参数。那么我们看看Outer这个类的字节码到底是什么样子<br><img src="http://bolinyoung.qiniudn.com/outer-code.png" alt="外部类的字节码"><br>果然外部类中存在两个这样的方法，我们先看一下access$000这个方法的实现，该方法先用aload_0把方法参数入栈，然后调用栈顶元素的f方法，即Outer的f方法，因为内部类中有地方通过外部类的this引用调用Outer的f()方法。access$100这个方法，很明显在访问Outer的成员变量x。</p>
+<p>至此疑问都清楚了，原来access$xxx是编译器生成的，用来解决内部类访问外部类的成员。</p>
 <p>但是你一定有一个疑问，我们自己能否写access$xxx的方法呢？答案是可以的。</p>
-<h4 id="三-自己编写access\$xxx">三.自己编写access\$xxx</h4>
+<h4 id="三-自己编写access$xxx">三.自己编写access$xxx</h4>
 <p>写个简单的例子</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
@@ -169,9 +169,9 @@
 <blockquote>
 <p>注意:</p>
 <ul>
-<li>我们自己编写的access\$xxx不能和编译生成的具有相同的方法签名，否则你会得到一个编译错误的。</li>
-<li>access\$xxx可以绕过编译器的检查，访问类的私有成员。</li>
-<li>一般不要编写access\$xxx方法。</li>
+<li>我们自己编写的access$xxx不能和编译生成的具有相同的方法签名，否则你会得到一个编译错误的。</li>
+<li>access$xxx可以绕过编译器的检查，访问类的私有成员。</li>
+<li>一般不要编写access$xxx方法。</li>
 </ul>
 </blockquote>
 
