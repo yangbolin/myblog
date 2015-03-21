@@ -59,6 +59,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/03/21/javac-accessbash00/">
+  <time datetime="2015-03-21T02:07:34.000Z">
+    Mar 21 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/21/javac-accessbash00/">javac生成的access$000方法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>最近在做字节码分析的时候，发现字节码中出现了access\$000的方法，这个方法不是开发工程师写的，是编译器生成的，那么编译器生成这个方法是为了解决什么问题呢？我们知道编译会为静态代码块生成执行的方法，在类没有构造函数时为类生成缺省构造函数，这个access\$000究竟是在什么场景下面用的呢？仔细分析包含access\$000的类，发现该类中存在内部类，结合google搜索，原来acess\$000是为了解决内部类访问外部类的成员，包括成员变量和成员方法。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/21/javac-accessbash00/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/12/26/short-ref-equal/">
   <time datetime="2014-12-26T15:02:20.000Z">
     Dec 26 2014
@@ -414,46 +454,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/10/07/thread-local-analyze/">
-  <time datetime="2014-10-07T13:01:03.000Z">
-    Oct 7 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/10/07/thread-local-analyze/">JAVA线程本地存储之ThreadLocal的分析</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>ThreadLocal是JDK的一个线程本地存储的类，我们可以把一些线程私有的数据写在ThreadLocal中，这样这些数据只有一个线程可见，实现了所谓的栈封闭。这样存储一些线程私有的数据，我们就不用去费心考虑如何保证临界资源的互斥访问了，同时对于一个线程，这些私有数据也只做一次初始化。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/10/07/thread-local-analyze/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -497,7 +497,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>18</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -528,6 +528,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
     
       <li>
         <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
@@ -565,10 +569,6 @@
         <a href="/2014/10/12/btrace-for-exception/" title="使用BTrace监控方法入参">使用BTrace监控方法入参</a>
       </li>
     
-      <li>
-        <a href="/2014/10/07/thread-local-analyze/" title="JAVA线程本地存储之ThreadLocal的分析">JAVA线程本地存储之ThreadLocal的分析</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -603,7 +603,7 @@
 		
 			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>27</sup></a></li>
 		
-			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>10</sup></a></li>
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		
 		</ul>
 </div>
