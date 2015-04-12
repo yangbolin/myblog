@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-03-21T02:41:28.232Z</updated>
+  <updated>2015-04-12T06:58:59.308Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,57 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[guava中的Multimap]]></title>
+    <link href="http://yangbolin.cn/2015/04/12/guava-multimap/"/>
+    <id>http://yangbolin.cn/2015/04/12/guava-multimap/</id>
+    <published>2015-04-12T06:32:31.000Z</published>
+    <updated>2015-04-12T06:58:30.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>我们在日常开发过程中都会使用Map这个数据结构，使用这个数据结构能够很方便维护一些映射关系，有时候，我们存储的结构是Key-Collection的映射关系，关于这个映射关系调用put方法的时候，我们需要先调用get方法，然后看看对应的Key是否在当前映射关系中已经存在Collection，如果不存在，我们直接忘Collection中增加一个元素，不存在我们需要手动去创建，然后在往我们手工创建的Collection中增加一个元素，最后再把这个Collection写入我们的Map中，很麻烦。对于C++ STL有过了解的人都知道，STL中有一个Multimap这个数据结构，该数据结构能方便地解决上面映射关系的问题。但是JDK本身不存在这样的数据结构。。。好在guava这个开源的二方库中自己定义了这个容器，该容器既能维护好Key-Collection这个数据结构，也能很方便往这个数据结构中写数据。</p>
+<a id="more"></a>
+
+<h4 id="二-Multimap数据结构">二.Multimap数据结构</h4>
+<p><img src="http://bolinyoung.qiniudn.com/key-collection.png" alt="Multimap"></p>
+<h4 id="三-如何使用">三.如何使用</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MultimapTest</span> {</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
+        Multimap&lt;String, Integer&gt; multimap = HashMultimap.create();
+        multimap.put(<span class="string">"A"</span>, <span class="number">1</span>);
+        multimap.put(<span class="string">"A"</span>, <span class="number">2</span>);
+        
+        System.out.println(multimap.get(<span class="string">"A"</span>));
+    }
+}
+输出结果：
+[<span class="number">1</span>, <span class="number">2</span>]
+</pre></td></tr></table></figure>
+
+<p>关于上述代码，我们看到我们的操作很简单，并不需要开发工程师自己去创建一个Collection，然后把这个Collection在手工写入Map中去。</p>
+<h4 id="四-总结">四.总结</h4>
+<p>可能很多工程师自己愿意创建Collection，并且自己写到Map中去，但是这个维护起来很不好维护，其实想想自己创建Collection并且写到Map中，也是一件很麻烦的事情，从此以后对于Key-Collection这种数据结构，直接走Multimap。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>我们在日常开发过程中都会使用Map这个数据结构，使用这个数据结构能够很方便维护一些映射关系，有时候，我们存储的结构是Key-Collection的映射关系，关于这个映射关系调用put方法的时候，我们需要先调用get方法，然后看看对应的Key是否在当前映射关系中已经存在Collection，如果不存在，我们直接忘Collection中增加一个元素，不存在我们需要手动去创建，然后在往我们手工创建的Collection中增加一个元素，最后再把这个Collection写入我们的Map中，很麻烦。对于C++ STL有过了解的人都知道，STL中有一个Multimap这个数据结构，该数据结构能方便地解决上面映射关系的问题。但是JDK本身不存在这样的数据结构。。。好在guava这个开源的二方库中自己定义了这个容器，该容器既能维护好Key-Collection这个数据结构，也能很方便往这个数据结构中写数据。</p>
+]]></summary>
+    
+      <category term="guava" scheme="http://yangbolin.cn/tags/guava/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[javac生成的access$000方法]]></title>
@@ -3105,29 +3156,6 @@ class Danger {
       <category term="并发" scheme="http://yangbolin.cn/tags/%E5%B9%B6%E5%8F%91/"/>
     
       <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[单元测试Failed的排查]]></title>
-    <link href="http://yangbolin.cn/2014/07/26/ut-failed-problems/"/>
-    <id>http://yangbolin.cn/2014/07/26/ut-failed-problems/</id>
-    <published>2014-07-26T07:47:22.000Z</published>
-    <updated>2014-07-26T08:13:24.000Z</updated>
-    <content type="html"><![CDATA[<p>最近各种中间件升级的事情，升级中间件可能会出现很多诡异的问题，此时我们需要定位这些问题是自己升级导致还是其他原因导致，升级中间件可能会出现很多JAR包冲突的问题，此时需要一一排查。</p>
-<a id="more"></a>
-
-<p>前两天升级后遇到这样的问题，系统中的单元测试在eclipse中单独跑没有问题，但是使用mvn test一起跑就会出现大部分单元测试PASS不了，此时查看单元测试FAIL的日志发现获取数据库连接超时，由于本次升级出现了很多JAR包冲突的问题，导致自己一直在怀疑是不是某个JAR包又冲突了导致数据库连接获取超时了？因此排查思路一直停留在JAR包冲突的这个范围内，查了好久，问题依然没有解决，由于自己维护的这个服务化应用非常重要，不能不管单元测试就发布，同时自己也不会放过这个问题，一定要追查到底。</p>
-<p>是不是自己的陷入了排查误区了呢？于是把整个代码的变更自己又回顾了一遍，发现最多的就是JAR包版本的升级，引入新的JAR包版本。记得之前自己总结过一句话：要是一个问题排查了好久没有眉目的话，记得去看看那些被你忽略过的细节问题，很可能问题就出现这些被忽略的细节上面。</p>
-<p>那到底那些细节被忽略了呢？问题的现象是什么？单个跑UT能够PASS,批量跑UT一部分不能PASS,因为数据库连接获取超时，单个和批量就是这里的细节了，此时自己有一种突然醒悟的感觉，问题就这里了，单个跑只获取一个数据库连接，批量跑会获取多个数据库连接，数据库连接池的问题，不是我升级导致，因此找DBA搞定这个问题。</p>
-<p>其实这个问题很简单，发现自己有时候很容易被最近刚出现的问题困扰住，思路一直停留如何最近刚出现的问题上，以后需要注意分析问题出现的本质原因，比如数据连接获取不到其实跟JAR包冲突的关系不是很大，可以说几乎没啥关系，不要受一些最近出现的问题的影响，避免思路被困住。</p>
-]]></content>
-    <summary type="html"><![CDATA[<p>最近各种中间件升级的事情，升级中间件可能会出现很多诡异的问题，此时我们需要定位这些问题是自己升级导致还是其他原因导致，升级中间件可能会出现很多JAR包冲突的问题，此时需要一一排查。</p>
-]]></summary>
-    
-      <category term="单元测试" scheme="http://yangbolin.cn/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"/>
-    
-      <category term="开发杂谈" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E6%9D%82%E8%B0%88/"/>
     
   </entry>
   
