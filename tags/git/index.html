@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>为什么zookeeper集群个需要奇数台机器 | BolinYoung&#39;s Blog</title>
+  <title>Tag: git | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="我们通常使用zookeeper集群来协同管理另外一个集群，比如HBase集群，一个HBase集群必然对应一个zookeeper集群。在部署zookeeper集群的时候，我们为什么选择奇数台机器呢？">
+  <meta name="description" content="Coder @Alibaba">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta property="og:title" content="为什么zookeeper集群个需要奇数台机器"/>
+  
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -49,77 +49,60 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-		<div class="content"><article class="post">
+		<div class="content">
+
+
+<h2 class="archives-title tag"><span>git</span></h2>
+
+
+
+  
+    <article class="post">
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/05/17/why-odd-number-machine-for-zookeeper/">
-  <time datetime="2014-05-17T07:39:29.000Z">
-    May 17 2014
+      <a href="/2015/04/26/git-command/">
+  <time datetime="2015-04-26T06:27:34.000Z">
+    Apr 26 2015
   </time>
 </a>
     
     
   
-    <h1 class="title">为什么zookeeper集群个需要奇数台机器</h1>
+    <h1 class="title"><a href="/2015/04/26/git-command/">GIT常用命令总结</a></h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>我们通常使用zookeeper集群来协同管理另外一个集群，比如HBase集群，一个HBase集群必然对应一个zookeeper集群。在部署zookeeper集群的时候，我们为什么选择奇数台机器呢？</p>
-<a id="more"></a>
-
-<p>关于zookeeper集群有下面几点说明</p>
-<ul>
-<li>1.集群中机器数目越多越稳定</li>
-<li>2.集群通过选举的方式来选出集群的leader，要是有一半以上的机器同一某个机器成为leader,那么这个机器就编程集群中的leader</li>
-<li>3.要是集群中有一半以上的机器挂掉，整个集群就会挂掉</li>
-</ul>
-<p>对于2N和2N+1台机器，选出leader的时候都需要有N+1票，就是说N+1台机器投票给某一台机器，因此2N和2N+1台机器构成的集群在投票过程中所投票数一样，但是2N+1台机器构成的集群稳定。同样2N台机器中挂掉N台的概率是50%，但是2N+1台机器中挂掉N太的概率小于50%，也就是说2N+1台机器构成的集群比较稳定。</p>
-<p>综上所述：<br>zookeeper集群选择2N+1台机器是比较合理的。</p>
+      <h4 id="一-概述">一.概述</h4>
+<p>最近有个项目分支使用了git托管代码，虽然之前在github上托管过很多代码，但是对git本身的使用以及特性也没有太多的深入的了解，最近使用git出现了一个问题，查到最后是环境问题，很悲摧，为了避免悲剧再次出现，就看了一遍git相关的所有常见命令以及一些git的设计思想，比如工作区，暂存区，本地仓库等等，也算是对平时编写代码思路的一种启发。很多人都说git是分布式的，svn不是分布式的，那么git分布式到底体现在哪里，每个人本地都有一个完整的仓库吗？难道svn每个人本地的代码就不是完善的吗？关于git分布式，我们从下面几个点来解释：</p>
 
     
   </div>
-  <footer>
+  <footer class="end-sep">
     
       
-  <div class="categories">
-    <a class="categories-link" href="/categories/分布式/">分布式</a>
-  </div>
-
+        <div class="alignleft">
+          <a href="/2015/04/26/git-command/#more" class="more-link">Read More</a>
+        </div>
       
-  <div class="tags">
-    <a class="tags-link" href="/tags/zookeeper/">zookeeper</a>
-  </div>
-
+      
     
     <div class="clearfix"></div>
   </footer>
 </article>
 
 
-<section id="comment">
-  <h1 class="title">Comments</h1>
-  <div class="ds-thread" data-title="为什么zookeeper集群个需要奇数台机器">
-  </div>
-<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"bolin"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- ��˵����JS���� end -->
 
+  
 
-</section>
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
 
 </div>
 	  </div>

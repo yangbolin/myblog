@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-04-12T06:58:59.308Z</updated>
+  <updated>2015-04-26T06:50:08.258Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,34 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[GIT常用命令总结]]></title>
+    <link href="http://yangbolin.cn/2015/04/26/git-command/"/>
+    <id>http://yangbolin.cn/2015/04/26/git-command/</id>
+    <published>2015-04-26T06:27:34.000Z</published>
+    <updated>2015-04-26T06:49:56.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>最近有个项目分支使用了git托管代码，虽然之前在github上托管过很多代码，但是对git本身的使用以及特性也没有太多的深入的了解，最近使用git出现了一个问题，查到最后是环境问题，很悲摧，为了避免悲剧再次出现，就看了一遍git相关的所有常见命令以及一些git的设计思想，比如工作区，暂存区，本地仓库等等，也算是对平时编写代码思路的一种启发。很多人都说git是分布式的，svn不是分布式的，那么git分布式到底体现在哪里，每个人本地都有一个完整的仓库吗？难道svn每个人本地的代码就不是完善的吗？关于git分布式，我们从下面几个点来解释：</p>
+<a id="more"></a>
+
+<ul>
+<li>1.每个人都可以在本地管理代码的变更，而不像svn如果svn中心挂了，本地代码的管理就无法实现。</li>
+<li>2.使用git人人都可以成为中心，而不像svn中心有且只有1个，中心挂了，只能坐等中心恢复，不然两个开发之间的代码就没法相互感知到。但是git可以在某个中心挂了之后，其他人能快速成为中心。</li>
+<li>3.github的fork功能就一个分布式的典型例子，比如作者A拥有一个仓库repo，此时开源爱好者m对这个repo很感兴趣，想贡献一些代码，因此m就去fork了repo仓库，此时开源爱好者n也知道了这个事情，n和m一起基于fork出来的repo1来贡献代码，此时有两个仓库，一个是repo一个是repo1，repo挂掉不影响repo1，repo1挂掉不影响repo，等m和n都开发结束了，就提交分支合并请求到A那边，A觉得没啥问题就合并代码到repo仓库。</li>
+</ul>
+<h4 id="二-命令">二.命令</h4>
+<p>基于命令维度总结了一下git的一些常用命令<br><img src="http://bolinyoung.qiniudn.com/GIT%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.bmp" alt="GIT-COMMAND"></p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>最近有个项目分支使用了git托管代码，虽然之前在github上托管过很多代码，但是对git本身的使用以及特性也没有太多的深入的了解，最近使用git出现了一个问题，查到最后是环境问题，很悲摧，为了避免悲剧再次出现，就看了一遍git相关的所有常见命令以及一些git的设计思想，比如工作区，暂存区，本地仓库等等，也算是对平时编写代码思路的一种启发。很多人都说git是分布式的，svn不是分布式的，那么git分布式到底体现在哪里，每个人本地都有一个完整的仓库吗？难道svn每个人本地的代码就不是完善的吗？关于git分布式，我们从下面几个点来解释：</p>
+]]></summary>
+    
+      <category term="git" scheme="http://yangbolin.cn/tags/git/"/>
+    
+      <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[guava中的Multimap]]></title>
@@ -3123,39 +3151,6 @@ class Danger {
       <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
     
       <category term="JVM学习" scheme="http://yangbolin.cn/categories/JVM%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[JAVA线程模型]]></title>
-    <link href="http://yangbolin.cn/2014/07/26/java-thread-model/"/>
-    <id>http://yangbolin.cn/2014/07/26/java-thread-model/</id>
-    <published>2014-07-26T11:13:14.000Z</published>
-    <updated>2014-07-26T11:37:52.000Z</updated>
-    <content type="html"><![CDATA[<p>我们在JAVA代码中创建一个线程，这线程在系统中会经历下面5个阶段：<br>New-&gt;Runnable-&gt;Blocked-&gt;Running-&gt;Dead</p>
-<a id="more"></a>
-
-<p>这里我们来详细看一下这几个阶段的演变以及转换<br><img src="http://bolinyoung.qiniudn.com/java-thread-model.png" alt="线程状态转换"></p>
-<ul>
-<li><p>New<br>表示这个线程对象刚刚被创建，它具备线程的一些特性，但是系统没有给它分配资源。</p>
-</li>
-<li><p>Runnable<br>表示这个线程处于就绪状态，要是能获得CPU的话，线程马上就能运行起来。</p>
-</li>
-<li><p>Blocked<br>一个正在运行的线程由于某些原因不能继续运行，它将进入阻塞状态。比如线程对象执行suspend(),sleep()等阻塞类型的方法后，线程就会进入BlockedPool，当线程调用resume()方法或者自动苏醒后，线程会进入Runnable状态;线程因为要执行synchronized同步代码块需要获取锁，但是当前要获取的锁被其他线程所占有，此时线程会进入LockPool，要是线程获取到这把锁后，线程又会进入到Runnable状态;线程执行了某个对象的wait()方法，此时线程会进入到WaitPool，当相应对象上的notify方法被调用后，线程就会进入Runnable状态。</p>
-</li>
-<li><p>Running<br>处于Runnable状态的线程要是能获取到CPU的话，马上就变成Running状态</p>
-</li>
-<li><p>Dead<br>线程运行结束，或者线程被interrupt，或者线程被stop，线程的生命周期也就结束了。</p>
-</li>
-</ul>
-<p>JVM在执行某个方法的时候，会创建一个方法执行栈帧(Frame),这个栈帧包含局部变量区和操作数栈，在局部变量区的第一个位置上存储当前方法所属的实例对象。</p>
-]]></content>
-    <summary type="html"><![CDATA[<p>我们在JAVA代码中创建一个线程，这线程在系统中会经历下面5个阶段：<br>New-&gt;Runnable-&gt;Blocked-&gt;Running-&gt;Dead</p>
-]]></summary>
-    
-      <category term="并发" scheme="http://yangbolin.cn/tags/%E5%B9%B6%E5%8F%91/"/>
-    
-      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   

@@ -59,6 +59,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/06/19/how-to-aware-jvm-exit/">
+  <time datetime="2014-06-19T14:42:58.000Z">
+    Jun 19 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/06/19/how-to-aware-jvm-exit/">JAVA代码中如何感知到JVM退出</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求">一.需求</h4>
+<p>当JVM退出的时候，把内存中的某块数据写入到DB。分析这个需求，我们需要让应用感知到JVM准备退出了，然后把数据写入DB，然后JVM继续执行退出…</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/06/19/how-to-aware-jvm-exit/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/06/18/maven-default-arbitration/">
   <time datetime="2014-06-18T14:09:25.000Z">
     Jun 18 2014
@@ -416,45 +456,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/06/01/vi-command/">
-  <time datetime="2014-05-31T16:39:35.000Z">
-    Jun 1 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/06/01/vi-command/">vim 命令</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>vim的一些命令总结</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/06/01/vi-command/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -509,6 +510,8 @@
 		
 			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
 		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
 			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
 		
 			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
@@ -516,8 +519,6 @@
 			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
 		
 			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
-		
-			<li><a href="/tags/servlet/" title="servlet">servlet<sup>1</sup></a></li>
 		
 		</ul>
 </div>
@@ -530,6 +531,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
     
       <li>
         <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
@@ -567,10 +572,6 @@
         <a href="/2014/10/25/open-call-to-avoid-deadlock/" title="通过开放调用来避免死锁">通过开放调用来避免死锁</a>
       </li>
     
-      <li>
-        <a href="/2014/10/19/project-accumulation-1/" title="项目中的点点滴滴">项目中的点点滴滴</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -595,7 +596,7 @@
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
 		
-			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>9</sup></a></li>
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>10</sup></a></li>
 		
 			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
 		

@@ -4,14 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>为什么zookeeper集群个需要奇数台机器 | BolinYoung&#39;s Blog</title>
+  <title>GIT常用命令总结 | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="我们通常使用zookeeper集群来协同管理另外一个集群，比如HBase集群，一个HBase集群必然对应一个zookeeper集群。在部署zookeeper集群的时候，我们为什么选择奇数台机器呢？">
+  <meta name="description" content="一.概述
+最近有个项目分支使用了git托管代码，虽然之前在github上托管过很多代码，但是对git本身的使用以及特性也没有太多的深入的了解，最近使用git出现了一个问题，查到最后是环境问题，很悲摧，为了避免悲剧再次出现，就看了一遍git相关的所有常见命令以及一些git的设计思想，比如工作区，暂存区，本地仓库等等，也算是对平时编写代码思路的一种启发。很多人都说git是分布式的，svn不是分布式的，那么git分布式到底体现在哪里，每个人本地都有一个完整的仓库吗？难道svn每个人本地的代码就不是完善的吗？关于git分布式，我们从下面几个点来解释：">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta property="og:title" content="为什么zookeeper集群个需要奇数台机器"/>
+  <meta property="og:title" content="GIT常用命令总结"/>
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -53,32 +54,32 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/05/17/why-odd-number-machine-for-zookeeper/">
-  <time datetime="2014-05-17T07:39:29.000Z">
-    May 17 2014
+      <a href="/2015/04/26/git-command/">
+  <time datetime="2015-04-26T06:27:34.000Z">
+    Apr 26 2015
   </time>
 </a>
     
     
   
-    <h1 class="title">为什么zookeeper集群个需要奇数台机器</h1>
+    <h1 class="title">GIT常用命令总结</h1>
   
 
   </header>
   
   <div class="entry">
     
-      <p>我们通常使用zookeeper集群来协同管理另外一个集群，比如HBase集群，一个HBase集群必然对应一个zookeeper集群。在部署zookeeper集群的时候，我们为什么选择奇数台机器呢？</p>
+      <h4 id="一-概述">一.概述</h4>
+<p>最近有个项目分支使用了git托管代码，虽然之前在github上托管过很多代码，但是对git本身的使用以及特性也没有太多的深入的了解，最近使用git出现了一个问题，查到最后是环境问题，很悲摧，为了避免悲剧再次出现，就看了一遍git相关的所有常见命令以及一些git的设计思想，比如工作区，暂存区，本地仓库等等，也算是对平时编写代码思路的一种启发。很多人都说git是分布式的，svn不是分布式的，那么git分布式到底体现在哪里，每个人本地都有一个完整的仓库吗？难道svn每个人本地的代码就不是完善的吗？关于git分布式，我们从下面几个点来解释：</p>
 <a id="more"></a>
 
-<p>关于zookeeper集群有下面几点说明</p>
 <ul>
-<li>1.集群中机器数目越多越稳定</li>
-<li>2.集群通过选举的方式来选出集群的leader，要是有一半以上的机器同一某个机器成为leader,那么这个机器就编程集群中的leader</li>
-<li>3.要是集群中有一半以上的机器挂掉，整个集群就会挂掉</li>
+<li>1.每个人都可以在本地管理代码的变更，而不像svn如果svn中心挂了，本地代码的管理就无法实现。</li>
+<li>2.使用git人人都可以成为中心，而不像svn中心有且只有1个，中心挂了，只能坐等中心恢复，不然两个开发之间的代码就没法相互感知到。但是git可以在某个中心挂了之后，其他人能快速成为中心。</li>
+<li>3.github的fork功能就一个分布式的典型例子，比如作者A拥有一个仓库repo，此时开源爱好者m对这个repo很感兴趣，想贡献一些代码，因此m就去fork了repo仓库，此时开源爱好者n也知道了这个事情，n和m一起基于fork出来的repo1来贡献代码，此时有两个仓库，一个是repo一个是repo1，repo挂掉不影响repo1，repo1挂掉不影响repo，等m和n都开发结束了，就提交分支合并请求到A那边，A觉得没啥问题就合并代码到repo仓库。</li>
 </ul>
-<p>对于2N和2N+1台机器，选出leader的时候都需要有N+1票，就是说N+1台机器投票给某一台机器，因此2N和2N+1台机器构成的集群在投票过程中所投票数一样，但是2N+1台机器构成的集群稳定。同样2N台机器中挂掉N台的概率是50%，但是2N+1台机器中挂掉N太的概率小于50%，也就是说2N+1台机器构成的集群比较稳定。</p>
-<p>综上所述：<br>zookeeper集群选择2N+1台机器是比较合理的。</p>
+<h4 id="二-命令">二.命令</h4>
+<p>基于命令维度总结了一下git的一些常用命令<br><img src="http://bolinyoung.qiniudn.com/GIT%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.bmp" alt="GIT-COMMAND"></p>
 
     
   </div>
@@ -86,12 +87,12 @@
     
       
   <div class="categories">
-    <a class="categories-link" href="/categories/分布式/">分布式</a>
+    <a class="categories-link" href="/categories/开发工具/">开发工具</a>
   </div>
 
       
   <div class="tags">
-    <a class="tags-link" href="/tags/zookeeper/">zookeeper</a>
+    <a class="tags-link" href="/tags/git/">git</a>
   </div>
 
     
@@ -102,7 +103,7 @@
 
 <section id="comment">
   <h1 class="title">Comments</h1>
-  <div class="ds-thread" data-title="为什么zookeeper集群个需要奇数台机器">
+  <div class="ds-thread" data-title="GIT常用命令总结">
   </div>
 <!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
 <script type="text/javascript">
