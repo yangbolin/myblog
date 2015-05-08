@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-04-26T06:50:08.258Z</updated>
+  <updated>2015-05-08T01:22:49.110Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,28 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[css换行]]></title>
+    <link href="http://yangbolin.cn/2015/05/07/css-break-line/"/>
+    <id>http://yangbolin.cn/2015/05/07/css-break-line/</id>
+    <published>2015-05-07T13:55:59.000Z</published>
+    <updated>2015-05-08T01:22:36.000Z</updated>
+    <content type="html"><![CDATA[<p>最近在搞一个后台系统的时候，发现table表格的宽度没法调整，找前端大神看了一下，发现是table表格中的全英文内容过长，不会自动换行导致。因此需要用CSS来实现换行，浏览器默认不会对英文内容进行换行的。具体CSS的写法如下</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="tag">word-break</span>: <span class="tag">break-all</span>;
+<span class="tag">word-wrap</span>: <span class="tag">break-word</span>;
+</pre></td></tr></table></figure>
+
+]]></content>
+    
+    
+      <category term="CSS" scheme="http://yangbolin.cn/tags/CSS/"/>
+    
+      <category term="前端开发" scheme="http://yangbolin.cn/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[GIT常用命令总结]]></title>
@@ -3121,36 +3143,6 @@ class Danger {
       <category term="ASM" scheme="http://yangbolin.cn/tags/ASM/"/>
     
       <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[JVM字节码指令相关]]></title>
-    <link href="http://yangbolin.cn/2014/07/26/jvm-byte-code-attention/"/>
-    <id>http://yangbolin.cn/2014/07/26/jvm-byte-code-attention/</id>
-    <published>2014-07-26T11:46:08.000Z</published>
-    <updated>2014-07-26T12:11:07.000Z</updated>
-    <content type="html"><![CDATA[<p>JAVA代码中的每个方法都会被编译成一系列的JVM字节码指令，这些字节码指令会被JVM所执行，从而产生相应的数据，我们通常可以用javap -verbose来查看一个方法的字节码指令。</p>
-<a id="more"></a>
-
-<p>记得自己之前写过一个简单编译器，编译之后生成的相关的指令，这写指令的编号都是连续的，因为这些指令被我存储在一个指令数组中，每次执行指令的时候，程序计数器PC就会加一，指向下一条需要执行的指令，但是我们使用javap -verbose查看方法字节码指令时，你会发现方法字节码指令前面的编号不是连续的<br><img src="http://bolinyoung.qiniudn.com/method-byte-code.jpg" alt="方法字节码指令"><br>我们看到Lookup方法有三条字节码指令，为什么这三条字节码指令前面的编号不是0,1,2呢？</p>
-<p>这里的编号不是以指令为单位的，而是以字节为单位。<br>字节码指令的结构是：<br>[ opcode ][ operands ]<br>其中opcode一定是1字节的，而operands可能是1字节、2字节、4字节或更多（如switch系指令）。<br>此外，方法的字节码指令都是存储在一个字节数组中的，对于aload_0前面的0表示这个字节码指令在字节数组中的偏移量是0,invokespecial前面的指令标识自己在字节数组中的偏移量是1,return表示自己在字节数组中的偏移量是4,从上面的分析可以知道invokespecial在字节数组中占据1,2,3三个下标对应的字节。</p>
-<p>这里顺便提一下几个容易混淆的字节码指令：</p>
-<ul>
-<li>load指令表示把局部变量区中的数据加载到操作数栈顶部</li>
-<li>store指令表示把栈顶的数据存储到局部变量区中</li>
-<li>invokevirtual表示调用实例的方法</li>
-<li>invokespecial表示调用类的构造方法，实例初始化方法，私有方法</li>
-<li>invokestatic表示调用静态方法</li>
-<li>invokeinterface表示调用接口方法</li>
-</ul>
-]]></content>
-    <summary type="html"><![CDATA[<p>JAVA代码中的每个方法都会被编译成一系列的JVM字节码指令，这些字节码指令会被JVM所执行，从而产生相应的数据，我们通常可以用javap -verbose来查看一个方法的字节码指令。</p>
-]]></summary>
-    
-      <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
-    
-      <category term="JVM学习" scheme="http://yangbolin.cn/categories/JVM%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
