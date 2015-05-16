@@ -1,15 +1,365 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>Java局部变量有没有final关键字对JVM性能影响不大 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+在写Java代码中我们经常使用final这个关键字，被final修饰的变量，编译器不允许我们修改它的值，如果是基本类型，编译器不允许我们在第一次赋值后再修改基本类型的值，如果是引用类型，编译器不允许我们在第一次赋值后再修改引用的指向，这都是编译器层面的限制，因为如果你试图去修改它，就会得到一个编译错误。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="Java局部变量有没有final关键字对JVM性能影响不大"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/17/final-local-variable-for-jvm/">
+  <time datetime="2014-05-17T10:08:12.000Z">
+    May 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">Java局部变量有没有final关键字对JVM性能影响不大</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在写Java代码中我们经常使用final这个关键字，被final修饰的变量，编译器不允许我们修改它的值，如果是基本类型，编译器不允许我们在第一次赋值后再修改基本类型的值，如果是引用类型，编译器不允许我们在第一次赋值后再修改引用的指向，这都是编译器层面的限制，因为如果你试图去修改它，就会得到一个编译错误。</p>
+<a id="more"></a>
+
+<h4 id="二-如何证明final关键字对JVM的性能影响不大">二.如何证明final关键字对JVM的性能影响不大</h4>
+<p>我们写下面的Java代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalLocalVariableTest</span> {</span>
+	<span class="keyword">public</span> <span class="keyword">int</span> <span class="title">generateInt</span>() {
+		<span class="keyword">return</span> <span class="number">3</span>;
+	}
+	
+	<span class="keyword">public</span> <span class="keyword">int</span> <span class="title">f1</span>() {
+		<span class="keyword">final</span> <span class="keyword">int</span> a = generateInt();
+		<span class="keyword">final</span> <span class="keyword">int</span> b = generateInt();
+		<span class="keyword">return</span> a + b;
+	}
+	
+	<span class="keyword">public</span> <span class="keyword">int</span> <span class="title">f2</span>() {
+		<span class="keyword">int</span> a = generateInt();
+		<span class="keyword">int</span> b = generateInt();
+		<span class="keyword">return</span> a + b;
+	}
+	
+	<span class="keyword">public</span> <span class="keyword">int</span> <span class="title">f3</span>() {
+		<span class="keyword">final</span> <span class="keyword">int</span> a = <span class="number">2</span>;
+		<span class="keyword">final</span> <span class="keyword">int</span> b = <span class="number">3</span>;
+		<span class="keyword">return</span> a + b;
+	}
+	
+	<span class="keyword">public</span> <span class="keyword">int</span> <span class="title">f4</span>() {
+		<span class="keyword">int</span> a = <span class="number">2</span>;
+		<span class="keyword">int</span> b = <span class="number">3</span>;
+		<span class="keyword">return</span> a + b;
+	}
+}
+</pre></td></tr></table></figure>
+
+<p>上面的java代码很简单，我们分组来对比，首先看看f1和f2的写法，f1和f2的写法一样，只是在f1是使用了final类型的局部变量，但是在f2中没有使用final类型的局部变量，此时我们编译上面的代码后，使用javap -verbose来查看编译后f1和f2的字节码<br><img src="http://bolinyoung.qiniudn.com/f1.png" alt="函数f1的字节码"><br>红色框内的字节码表示局部变量量a,b的赋值<br><img src="http://bolinyoung.qiniudn.com/f2.png" alt="函数f2的字节码"><br>红四框内的字节码表示final类型局部变量a,b的赋值</p>
+<p>对比发现，使用final关键字声明局部变量和不使用final关键子声明局部变量，生成的字节码都是一样的，对于JVM来说，最终执行的是字节码，既然字节码都一样，那么执行的性能也一样。</p>
+<p>接下来我们看看f3和f4的字节码有何不同<br><img src="http://bolinyoung.qiniudn.com/f3&amp;&amp;f4.png" alt="f3&amp;&amp;f4的字节码"><br>观察上图，我们发现f3中使用了final关键字声明了局部变量a和b，此时a,b的值在编译阶段就能确定，因此字节码中直接返回常量5,但是f4中我们没有使用final关键字，因此先要把变量值load到方法栈上，然后执行变量的相加操作，最后返回相加的结果，不过这个对JVM的性能影响较小。</p>
+<p>综上所述：<br>使用不使用final关键字修饰局部变量，对JVM的性能影响不大。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/编程语言/">编程语言</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/JAVA/">JAVA</a>, <a class="tags-link" href="/tags/JVM/">JVM</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="Java局部变量有没有final关键字对JVM性能影响不大">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <% if (site.categories.length){ %>
+<div class="widget categorieslist">
+		<h3><%= __('分类') %></h3>
+		<ul class="clearfix">
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+<% } %>
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

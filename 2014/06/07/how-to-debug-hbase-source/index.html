@@ -1,15 +1,525 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>如何在本地通过eclipse来调试HBase的源代码 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+要想把HBase的源代码梳理清楚，需要在本地调试一下，可能直接看代码也能搞清楚，但是调试能让我们尽快搞清楚HBase的源代码，下面就来看一下如何在eclipse中调试HBase的源代码。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="如何在本地通过eclipse来调试HBase的源代码"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/06/07/how-to-debug-hbase-source/">
+  <time datetime="2014-06-07T14:36:16.000Z">
+    Jun 7 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">如何在本地通过eclipse来调试HBase的源代码</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>要想把HBase的源代码梳理清楚，需要在本地调试一下，可能直接看代码也能搞清楚，但是调试能让我们尽快搞清楚HBase的源代码，下面就来看一下如何在eclipse中调试HBase的源代码。</p>
+<a id="more"></a>
+
+<h4 id="二-编译HBase的源代码">二.编译HBase的源代码</h4>
+<p>1.HBase源代码的获取<br>你可以直接从HBase的官方网站上下载HBase的包，<a href="http://hbase.apache.org/" target="_blank">HBase官方地址</a><br>你也可以使用svn把hbase的代码签出</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>svn co <span class="symbol">http:</span>/<span class="regexp">/svn.apache.org/repos</span><span class="regexp">/asf/hbase</span><span class="regexp">/tags/</span><span class="number">0</span>.<span class="number">94.2</span>/ hbase_sources
+</pre></td></tr></table></figure>
+
+<p>2.HBase源代码的编译<br>进入到HBase代码的目录下面，执行下面的命令</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>mvn clean <span class="keyword">install</span> mvn clean <span class="keyword">install</span> -DskipTests
+mvn eclipse clean eclipse:eclipse
+</pre></td></tr></table></figure>
+
+<p>执行完上面的命令后，就把HBase的源码导入到eclipse中去。在执行maven命令的时候注意使用maven包自带的settings.xml，不要使用其他settings.xml文件，会导致编译不过的。</p>
+<p>3.在eclipse中做相关的设置</p>
+<p>在eclipse的Run Configurations中设置启动类<br><img src="http://bolinyoung.qiniudn.com/hbase-start.png" alt="设置启动类HMaster"></p>
+<p>在eclipse的Run Configurations中设置启动参数<br><img src="http://bolinyoung.qiniudn.com/hbase-start-args.png" alt="设置启动参数"></p>
+<p>在eclipse的Run Configurations中把conf文件放到classpath中<br><img src="http://bolinyoung.qiniudn.com/hbase-start-conf.png" alt="把conf文件放到classpath中"></p>
+<p>4.点击Run运行<br>出现了下面的错误<br><img src="http://bolinyoung.qiniudn.com/hbase-xml-version.png" alt="xml版本校验出错"><br>观察出错日志，显示hbase-default.xml版本校验出错，搞不定，搜一把，有人说在hbase-site.xml增加下面的配置项</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">property</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">name</span>&gt;</span>hbase.defaults.for.version.skip<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">value</span>&gt;</span>true<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">description</span>&gt;</span>
+		Set to true to skip the 'hbase.defaults.for.version' check.
+		Setting this to true can be useful in contexts other than
+		the other side of a maven generation; i.e. running in an
+		ide. You'll want to set this boolean to true to avoid
+		seeing the RuntimException complaint: "hbase-default.xml file
+		seems to be for and old version of HBase (@@@VERSION@@@), this
+		version is X.X.X-SNAPSHOT"
+	<span class="tag">&lt;/<span class="title">description</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>索性试一下，此错误消失了，又来一错误<br><img src="http://bolinyoung.qiniudn.com/hbase-zk-error.png" alt="HBase ZK ERROR"><br>这个错之前遇到过是由于zookeeper没启动导致，一直以为运行HMaster类，会自己启动zookeeper，所以一直在网上找答案，结果找到的答案都是错的，于是怀疑zookeeper在自己的电脑上压根就没有启动起来,所以需要想办法在本地启动zookeeper，我们看到hbase源代码中有一个HQuorumPeer类，这个类就是hbase-zookeeper的启动类，该类中有一个main方法，我们在eclipse中以application的方式启动。<br><img src="http://bolinyoung.qiniudn.com/hbase-zk-start.png" alt="hbase zk启动类"><br>把conf下面的配置文件设置到classpath中<br><img src="http://bolinyoung.qiniudn.com/hbase-zk-classpath.png" alt="设置conf到classpath"><br>这样我们就可以在eclipse中启动zookeeper啦。接下来我们再次启动HMaster<br><img src="http://bolinyoung.qiniudn.com/hbase-region-server-error.png" alt="启动HMaster控制台不断输出错误日志"><br>又出错了，看看错误日志，我们发现是RegionServer没有启动好，使用jps可以发现没有RegionServer的进程，虽然日志的级别是INFO的，回头一看确实没有启动过RegionServer，所以启动一下RegionServer啦，我们还是在eclipse中以application的方式去启动RegionServer<br><img src="http://bolinyoung.qiniudn.com/hbase-region-server.png" alt="HBase RegionServer的启动配置"><br>同样需要把conf文件加入到eclipse的classpath中，方法和前面一样，这里就不用再重复了。配置好就启动,然后发现HMaster的控制台INFO级别的日志停掉了。关于这个点我们稍微再深入一些，我们刚才的场景是启动了HMaster但是没有启动RegionServer，此时HMaster的控制台一直有INFO级别的日志输出，我们看一下ServerManager这个类中输出这段日志的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+</pre></td><td class="code"><pre><span class="javadoc">/**
+   * Wait for the region servers to report in.
+   * We will wait until one of this condition is met:
+   *  - the master is stopped
+   *  - the 'hbase.master.wait.on.regionservers.maxtostart' number of
+   *    region servers is reached
+   *  - the 'hbase.master.wait.on.regionservers.mintostart' is reached AND
+   *   there have been no new region server in for
+   *      'hbase.master.wait.on.regionservers.interval' time AND
+   *   the 'hbase.master.wait.on.regionservers.timeout' is reached
+   *
+   *<span class="javadoctag"> @throws</span> InterruptedException
+   */</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">waitForRegionServers</span>(MonitoredTask status)
+  <span class="keyword">throws</span> InterruptedException {
+    <span class="keyword">final</span> <span class="keyword">long</span> interval = <span class="keyword">this</span>.master.getConfiguration().
+      getLong(WAIT_ON_REGIONSERVERS_INTERVAL, <span class="number">1500</span>);
+    <span class="keyword">final</span> <span class="keyword">long</span> timeout = <span class="keyword">this</span>.master.getConfiguration().
+      getLong(WAIT_ON_REGIONSERVERS_TIMEOUT, <span class="number">4500</span>);
+    <span class="keyword">int</span> minToStart = <span class="keyword">this</span>.master.getConfiguration().
+      getInt(WAIT_ON_REGIONSERVERS_MINTOSTART, <span class="number">1</span>);
+    <span class="keyword">if</span> (minToStart &lt; <span class="number">1</span>) {
+      LOG.warn(String.format(
+        <span class="string">"The value of '%s' (%d) can not be less than 1, ignoring."</span>,
+        WAIT_ON_REGIONSERVERS_MINTOSTART, minToStart));
+      minToStart = <span class="number">1</span>;
+    }
+    <span class="keyword">int</span> maxToStart = <span class="keyword">this</span>.master.getConfiguration().
+      getInt(WAIT_ON_REGIONSERVERS_MAXTOSTART, Integer.MAX_VALUE);
+    <span class="keyword">if</span> (maxToStart &lt; minToStart) {
+        LOG.warn(String.format(
+            <span class="string">"The value of '%s' (%d) is set less than '%s' (%d), ignoring."</span>,
+            WAIT_ON_REGIONSERVERS_MAXTOSTART, maxToStart,
+            WAIT_ON_REGIONSERVERS_MINTOSTART, minToStart));
+        maxToStart = Integer.MAX_VALUE;
+    }
+
+    <span class="keyword">long</span> now =  System.currentTimeMillis();
+    <span class="keyword">final</span> <span class="keyword">long</span> startTime = now;
+    <span class="keyword">long</span> slept = <span class="number">0</span>;
+    <span class="keyword">long</span> lastLogTime = <span class="number">0</span>;
+    <span class="keyword">long</span> lastCountChange = startTime;
+    <span class="keyword">int</span> count = countOfRegionServers();
+    <span class="keyword">int</span> oldCount = <span class="number">0</span>;
+    <span class="keyword">while</span> (
+      !<span class="keyword">this</span>.master.isStopped() &&
+        count &lt; maxToStart &&
+        (lastCountChange+interval &gt; now || timeout &gt; slept || count &lt; minToStart)
+      ){
+
+      <span class="comment">// Log some info at every interval time or if there is a change</span>
+      <span class="keyword">if</span> (oldCount != count || lastLogTime+interval &lt; now){
+        lastLogTime = now;
+        String msg =
+          <span class="string">"Waiting for region servers count to settle; currently"</span>+
+            <span class="string">" checked in "</span> + count + <span class="string">", slept for "</span> + slept + <span class="string">" ms,"</span> +
+            <span class="string">" expecting minimum of "</span> + minToStart + <span class="string">", maximum of "</span>+ maxToStart+
+            <span class="string">", timeout of "</span>+timeout+<span class="string">" ms, interval of "</span>+interval+<span class="string">" ms."</span>;
+        LOG.info(msg);
+        status.setStatus(msg);
+      }
+
+      <span class="comment">// We sleep for some time</span>
+      <span class="keyword">final</span> <span class="keyword">long</span> sleepTime = <span class="number">50</span>;
+      Thread.sleep(sleepTime);
+      now =  System.currentTimeMillis();
+      slept = now - startTime;
+
+      oldCount = count;
+      count = countOfRegionServers();
+      <span class="keyword">if</span> (count != oldCount) {
+        lastCountChange = now;
+      }
+    }
+
+    LOG.info(<span class="string">"Finished waiting for region servers count to settle;"</span> +
+      <span class="string">" checked in "</span> + count + <span class="string">", slept for "</span> + slept + <span class="string">" ms,"</span> +
+      <span class="string">" expecting minimum of "</span> + minToStart + <span class="string">", maximum of "</span>+ maxToStart+<span class="string">","</span>+
+      <span class="string">" master is "</span>+ (<span class="keyword">this</span>.master.isStopped() ? <span class="string">"stopped."</span>: <span class="string">"running."</span>)
+    );
+  }
+</pre></td></tr></table></figure>
+
+<p>重点关注这段代码中的while循环，这段代码不断轮寻RegionServer数目，只有启动起来的RegionServer数目&gt;=hbase.master.wait.on.regionservers.mintostart这个while循环才能退出，不然while循环里面就会一直输出INFO的级别的日志，说没有RegionServer启动好，其实hbase.master.wait.on.regionservers.mintostart的默认值就是1.</p>
+<p>至此，Zookeeper，HMaster，HRegionServer都已经启动好了，这里所说的HRegionServer和上面所说的RegionServer指的是同一个东西。接下来我们访问<a href="http://localhost:60010/master-status" target="_blank">http://localhost:60010/master-status</a> 就能看到相关的信息。</p>
+<p>这样我们就可以在本地eclipse中debug一下HBase的源代码啦^=^。</p>
+<h4 id="三-最后总结">三.最后总结</h4>
+<p>我们发现在本地部署HBase，我们需要启动三个东西，Zookeeper,HMaster以及RegionServer。</p>
+<p>zookeeper通过HMaster负责协调整个HBase集群，同时zookeeper保存了hbase中-ROOT-表的地址和HMaster的地址。HRegionServer也会把自己以Ephemeral方式注册到Zookeeper中，使得HMaster可以随时感知到各个HRegionServer的健康状态。</p>
+<p>HMaster没有单点问题，HBase中可以启动多个HMaster，通过Zookeeper的Master Election机制保证总有一个Master运行，HMaster在功能上主要负责Table和Region的管理工作：</p>
+<ol>
+<li>管理用户对Table的增、删、改、查操作</li>
+<li>管理HRegionServer的负载均衡，调整Region分布</li>
+<li>在Region Split后，负责新Region的分配</li>
+<li>在HRegionServer停机后，负责失效HRegionServer 上的Regions迁移</li>
+</ol>
+<p>HRegionServer主要负责响应用户I/O请求，向HDFS文件系统中读写数据，是HBase中最核心的模块。<br>HRegionServer内部管理了一系列HRegion对象，每个HRegion对应了Table中的一个Region，HRegion中由多个HStore组成。每个HStore对应了Table中的一个Column Family的存储，可以看出每个Column Family其实就是一个集中的存储单元，因此最好将具备共同IO特性的column放在一个Column Family中，这样最高效。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/大数据/">大数据</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/HBase/">HBase</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="如何在本地通过eclipse来调试HBase的源代码">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <% if (site.categories.length){ %>
+<div class="widget categorieslist">
+		<h3><%= __('分类') %></h3>
+		<ul class="clearfix">
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+<% } %>
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

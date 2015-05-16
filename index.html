@@ -1,15 +1,648 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="Coder @Alibaba">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content">
+
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/05/07/css-break-line/">
+  <time datetime="2015-05-07T13:55:59.000Z">
+    May 7 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/05/07/css-break-line/">css换行</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近在搞一个后台系统的时候，发现table表格的宽度没法调整，找前端大神看了一下，发现是table表格中的全英文内容过长，不会自动换行导致。因此需要用CSS来实现换行，浏览器默认不会对英文内容进行换行的。具体CSS的写法如下</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="tag">word-break</span>: <span class="tag">break-all</span>;
+<span class="tag">word-wrap</span>: <span class="tag">break-word</span>;
+</pre></td></tr></table></figure>
+
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/04/26/git-command/">
+  <time datetime="2015-04-26T06:27:34.000Z">
+    Apr 26 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/04/26/git-command/">GIT常用命令总结</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>最近有个项目分支使用了git托管代码，虽然之前在github上托管过很多代码，但是对git本身的使用以及特性也没有太多的深入的了解，最近使用git出现了一个问题，查到最后是环境问题，很悲摧，为了避免悲剧再次出现，就看了一遍git相关的所有常见命令以及一些git的设计思想，比如工作区，暂存区，本地仓库等等，也算是对平时编写代码思路的一种启发。很多人都说git是分布式的，svn不是分布式的，那么git分布式到底体现在哪里，每个人本地都有一个完整的仓库吗？难道svn每个人本地的代码就不是完善的吗？关于git分布式，我们从下面几个点来解释：</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/04/26/git-command/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/04/12/guava-multimap/">
+  <time datetime="2015-04-12T06:32:31.000Z">
+    Apr 12 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/04/12/guava-multimap/">guava中的Multimap</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>我们在日常开发过程中都会使用Map这个数据结构，使用这个数据结构能够很方便维护一些映射关系，有时候，我们存储的结构是Key-Collection的映射关系，关于这个映射关系调用put方法的时候，我们需要先调用get方法，然后看看对应的Key是否在当前映射关系中已经存在Collection，如果不存在，我们直接忘Collection中增加一个元素，不存在我们需要手动去创建，然后在往我们手工创建的Collection中增加一个元素，最后再把这个Collection写入我们的Map中，很麻烦。对于C++ STL有过了解的人都知道，STL中有一个Multimap这个数据结构，该数据结构能方便地解决上面映射关系的问题。但是JDK本身不存在这样的数据结构。。。好在guava这个开源的二方库中自己定义了这个容器，该容器既能维护好Key-Collection这个数据结构，也能很方便往这个数据结构中写数据。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/04/12/guava-multimap/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/03/21/javac-accessbash00/">
+  <time datetime="2015-03-21T02:07:34.000Z">
+    Mar 21 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/03/21/javac-accessbash00/">javac生成的access$000方法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>最近在做字节码分析的时候，发现字节码中出现了access$000的方法，这个方法不是开发工程师写的，是编译器生成的，那么编译器生成这个方法是为了解决什么问题呢？我们知道编译会为静态代码块生成执行的方法，在类没有构造函数时为类生成缺省构造函数，这个access$000究竟是在什么场景下面用的呢？仔细分析包含access$000的类，发现该类中存在内部类，结合google搜索，原来acess$000是为了解决内部类访问外部类的成员，包括成员变量和成员方法。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/03/21/javac-accessbash00/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/12/26/short-ref-equal/">
+  <time datetime="2014-12-26T15:02:20.000Z">
+    Dec 26 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/12/26/short-ref-equal/">Short对象的比较</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-背景">一.背景</h4>
+<p>今天和同事一起分析线下问题，发现代码中有个笔误，对两个Short类型的对象使用==来比较，结果是比较表达式一直为false，导致一个bug的产生。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/12/26/short-ref-equal/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/11/17/servlet-extend/">
+  <time datetime="2014-11-17T14:43:31.000Z">
+    Nov 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/11/17/servlet-extend/">一次关于servlet的扩展</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求">一.需求</h4>
+<p>现有一个web框架，从HttpServletRequest中获取调用request.getParameter(“orderId”)获取订单的ID，为了安全，我们对订单的ID加密了，也就是此时外部传递过来的orderId已经加密，但是这个web框架不认识加密后的orderId，这就需要我们在自己的web应用中把orderId解密，然后继续传递。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/11/17/servlet-extend/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/11/17/akka-spring/">
+  <time datetime="2014-11-17T14:08:04.000Z">
+    Nov 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/11/17/akka-spring/">akka如何和Spring集成起来</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>最近又重新学习了一下akka，并且在一个web应用中成功使用了akka提升了系统的性能。我们在web应用中一般都会有dao&amp;&amp;service，这些都是spring的bean，我们定义一个actor，这个actor中可能调用dao读写数据库，也可能调用service做业务逻辑，因此我们就希望actor也是从spring容器中获取到的，这样就可以在actor中注入service&amp;&amp;dao了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/11/17/akka-spring/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/10/31/transaction-attention/">
+  <time datetime="2014-10-31T09:12:19.000Z">
+    Oct 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/31/transaction-attention/">使用事务的一个注意点</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近在代码中配置了一个事务，事务的意思就是当前这件事情要么全部正常做完，要么全部不做。为了避免数据库中出现脏数据，我给XXX类的ff方法配置了事务。在ff方法主要做下面这几件事情</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/31/transaction-attention/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/10/31/log4j-additivity/">
+  <time datetime="2014-10-31T09:10:37.000Z">
+    Oct 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/31/log4j-additivity/">关于log4j的additivity</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-问题描述">一.问题描述</h4>
+<p>最近优化了一下一个应用的日志，但是优化后的结果不是自己想要的，简单说指定的log部分输出到了root中的appender中，部分输出到自己指定的log中。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/31/log4j-additivity/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/10/25/akka-start/">
+  <time datetime="2014-10-25T14:35:44.000Z">
+    Oct 25 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/25/akka-start/">Akka入门</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>为了提高一个数据计算平台的吞吐了，最近抽空看了看akka，之前听同事说akka能够提高并发吞吐量，高容错，很稳定，今天抽时间先简单看了相关的文档，写了个简单的例子，主要演示如何使用akka，当然我们也可以搭建一个akka的集群。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/25/akka-start/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+    <a href="/page/2/" class="next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <% if (site.categories.length){ %>
+<div class="widget categorieslist">
+		<h3><%= __('分类') %></h3>
+		<ul class="clearfix">
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+<% } %>
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

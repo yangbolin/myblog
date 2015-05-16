@@ -1,15 +1,302 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>谈谈自己对Spring IOC 和 AOP理解 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.谈谈自己对IOC的理解
+Spring提供了一个容器，把我们业务代码中需要的一些bean都管理起来，这个Spring容器负责管理这些bean的生命周期，同时保证被依赖的bean能够正确找到自己所属的bean,能够根据代码中的依赖关系正确的实例化一个bean。要是没有Spring容器，我们就需要自己去创建bean，同时设置bean所依赖的bean，Spring容器把这些事情从业务代码中剥">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="谈谈自己对Spring IOC 和 AOP理解"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/19/spring-ioc-aop-idea/">
+  <time datetime="2014-04-19T07:56:47.000Z">
+    Apr 19 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">谈谈自己对Spring IOC 和 AOP理解</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-谈谈自己对IOC的理解">一.谈谈自己对IOC的理解</h4>
+<p>Spring提供了一个容器，把我们业务代码中需要的一些bean都管理起来，这个Spring容器负责管理这些bean的生命周期，同时保证被依赖的bean能够正确找到自己所属的bean,能够根据代码中的依赖关系正确的实例化一个bean。要是没有Spring容器，我们就需要自己去创建bean，同时设置bean所依赖的bean，Spring容器把这些事情从业务代码中剥</p>
+<a id="more"></a>
+
+<p>离出来，实现解耦。IOC其实就是控制反转，它所要解决的问题就是一个对象如何获取它所依赖的对象，这个问题包含两层含义：假如对象A依赖对象B，A在获取对象B的时候先要创建对象B，然后把对象B设置到A的某个属性，其实这就是两件事情，那么现在的问题就是这两件事情由谁来做的问题了，首先对象A完全可以自己做这两件事情，new一个对象B然后赋值给其中某个字段，IOC的理念是B的创建和设置都不用A亲自去做，由Spring容器来做，这样A从之前自己动手去做变成了让别人去做，自己享用，这样关于对象B的获取A就不用关心了，IOC保证A在使用B的时候，B是现成的，其实完全可以理解为IOC就是把对象创建以及获取的责任托管给Spring容器了，这是一种责任的托管，这样就会有很多创建对象并且赋值的代码从我们的业务逻辑中剥离出来，从而使得我们在编写业务逻辑的时候不用再写对象的创建以及对象复制，只要我们愿意把这两件事情交由Spring容器来做。</p>
+<h4 id="二-谈谈自己对AOP的理解">二.谈谈自己对AOP的理解</h4>
+<p>在IOC的基础上出现了AOP的编程理念，所谓AOP就是面向切面编程，我们在编写一些业务逻辑代码的时候，经常会出现一个共性的逻辑，为了避免把这些共性的逻辑和一些特性的逻辑耦合在一起，我们可以把这些共性的逻辑抽取出来，变成一个横切逻辑，AOP负责把这些横切逻辑织入到我们指定的一些地方去。AOP最终通过代理或者动态修改字节码的方式来执行我们的横切逻辑，默认情况下，要是类实现了接口，直接走JDK的动态代理，要是类没有实现接口，就基于ASM动态修改类的字节码。要是采用JDK的动态代理，这样每次生成的代理都会增加到perm区，占据一定的内存空间，同样我们需要注意一点，jdk每次生成的代理都会被增加上ACC_FINAL的标志，就是说生成的代理类是一个final类，这个类不允许被继承，也就不允许被再次代理。其实JDK的proxy之所以这么搞，我觉得是出于JVM层次的优化，首先，final类不允许被继承，这样final类中的方法就不会被重写，这样在调用的时候JVM就不会动态去寻找调用方法的地址，其次，我们想假设类A被代理成proxyA，要是proxyA再次被代理成proxyB的话，这时候proxyA其实在系统中已经没啥用了，但是proxyA在perm区还占据了一定内存空间，这会给JVM的GC带来负担。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/编程开发/">编程开发</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Spring/">Spring</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="谈谈自己对Spring IOC 和 AOP理解">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <% if (site.categories.length){ %>
+<div class="widget categorieslist">
+		<h3><%= __('分类') %></h3>
+		<ul class="clearfix">
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+<% } %>
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

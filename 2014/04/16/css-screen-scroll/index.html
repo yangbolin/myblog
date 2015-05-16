@@ -1,15 +1,347 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>实现页面区块随屏幕滚动的效果 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.需求描述
+为了提升用户体验，我们经常需要在页面上显示一块内容，这块内容当屏幕向下滚动到一定位置后就展示出来，然后随着屏幕一起上下滚动，当屏幕向上滚动到一定程度，这块内容就消失，这样这块内容在就会有时候消失，有时候随着屏幕一起滚动。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="实现页面区块随屏幕滚动的效果"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/16/css-screen-scroll/">
+  <time datetime="2014-04-16T10:56:55.000Z">
+    Apr 16 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">实现页面区块随屏幕滚动的效果</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求描述">一.需求描述</h4>
+<p>为了提升用户体验，我们经常需要在页面上显示一块内容，这块内容当屏幕向下滚动到一定位置后就展示出来，然后随着屏幕一起上下滚动，当屏幕向上滚动到一定程度，这块内容就消失，这样这块内容在就会有时候消失，有时候随着屏幕一起滚动。</p>
+<a id="more"></a>
+
+<h4 id="二-需求分析">二.需求分析</h4>
+<p>这个需求需要从两个方面来把握，第一，内容块随着屏幕的滚动一直展示在页面上的某个位置，第二，当屏幕向上滚动到一定位置，内容块隐藏，向下滚动到一定位置，内容块显示出来，先实现第一点，在实现第二点，这个需求就满足了。</p>
+<h4 id="三-实现思路">三.实现思路</h4>
+<p>按照上面的分析，我们先来看第一点如何实现，内容块随着屏幕的滚动一直出现在页面上的某个位置，我们很容易想到css的position:fixed这个属性，可是别太高兴，IE6说你这个属性我不认识，所以在我的地盘你这样我不生效。这个时候就需要我们解决浏览器兼容性问题了，解决完这个问题我们就成功了一大半了,解决浏览器兼容性问题，使用hack啦，我们在IE6下面通过hack来使用绝对定位，伪代码如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre><span class="class">.mod-scroll</span><span class="rules">{ 
+    <span class="rule"><span class="attribute">position</span>:<span class="value">fixed</span></span>; 
+    <span class="rule"><span class="attribute">top</span>:<span class="value"><span class="number">0</span></span></span>; 
+    <span class="rule"><span class="attribute">left</span>:<span class="value"><span class="number">50</span>%</span></span>;
+    <span class="comment">/** for IE6, 这个表达式可以根据实际需求具体调整 **/</span>
+	<span class="rule"><span class="attribute">_top</span>:<span class="value"> <span class="function">expression(documentElement.scrollTop + documentElement.clientHeight-this.offsetHeight)</span></span></span>;
+	<span class="rule"><span class="attribute">_position</span>:<span class="value">absolute</span></span>;
+<span class="rule">}</span></span>
+</pre></td></tr></table></figure>
+
+<p>通过上面的css我们第一个问题就解决了，第二个问题需要监听一下滚动事件，当滚动到某个高度的时候显示内容块，当滚动到另外一个高度的时候把内容块隐藏起来。伪代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="code"><pre>$(window).on(<span class="string">'scroll'</span>,<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="comment">// 260这个高度可以自己根据实际需求调整</span>
+	<span class="keyword">if</span>($(window).scrollTop() &gt; <span class="number">260</span>) {
+	    <span class="comment">// 内容区块带有class='xxxx'</span>
+		$(<span class="string">'div.xxxx'</span>).show();
+		<span class="comment">// 25也可以自己调整</span>
+		$(<span class="string">'div.xxxx'</span>).css(<span class="string">'top'</span>,($(window).scrollTop()-<span class="number">25</span>)+ <span class="string">'px'</span>);
+	} <span class="keyword">else</span> {
+		$(<span class="string">'div.xxx'</span>).hide();
+	}
+});
+</pre></td></tr></table></figure>
+
+<p>这样上面这个需求就完美解决啦。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/前端开发/">前端开发</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/CSS/">CSS</a>, <a class="tags-link" href="/tags/jQuery/">jQuery</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="实现页面区块随屏幕滚动的效果">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <% if (site.categories.length){ %>
+<div class="widget categorieslist">
+		<h3><%= __('分类') %></h3>
+		<ul class="clearfix">
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+<% } %>
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

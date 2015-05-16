@@ -1,15 +1,639 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>JAVA线程本地存储之ThreadLocal的分析 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+ThreadLocal是JDK的一个线程本地存储的类，我们可以把一些线程私有的数据写在ThreadLocal中，这样这些数据只有一个线程可见，实现了所谓的栈封闭。这样存储一些线程私有的数据，我们就不用去费心考虑如何保证临界资源的互斥访问了，同时对于一个线程，这些私有数据也只做一次初始化。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="JAVA线程本地存储之ThreadLocal的分析"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/10/07/thread-local-analyze/">
+  <time datetime="2014-10-07T13:01:03.000Z">
+    Oct 7 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">JAVA线程本地存储之ThreadLocal的分析</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>ThreadLocal是JDK的一个线程本地存储的类，我们可以把一些线程私有的数据写在ThreadLocal中，这样这些数据只有一个线程可见，实现了所谓的栈封闭。这样存储一些线程私有的数据，我们就不用去费心考虑如何保证临界资源的互斥访问了，同时对于一个线程，这些私有数据也只做一次初始化。</p>
+<a id="more"></a>
+
+<h4 id="二-一段ThreadLocal的测试代码">二.一段ThreadLocal的测试代码</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+</pre></td><td class="code"><pre>class LocalObject {
+    <span class="keyword">private</span> String name;
+    
+    <span class="keyword">public</span> String <span class="title">getName</span>() {
+        <span class="keyword">return</span> name;
+    }
+    
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(String name) {
+        <span class="keyword">this</span>.name = name;
+    }
+}
+
+class LocalStoreThread extends Thread {
+    <span class="javadoc">/** 定义了一个线程本地存储的成员变量 **/</span>
+    <span class="keyword">private</span> ThreadLocal&lt;LocalObject&gt; threadLocal = <span class="keyword">new</span> ThreadLocal&lt;LocalObject&gt;();
+
+    <span class="keyword">public</span> <span class="title">LocalStoreThread</span>(LocalObject lo) {
+        threadLocal.set(lo);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
+        System.out.println(threadLocal.get().getName());
+    }
+}
+
+<span class="javadoc">/**
+ * &lt;pre&gt;
+ * 创建一个线程实例，这个线程实例中有一个线程本地存储成员变量
+ * &lt;/pre&gt;
+ */</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalTest</span> {</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
+        LocalObject lo = <span class="keyword">new</span> LocalObject();
+        lo.setName(<span class="string">"thread-local"</span>);
+        <span class="keyword">new</span> LocalStoreThread(lo).start();
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>上述代码运行的时候在run方法中抛出了空指针异常，明明在构造函数中调用了threadLocal的set方法，为什么get的时候获取到了null,然后使用了null抛出了NPE呢？</p>
+<p>由于ThreadLocal是和线程相关的，我们上面的代码在够在函数中往线程本地存储变量中设置了一个实例对象，在run方法中获取这个实例对象的时候发现拿到是null,所以我们有必要看一下set时对应的线程和get时对应的线程是不是一样的。因此在set之前打印一下Thread.currentThread()，同时在get之前打印一下Thread.currentThread()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+</pre></td><td class="code"><pre>class LocalObject {
+    <span class="keyword">private</span> String name;
+    
+    <span class="keyword">public</span> String <span class="title">getName</span>() {
+        <span class="keyword">return</span> name;
+    }
+    
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(String name) {
+        <span class="keyword">this</span>.name = name;
+    }
+}
+
+class LocalStoreThread extends Thread {
+    <span class="javadoc">/** 定义了一个线程本地存储的成员变量 **/</span>
+    <span class="keyword">private</span> ThreadLocal&lt;LocalObject&gt; threadLocal = <span class="keyword">new</span> ThreadLocal&lt;LocalObject&gt;();
+
+    <span class="keyword">public</span> <span class="title">LocalStoreThread</span>(LocalObject lo) {
+        <span class="comment">// set之前打印当前线程</span>
+        System.out.println(Thread.currentThread().getName());   <span class="comment">// main</span>
+        threadLocal.set(lo);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
+        <span class="comment">// get之前打印当前线程</span>
+        System.out.println(Thread.currentThread().getName()); <span class="comment">// Thread-0</span>
+        System.out.println(threadLocal.get().getName());
+    }
+}
+
+<span class="javadoc">/**
+ * &lt;pre&gt;
+ * 创建一个线程实例，这个线程实例中有一个线程本地存储成员变量
+ * &lt;/pre&gt;
+ */</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalTest</span> {</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
+        LocalObject lo = <span class="keyword">new</span> LocalObject();
+        lo.setName(<span class="string">"thread-local"</span>);
+        <span class="keyword">new</span> LocalStoreThread(lo).start();
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>好，问题出现了，set时的当前线程和get时的当前线程不一样，所以get的结果是null。set是写在线程的构造函数中的，此时当前线程是main线程，因为在main线程中创建线程。但是在run方法中当前线程已经不是main线程了变成了new出来的这个新线程了。</p>
+<h4 id="三-ThreadLocal中get和set方法分析">三.ThreadLocal中get和set方法分析</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre></td><td class="code"><pre><span class="keyword">public</span> T <span class="title">get</span>() {
+        <span class="comment">// 获取当前线程实例</span>
+        Thread t = Thread.currentThread();
+        <span class="comment">/* 获取当前线程实例的ThreadLocalMap，其实就是一个数组
+         * 这个数组可以扩容，每次空间不够时都拿当前大小*2
+         */</span>
+        ThreadLocalMap map = getMap(t);
+        <span class="keyword">if</span> (map != <span class="keyword">null</span>) {
+            <span class="comment">/*根据this哈希获取数组中的一个元素*/</span>
+            ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);
+            <span class="keyword">if</span> (e != <span class="keyword">null</span>)
+                <span class="keyword">return</span> (T)e.value;
+        }
+        <span class="comment">// 如果当前线程的ThreadLocalMap为null,就创建一个</span>
+        <span class="keyword">return</span> setInitialValue();
+}
+<span class="keyword">private</span> T <span class="title">setInitialValue</span>() {
+        <span class="comment">/* 这里调用了ThreadLocal的initValue方法，一般都会在创建ThreadLocal
+         * 实例的时候重写这个方法，比如说ThreadLocal中要是存放数据库链接对象的
+         * 话，就需要一个初始化方法来初始化这个数据库链接对象
+         */</span>
+        T value = initialValue();
+        <span class="comment">/*把初始化好的值保存起来*/</span>
+        Thread t = Thread.currentThread();
+        ThreadLocalMap map = getMap(t);
+        <span class="keyword">if</span> (map != <span class="keyword">null</span>)
+            map.set(<span class="keyword">this</span>, value);
+        <span class="keyword">else</span>
+            createMap(t, value);
+        <span class="keyword">return</span> value;
+}
+<span class="comment">/*创建线程的ThreadLocalMap*/</span>
+<span class="keyword">void</span> createMap(Thread t, T firstValue) {
+        t.threadLocals = <span class="keyword">new</span> ThreadLocalMap(<span class="keyword">this</span>, firstValue);
+}
+<span class="comment">/*获取线程的ThreadLocalMap*/</span>
+ThreadLocalMap getMap(Thread t) {
+        <span class="keyword">return</span> t.threadLocals;
+}
+</pre></td></tr></table></figure>
+
+<p>上述代码就是ThreadLocal的get源代码，先根据当前线程获取当前线程的ThreadLocalMap,此时获取到的就是一个table数组，接下来根据ThreadLocal实例的threadLocalHashCode来获取table数组中的一个元素，这个元素是个K-V的键值对，此时V就是本地存储的值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="comment">/*关于set代码和get代码是对称的*/</span>
+<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span>(T value) {
+        Thread t = Thread.currentThread();
+        ThreadLocalMap map = getMap(t);
+        <span class="keyword">if</span> (map != <span class="keyword">null</span>)
+            map.set(<span class="keyword">this</span>, value);
+        <span class="keyword">else</span>
+            createMap(t, value);
+}
+</pre></td></tr></table></figure>
+
+<h4 id="四-ThreadLocal源代码中提供的一个实例代码">四.ThreadLocal源代码中提供的一个实例代码</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="code"><pre><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UniqueThreadIdGenerator</span> {</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> AtomicInteger uniqueId = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);  
+
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal &lt; Integer &gt; uniqueNum =   
+            <span class="keyword">new</span> ThreadLocal &lt; Integer &gt; () {  
+        <span class="comment">//定义初始值（副本）  </span>
+        <span class="annotation">@Override</span> <span class="keyword">protected</span> Integer <span class="title">initialValue</span>() {  
+            <span class="keyword">return</span> uniqueId.getAndIncrement();  
+        }  
+    };  
+
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getCurrentThreadId</span>() {  
+        <span class="comment">// 这里应该要把 uniqueId换成uniqueNum，源码应该是写错了   </span>
+        <span class="keyword">return</span> uniqueNum.get();  
+    }
+
+    <span class="keyword">static</span> class MyThread extends Thread {
+
+        <span class="annotation">@Override</span>
+        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
+            System.out.println(UniqueThreadIdGenerator.getCurrentThreadId());
+        }
+    }
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) {
+            <span class="keyword">new</span> MyThread().start();
+        }
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>这里总共创建了5个线程，每个线程在run方法中调用UniqueThreadIdGenerator.getCurrentThreadId()时，发现每个线程的ThreadLocalMap都是null,所以每次初始化的方法initialValue都会被调用。</p>
+<h4 id="五-Thread&amp;&amp;ThreadLocal&amp;&amp;ThreadLocalMap之间的关系">五.Thread&amp;&amp;ThreadLocal&amp;&amp;ThreadLocalMap之间的关系</h4>
+<p><img src="http://dl.iteye.com/upload/attachment/0084/5636/079ae373-cc30-3a5e-8890-496018582ca0.bmp" alt="图示"></p>
+<h4 id="六-总结">六.总结</h4>
+<p>一个线程只有一个ThreadLocalMap,其实ThreadLocalMap就是一个table数组，数组中的每个元素都是一个K-V的键值对，其中K就是ThreadLocal实例，在获取本地存储的值的时候根据ThreadLocal实例的threadLocalHashCode来对table进行Hash查找，找到对应的K-V键值对。一个线程可以有多个ThreadLocal实例，那么有多少个ThreadLocal实例就决定了table数组的大小，这个数组是动态增长的，每次要是大小不够，就自动扩充为原来大小的2倍，然后对于原来的元素重新Hash,这个操作的成本还是很大的。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/编程开发/">编程开发</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/JAVA/">JAVA</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="JAVA线程本地存储之ThreadLocal的分析">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <% if (site.categories.length){ %>
+<div class="widget categorieslist">
+		<h3><%= __('分类') %></h3>
+		<ul class="clearfix">
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+<% } %>
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

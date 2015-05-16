@@ -1,15 +1,422 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>2014.04.26 Qcon北京第二天总结 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+2014Qcon北京第二天我主要关注了两个主题，一个是大数据处理与应用，另外一个是扩展性，可用性与高性能。总共听了7场分享，其中一场是老外讲的，由于跑去领InfoQ赞助的书，所以只听了最后一些内容。关于大数据这块，只听了1场，其余6常都是和扩展性，可用性与高性能相关的东西，因为这些东西和工作息息相关，所以多听了一些。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="2014.04.26 Qcon北京第二天总结"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/26/2014-qcon-second/">
+  <time datetime="2014-04-26T13:57:57.000Z">
+    Apr 26 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">2014.04.26 Qcon北京第二天总结</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>2014Qcon北京第二天我主要关注了两个主题，一个是大数据处理与应用，另外一个是扩展性，可用性与高性能。总共听了7场分享，其中一场是老外讲的，由于跑去领InfoQ赞助的书，所以只听了最后一些内容。关于大数据这块，只听了1场，其余6常都是和扩展性，可用性与高性能相关的东西，因为这些东西和工作息息相关，所以多听了一些。</p>
+<a id="more"></a>
+
+<h4 id="二-大数据环境下社交图谱和兴趣图谱的融合">二.大数据环境下社交图谱和兴趣图谱的融合</h4>
+<p>这个主题的分享者是一位豆瓣的工程师，关于大数据我们目前的理解就是Hadoop，Nosql等技术的使用，其实大数据的关键是挖掘数据的价值，就算你不用Hadoop，Nosql只是工具。在互联网行业推荐功能很重要，首先用户都比较懒，要是你能把用户自己感兴趣的东西推荐给用户，这样用户会经常来你网站，其次，推荐可以帮助用户做决策。</p>
+<p>推荐系统在一开始其实是没有太多用户偏好数据的，这时候可能是随机推荐一些数据给用户，这个阶段就是所谓的冷启动，随着用户对推荐数据的收藏，阅读，我们的推荐系统就会慢慢积累一些用户的偏好数据，这样最终的推荐结果也就越来越精确了。当用户收藏了过多的内容后，这时候我们推荐给用户内容用户都已经知道了，这样我们推荐出的内容就没有带给用户惊喜，用户就不会喜欢我们推荐出来的东西了，这是目前推荐系统中需要解决的问题。</p>
+<p>关于个性化推荐的缘起</p>
+<ul>
+<li>集邻思想，协同过滤，机器学习</li>
+<li>过去发生的事情，未来还会发生</li>
+</ul>
+<p>从用户的角度出发，我们想一下用户需要什么样的推荐内容</p>
+<ul>
+<li><p>靠谱<br>这个目前已经做的不错了</p>
+</li>
+<li><p>新颖与惊喜<br>我们所推荐的内容对用户来说一定是有新颖性，同时也能给用户带来一定的惊喜，这样用户就会很渴望我们推荐出来的内容</p>
+</li>
+<li><p>场景相关<br>推荐出来的内容一定要和用户目前正在做的事情相关，比如用户正在听音乐，你给他推荐一些和音乐没关系的东西，一般用户都会反感的。</p>
+</li>
+<li><p>快速及时<br>推荐系统要能快速的计算出用户感兴趣的东西，同时及时推送给用户，要是你推送给用户的时候，用户已经知道了或者内容已经过期了，这样都会让用户觉得不太舒服的。</p>
+</li>
+<li><p>传播与话题性<br>方便用户寻找具有相似爱好用户。就是我们推荐出来的东西要具有可传播性以及话题性，这样方便用户和用户进行交流。</p>
+</li>
+</ul>
+<p>下面是豆瓣自己对推荐算法的改进：</p>
+<ul>
+<li>纳入监督学习框架</li>
+<li>生成模型</li>
+<li>跨领域学习</li>
+<li>增强学习</li>
+</ul>
+<p>目前豆瓣也把社交图谱纳入到他们FM推荐的维度里面，社交图谱与兴趣图谱的融合：</p>
+<ul>
+<li>社交是动态的，兴趣相对来说是动态的</li>
+<li>社交是变化的，兴趣是持续的</li>
+<li>社交具有情感，比较微妙，复杂….技术没法抽象这些东东</li>
+</ul>
+<p>豆瓣的推荐指标框架：</p>
+<ul>
+<li>产品指标：点击率，转换率…</li>
+<li>在线指标：新颖度，多样性，惊喜度</li>
+<li>离线指标：RMSE…</li>
+</ul>
+<p>关于这个指标框架只是记录一些关键词，自己听的也不是很明白。</p>
+<h4 id="三-关于我在eBay和Google学到的一切">三.关于我在eBay和Google学到的一切</h4>
+<p>由于贪恋InfoQ提供的图书，因此跑出去赚图书了，赚到图书后，这个国外coder的演讲也就差不多结束了，不过从他后面的发言看，感觉老外做事情要么不做，要么就做到极致。</p>
+<h4 id="四-微博平台架构之高性能与高可靠">四.微博平台架构之高性能与高可靠</h4>
+<p>微博的工程师介绍了微博的架构，没想到春晚居然会让微博的流量增加不少，给微博的系统带来很大的冲击。</p>
+<p>微博高可用的影响因素</p>
+<ul>
+<li>容量规划<br>容量超过曾经的规划，导致系统可用性降低。</li>
+<li>资源Qos<br>资源质量的问题，比如网路有问题，机房断电等等。</li>
+<li>软件质量<br>工程师开发出来的代码有BUG。</li>
+<li>模块依赖<br>模块A依赖模块B，这样要是模块B有问题，会导致模块A也有问题，因此减少模块之间的耦合度也能提高不少可用性。</li>
+</ul>
+<p>架构思路</p>
+<ul>
+<li>容量规划与流控</li>
+<li>容错处理</li>
+<li>问题定位</li>
+</ul>
+<p>下面从这三个点来描述微博的架构思路<br>1.容量规划<br>通过压力测试来计算实际需要的容量，使用线上真实的流量峰值来计算，利用tcpcopy来复制线上的流量，在压力测试的时候需要mock依赖的资源，用到的技术有linux tc以及Tprofile来修改字节码。当线上机器不够的时候，需要快速扩容，新增的机器要能被客户端尽快感知到。同时微博也做了流量控制：</p>
+<ul>
+<li>跨机房流量迁移</li>
+<li>7层频次控制，DDOS攻击</li>
+<li>把核心和非核心的流量分离开来</li>
+<li>服务降级<br>当某一服务不可用的时候，我们可以把服务本身的开关关闭，这样调用这个服务的时候就会返回一个default value.</li>
+<li>资源隔离<br>tomcat线程池隔离调度，每个业务请求最多使用100个线程来处理。</li>
+</ul>
+<p>2.容错设计</p>
+<ul>
+<li>快速回滚<br>新老版本线上并存，开关控制版本。</li>
+<li>灰度发布</li>
+<li>资源缓存容错<br>当缓存中的核心存储机器挂了，直接写数据到另外一个全量保持数据的地方。</li>
+<li>服务化解耦，保证整体高可用。</li>
+</ul>
+<p>3.问题定位<br>在微博的架构中，每个请求都会被watchman这个系统感知到，这个系统使用TProfile来采集数据，然后把数据存储到HBase中，这样就解决了日志离散的问题，后续通过分析日志来定位问题。</p>
+<h4 id="五-微信后台存储架构">五.微信后台存储架构</h4>
+<p>CAP原理</p>
+<ul>
+<li>C-一致性</li>
+<li>A-可用性</li>
+<li>P-可靠性</li>
+</ul>
+<p>腾讯自己研发的存储系统，改进了paxos算法，保证冗余数据的强一致性，也是基于决策思想来实现的。同时也提到了一致性哈希性算法以及LSM-TREE，对于数据冗余存储的设计，如何保证数据的强一致性。讲了存储系统中很多细节方面的东西，听起来有点费劲，不过蛮佩服腾讯这种对技术钻研的精神。关于一致性哈希算法和paxos算法，后面再专门写文章分析一下。</p>
+<h4 id="六-搜狗商业平台设计">六.搜狗商业平台设计</h4>
+<p>发展历程<br>All-in-one==&gt;MVC==&gt;SOA==&gt;Cloud Computing</p>
+<p>1.分散计算</p>
+<ul>
+<li>分层计算<br>前端层，业务处理层，存储层</li>
+<li>集群计算</li>
+<li>共享session<br>把本地session保存到分布式缓存中，当本地session失效后，分布式缓存也要失效。</li>
+<li>SOA服务化<br>Service-Oriented Architecture 面向服务架构，服务治理框架。</li>
+<li>分布式并发与协同</li>
+<li>分布式任务调度</li>
+</ul>
+<p>2.分散存储<br>关系型+非关系型<br>搜狗20%的核心数据使用nosql数据库mongoDB来存储，在mongoDB中value都是以json字符串的形式存储的。<br>集中式存储到分布式存储<br>使用存储访问的中间件，包括多结构数据库的支持，读写分离，事务管理，负载均衡。<br>3.消除单点<br>硬件备份，多机器备份，跨机房，跨网段。<br>4.异步处理<br>异步处理请求的时候，需要关注请求的处理顺序。<br>5.度量系统<br>日志分析，使用storm<br>6.善用缓存<br>注意查看缓存的命中率，确定缓存是否解决了实际问题，要是缓存命中率很低的话，那还不如不使用缓存。</p>
+<h4 id="七-途牛旅游网络实践经验">七.途牛旅游网络实践经验</h4>
+<ul>
+<li>大数据<br>原来途牛的数据提取会产生很多一次性的表，这些表达到一定数量之后就很难维护了，这些表都是实际需求产生的，因此他们称之为需求驱动，他们把数据产出系统重构后就变成了数据驱动，这样不会产生很多一次性的表，他们使用storm来实时处理数据，其实就是所谓的数据仓库。</li>
+<li>搜索<br>使用开源的搜索引擎solr，solr的高版本4不兼容低版本，升级比较麻烦。<br>对象更新的时候，假如对象有20个字段，但是我们只需要更新其中1个字段，这时候其他19个字段的值也需要跟着更新，虽然更新前后值一样。<br>分词，建立自己的词库，方便对用户输入的关键词进行分词。<br>使用缓冲，合并一些操作，比如批量读写。<br>能不使用关系型数据库就不使用关系型数据库。</li>
+<li>起价计算<br>用户从杭州到三亚，买机票的选择有100种，订酒店的选择有10种，同时又有3中促销（越早价格越低，人越多价格越低），最后我们需要计算未来180天每天的价格，然后从中选出最低的价格，这样就需要计算100 x 10 x 3 x 180 = 54万条数据，一次查询就意味着54万条数据的计算，但是这些数据都是提前计算好，然后输出到搜索引擎。关于起价计算系统的架构如下：<br><img src="http://bolinyoung.qiniudn.com/tuniu1.png" alt="起价计算系统架构一"><br>1.多线程主动计算引擎见通MQ，有消息过来，这个引擎就会计算，比如机票价格有更新，此时相关的数据都会被重新计算一次<br>2.多线程计算的结果输出到搜索引擎<br>3.Master和Slave实现读写分离</li>
+</ul>
+<p>关于上面的起价计算系统架构存在的问题</p>
+<ul>
+<li><p>要是发过来的消息中相同机票的价格有多次更新的话，在上面的结构系统中，每次更新都会触发一次多线程计算，实际上我们会以最后一次更新为准，这批消息中，前几次的计算都是无效的。</p>
+</li>
+<li><p>要是多线程主动计算的能力太强大的话，会让搜索引擎承受不了。</p>
+</li>
+<li>有些数据计算出来后可能马上就会被使用，但是有些数据计算出来后，可能需要过一段时间后才会被用到，因此上面的架构没法保证马上被使用的数据优先被计算。</li>
+</ul>
+<p>优化后的系统架构<br><img src="http://bolinyoung.qiniudn.com/tuniu2.png" alt="起价计算系统架构二"></p>
+<ul>
+<li>在原来架构的基础上增加消息处理层，这层主要用来做消息的合并，避免一些重复计算。</li>
+<li>计算优先级，保证那些优先被使用的数据优先被计算</li>
+<li>计算结果先输出到MQ，计算能力过强对搜索引擎造成压力</li>
+</ul>
+<p>设计模块的时候，我们需要考虑一下模块与模块之间能力是否匹配，要是二者能力不匹配的话，我们使用MQ来异步通信，这样提升模块的可用性。</p>
+<h4 id="八-京东JOS进化论">八.京东JOS进化论</h4>
+<p>JOS即京东的开发平台，OS即open service。这个开发平台主要是用来提供一些http服务。个人感觉JOS有下面几个特色</p>
+<ul>
+<li>使用Servlet3.0中的异步Servlet来解决客户端和服务端在某种情况下连接断不掉的问题。</li>
+<li>接口有语法树的元数据，就是说接口的信息都是用语法树的元数据来描述的。</li>
+<li>使用了pipeline的思想，同时pipeline有版本的控制，当新增的pipeline有问题的时候，系统能够自动使用老版本的pipeline继续提供服务，具体怎么实现的当时没来得及仔细问。</li>
+<li>线程的划分思想，分为私有线程和公有线程，私有线程只能自己使用，当私有线程没法满足的时候，就会抢占公有线程。</li>
+</ul>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/技术交流/">技术交流</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Qcon/">Qcon</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="2014.04.26 Qcon北京第二天总结">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/25/akka-start/" title="Akka入门">Akka入门</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <% if (site.categories.length){ %>
+<div class="widget categorieslist">
+		<h3><%= __('分类') %></h3>
+		<ul class="clearfix">
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+<% } %>
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>
