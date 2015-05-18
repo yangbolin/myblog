@@ -1,15 +1,397 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>一个数据产品中异步写数据的实现思路 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.需求描述
+最近在开发一个大数据产品，这个数据产品主要是快速产出用户需要的数据，每次用户调我们数据产品提供的接口后，我们都会把接口的返回值存储到HBase和缓存，存储到HBase目的是后续做一些统计用，存储到缓存的目的加速数据产品的计算速度，因为某些数据在一段时间内计算的结果都是一样的。这个需求可以简单描述成这样，把数据产品的计算结果写缓存和HBase。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="一个数据产品中异步写数据的实现思路"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/12/async-write-data/">
+  <time datetime="2014-04-12T07:20:21.000Z">
+    Apr 12 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">一个数据产品中异步写数据的实现思路</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-需求描述">一.需求描述</h4>
+<p>最近在开发一个大数据产品，这个数据产品主要是快速产出用户需要的数据，每次用户调我们数据产品提供的接口后，我们都会把接口的返回值存储到HBase和缓存，存储到HBase目的是后续做一些统计用，存储到缓存的目的加速数据产品的计算速度，因为某些数据在一段时间内计算的结果都是一样的。这个需求可以简单描述成这样，把数据产品的计算结果写缓存和HBase。</p>
+<a id="more"></a>
+
+<h4 id="二-分析">二.分析</h4>
+<p>上述数据产品先计算数据，然后把计算结果存储起来，计算和存储是两个模块，先计算后存储，首先我们想到不应该同步做这两件事情，毕竟存储不存储对使用数据产品的人来说他不关心，他所关心的是我们的数据产品能否准确快速地返回他所需要的数据，这样一旦数据产品计算出结果后，我们应该立即返回给用户，从这点说我们应该在计算模块结束后就把数据直接返回到客户端，因此异步存储计算结果的思路就出来了，不要等结果都存储后，再把计算结果返回，这样可以加速数据产品数据产出的速度，因此我们采用异步存储的思路。</p>
+<h4 id="三-异步存储思路">三.异步存储思路</h4>
+<ul>
+<li>方案1：每次存储都创建一个线程，由这个线程负责把数据写到缓存和HBase</li>
+<li>方案2：把每次要写的数据先在内存中存储起来，使用固定数目的后台线程把数据写入HBase和缓存</li>
+</ul>
+<p>关于方案1是最常见也最容易想到的一种思路，采用固定大小的线程池，每次写数据的时候都new一个线程对象，然后交给线程池去调度执行。</p>
+<p>在方案2中我们需要启动N个后台线程，这N个后台线程不断轮循内存中存储数据的BlokingQueue,如果BlockingQueue中有数据，这N个线程会竞争获取一块数据，然后异步把数据写入到HBase和缓存。关于线程的同步我们使用了BlockingQueue，要是BlockingQueue中没有数据，线程就会阻塞，当BlockingQueue中有数据了，线程就会被唤醒。</p>
+<p>对于方案2我们需要考虑一下线程的善后处理，当系统中线程池要销毁时，该如何应对呢？此时，我们要保证两个点，第一，保证BlockingQueue中的数据都被存储，第二，保证正在RUNNABLE的线程把数据写完。关于第一点我们可以在线程池销毁的时候，也轮循一下BlockingQueue这个队列，当这个队列中还有数据的话，我们就取数据出来，然后把数据写入HBase和缓存，直到这个队列为空。伪代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre><span class="keyword">while</span> (!blockingQueue.isEmpty()) { <span class="comment">// 阻塞队列中还有数据</span>
+    <span class="comment">// 取出阻塞队列中的数据</span>
+    StoreDataObject storeDataObject = blockingQueue.take();
+    <span class="comment">// 存储数据</span>
+    dataWriteService.write(storeDataObject);
+}
+</pre></td></tr></table></figure>
+
+<p>当上面这个代码块执行完后，我们再开始考虑销毁线程池。</p>
+<p>接下来我们考虑，如何保证第二点，即保证正在运行的线程把数据写完，我们先让线程池发出一个shutdownNow的信号，此时线程池处于stop状态，拒绝接受新的线程，同时调用线程的interrupt方法，尝试中断线程，要是线程处于RUNNABLE的话，调用interrupt是不会被中断的，由于当BlockingQueue中没有数据的话的，线程就会处于BLOCKED状态，直到BlockingQueue中有数据，线程才会被唤醒，基于这个原理我们就有了下面的思路，伪代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre><span class="comment">// 先调用线程池的shutdownNow,这样线程池会调线程的interrupt</span>
+FIELD_DATA_WRITE_THREAD_POOL.shutdownNow(); 
+<span class="comment">//处于RUNNABLE的线程不会受影响</span>
+<span class="keyword">while</span> (!FIELD_DATA_WRITE_THREAD_POOL.isTerminated()) {
+    <span class="comment">// 继续调用线程池的shutdownNow，让线程池调用线程的interrupt</span>
+    FIELD_DATA_WRITE_THREAD_POOL.shutdownNow();
+}
+</pre></td></tr></table></figure>
+
+<p>这样我们就保证了上面的第二点，保证处于RUNNABLE的线程能够把数据正常写入到缓存和HBase.</p>
+<p>另外，我们写数据的线程都是轮循BlockingQueue的，这些线程需要对中断作出合理响应，即放弃轮循。伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="code"><pre><span class="keyword">while</span> (<span class="keyword">true</span>) {
+    <span class="keyword">try</span> {
+        StoreDataObject storeDataObject = storeDataQueue.take();
+        dataWriteService.writestoreDataObject();
+    } <span class="keyword">catch</span> (InterruptedException e) {
+        LOG.info(String.format(<span class="string">"%s has bean interrupted!!!"</span>, <span class="keyword">this</span>.getName()), e);
+         <span class="keyword">break</span>; <span class="comment">// 轮循终止</span>
+    } <span class="keyword">catch</span> (Exception e) {
+        LOG.error(String.format(<span class="string">"%s store iquant data exception"</span>, <span class="keyword">this</span>.getName()), e);
+        <span class="keyword">break</span>; <span class="comment">// 轮循终止</span>
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>至此，方案2表面上看起来是差不多了，但是我们想一下，要是轮循写数据出现异常的时候，线程就退出了，这样消费能力就降低了，这样BlockingQueue中的数据就会堆积，占用很大的内存，从这个角度出发我们需要考虑两个问题，如何保证轮循的线程在挂掉之后，补充一个轮循线程，其次，如何保证BlockingQueue中的数据暴增对系统的不会产生影响，关于第一个问题，我们可以使用一个后台线程去管理这些轮循线程，当轮循的线程数目少于N的时候，这个后台线程自动新增线程，第二个问题有很多解决思路，比如最简单可以限定BlockingQueue的大小，超过大小后，BlockingQueue就拒绝接收数据，把这些被拒绝的数据持久化到某个地方，后续再补充到BlockingQueue中。</p>
+<h4 id="四-最后总结">四.最后总结</h4>
+<ul>
+<li>在系统中一旦使用了线程池，在线程池销毁的时候，需要考虑线程正在做什么事情，要不要在销毁之前等线程把自己该做的事情做完，不要贸然就去销毁一个线程池。</li>
+<li>对于生产者和消费者模型的并发问题，注意考虑如何维持消费能力，以及如何避免共享内存暴增对系统造成的影响。</li>
+</ul>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/编程开发/">编程开发</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/并发/">并发</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="一个数据产品中异步写数据的实现思路">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/05/18/os-timer-call/" title="操作系统定时调度">操作系统定时调度</a>
+      </li>
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>10</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>29</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

@@ -1,15 +1,672 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="Coder @Alibaba">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content">
+
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/17/maven-notice/">
+  <time datetime="2014-05-17T11:39:59.000Z">
+    May 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/17/maven-notice/">maven的一些注意点</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>目前maven被广泛用于java项目的开发中，统一管理项目依赖，以及项目的打包部署等，我们经常需要编写maven的pom文件，包括顶级pom以及子pom。maven既可以用来构建单工程项目，也可以用来构建多工程项目，子工程和子工程之间有相互依赖。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/17/maven-notice/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/17/final-local-variable-for-jvm/">
+  <time datetime="2014-05-17T10:08:12.000Z">
+    May 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/17/final-local-variable-for-jvm/">Java局部变量有没有final关键字对JVM性能影响不大</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在写Java代码中我们经常使用final这个关键字，被final修饰的变量，编译器不允许我们修改它的值，如果是基本类型，编译器不允许我们在第一次赋值后再修改基本类型的值，如果是引用类型，编译器不允许我们在第一次赋值后再修改引用的指向，这都是编译器层面的限制，因为如果你试图去修改它，就会得到一个编译错误。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/17/final-local-variable-for-jvm/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/">
+  <time datetime="2014-05-17T09:35:04.000Z">
+    May 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/">maven dependencies 和 dependencyManagement的区别</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>曾经有人问我maven中dependencies和dependencyManagement的区别，我当时主要从版本控制以及依赖引入这两方面来回答</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/17/why-odd-number-machine-for-zookeeper/">
+  <time datetime="2014-05-17T07:39:29.000Z">
+    May 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/17/why-odd-number-machine-for-zookeeper/">为什么zookeeper集群个需要奇数台机器</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>我们通常使用zookeeper集群来协同管理另外一个集群，比如HBase集群，一个HBase集群必然对应一个zookeeper集群。在部署zookeeper集群的时候，我们为什么选择奇数台机器呢？</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/17/why-odd-number-machine-for-zookeeper/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/14/btrace-for-production-problem/">
+  <time datetime="2014-05-14T07:55:55.000Z">
+    May 14 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/14/btrace-for-production-problem/">使用BTrace来定位方法中Catch住的异常</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-问题">一.问题</h4>
+<p>今天在自己应用中引入了一个新的中间件，发布到线上后，发现一个接口一直获取不到数据，此时找不到日志，因为代码中的日志输出不按常理出牌，误引入了某一中间件自定义的Logger导致日志很难找到，此时要是在测试环境，debug一下就搞定，但是线上不能这么搞，如何去查看一下本次调用接口返回的数据到底是什么呢？</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/14/btrace-for-production-problem/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">
+  <time datetime="2014-05-11T13:11:11.000Z">
+    May 11 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">CountDownLatch和CyclicBarrier</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在编写并发程序的时候，我们经常遇到这样的事情，就是当N个线程都走到某一步后再继续做其他事情，都走到某一步包含这N个线程都运行结束这种场景。我们可以使用线程同步的思想来解决这类问题，在C语言中中我们经常使用信号量来解决此类问题。当然要是你自己使用线程同步来解决个问题，你需要做很多事情，不过jdk提供了一些封装好的类帮助我们解决此类问题，这里我们来看如何使用juc包中提供的CountDownLatch和CyclicBarrier来解决这类问题。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/11/countdownlatch-and-cyclicbarrier/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/10/consistent-hashing/">
+  <time datetime="2014-05-10T14:03:25.000Z">
+    May 10 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/10/consistent-hashing/">聊聊一致性哈希算法</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-一致性哈希算法要解决什么问题">一.一致性哈希算法要解决什么问题</h4>
+<p>假设我们有N个缓存空间，我们现在要把对象存储到到这个N个缓存空间中，我们可以定义这样的哈希函数</p>
+<blockquote>
+<p>hash(object) mod N</p>
+</blockquote>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/10/consistent-hashing/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/10/svn-command/">
+  <time datetime="2014-05-10T08:20:24.000Z">
+    May 10 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/10/svn-command/">谈谈几个svn命令</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>很多公司目前都在使用svn来管理代码，当然要是你的开发环境不是Linux或许你不知到这几个命令你一样可以开发，但是要是你的开发环境是Linux，那你就需要了解这几个开发命令。关于代码的签出，提交我们就暂时不用考虑了，这些命令太简单。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/10/svn-command/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/09/class-conflict-analyse-1/">
+  <time datetime="2014-05-09T10:59:01.000Z">
+    May 9 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/09/class-conflict-analyse-1/">一个jar包冲突的解决</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近在发布一个需求的时候，遇到下面的错误</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/09/class-conflict-analyse-1/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/05/03/after-returning-advice-error/">
+  <time datetime="2014-05-03T06:40:00.000Z">
+    May 3 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/03/after-returning-advice-error/">一个在方法返回前使用AOP的BUG分析</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="源代码">源代码</h4>
+<p>最近使用AOP拦截一个方法的返回值，并且修改一下方法的返回值，然后再返回，于是写了下面的代码：</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/03/after-returning-advice-error/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/page/5/" class="prev">Prev</a>
+  
+  
+    <a href="/page/7/" class="next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/05/18/os-timer-call/" title="操作系统定时调度">操作系统定时调度</a>
+      </li>
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
+      </li>
+    
+      <li>
+        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>10</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>29</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>
