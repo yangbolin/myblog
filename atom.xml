@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-05-18T12:29:14.226Z</updated>
+  <updated>2015-05-18T12:30:43.579Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yangbolin.cn/2015/05/18/os-timer-call/"/>
     <id>http://yangbolin.cn/2015/05/18/os-timer-call/</id>
     <published>2015-05-18T12:13:29.000Z</published>
-    <updated>2015-05-18T12:28:19.000Z</updated>
+    <updated>2015-05-18T12:30:39.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
 <p>最近需要开发一些定时任务，提到定时任务，我们都会想到quartz，为了让我们的定时任务能够更加灵活的被控制，我们通过shell脚本去执行一个java类，然后定时去执行这个shell脚本即可。如何去定时执行这个shell脚本，我们想到Linux本身提供后台进程去定时执行一些命令，那就是crontab，因此我们编写好自己的shell脚本再写好crontab后就能定时执行我们的任务了。</p>
 <a id="more"></a>
@@ -40,7 +40,7 @@
 </pre></td><td class="code"><pre>0 6 <span class="bullet">* *</span> * sh xx.sh
 </pre></td></tr></table></figure>
 
-<p>表四每天凌晨6点开始执行一次sh xx.sh脚本，只执行一次</p>
+<p>表示每天凌晨6点开始执行一次sh xx.sh脚本，只执行一次</p>
 <p>注意上面这两个频率的区别，排查问题的时候注意考虑那些一直被忽略的点，有可能那些点就是解决问题的关键之所在。</p>
 ]]></content>
     <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
