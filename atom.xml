@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-05-16T13:08:36.289Z</updated>
+  <updated>2015-05-18T12:28:29.763Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,45 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[操作系统定时调度]]></title>
+    <link href="http://yangbolin.cn/2015/05/18/os-timer-call/"/>
+    <id>http://yangbolin.cn/2015/05/18/os-timer-call/</id>
+    <published>2015-05-18T12:13:29.000Z</published>
+    <updated>2015-05-18T12:28:19.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>最近需要开发一些定时任务，提到定时任务，我们都会想到quartz，为了让我们的定时任务能够更加灵活的被控制，我们通过shell脚本去执行一个java类，然后定时去执行这个shell脚本即可。如何去定时执行这个shell脚本，我们想到Linux本身提供后台进程去定时执行一些命令，那就是crontab，因此我们编写好自己的shell脚本再写好crontab后就能定时执行我们的任务了。</p>
+<a id="more"></a>
+
+<h4 id="二-如何配置">二.如何配置</h4>
+<ul>
+<li>查看crontab的配置<br>crontab -l</li>
+<li>编辑crontab的配置<br>crontab -e</li>
+<li>crontab的格式说明<br><img src="http://bolinyoung.qiniudn.com/crontab.jpg" alt="crontab格式说明"></li>
+</ul>
+<h4 id="三-注意点">三.注意点</h4>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="bullet">* </span>6 <span class="bullet">* *</span> * sh xx.sh
+</pre></td></tr></table></figure>
+
+<p>表示每天凌晨6点开始没分钟执行一次sh xx.sh脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>0 6 <span class="bullet">* *</span> * sh xx.sh
+</pre></td></tr></table></figure>
+
+<p>表四每天凌晨6点开始执行一次sh xx.sh脚本，只执行一次</p>
+<p>注意上面这两个频率的区别，排查问题的时候注意考虑那些一直被忽略的点，有可能那些点就是解决问题的关键之所在。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>最近需要开发一些定时任务，提到定时任务，我们都会想到quartz，为了让我们的定时任务能够更加灵活的被控制，我们通过shell脚本去执行一个java类，然后定时去执行这个shell脚本即可。如何去定时执行这个shell脚本，我们想到Linux本身提供后台进程去定时执行一些命令，那就是crontab，因此我们编写好自己的shell脚本再写好crontab后就能定时执行我们的任务了。</p>
+]]></summary>
+    
+      <category term="crontab" scheme="http://yangbolin.cn/tags/crontab/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[css换行]]></title>
@@ -2956,193 +2995,6 @@ class Danger {
       <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
     
       <category term="JVM学习" scheme="http://yangbolin.cn/categories/JVM%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[如何使用ASMifier]]></title>
-    <link href="http://yangbolin.cn/2014/07/27/how-to-use-asmifier/"/>
-    <id>http://yangbolin.cn/2014/07/27/how-to-use-asmifier/</id>
-    <published>2014-07-27T05:53:45.000Z</published>
-    <updated>2014-07-27T06:47:30.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>ASM这个字节码处理框架，不仅能够读字节码，而且还能修改字节码，我们经常是先写好JAVA代码，然后编译(IDE或者javac)生成class文件，最后classloader再把相应的class文件加载到内存，但是有了ASM后，我们可以直接使用ASM生成class文件的字节数组，即面向字节码写JAVA代码，这样可以让JVM动态去加载一个类，但是这个类的class文件并不存在磁盘上，也就是说这个类的class文件是在内存中构建出来的。</p>
-<a id="more"></a>
-
-<p>下面我们就来看看如何在内存中构造class文件的字节数组，并且让JVM动态加载对应的class.</p>
-<h4 id="二-如何使用">二.如何使用</h4>
-<p>假如我们我们需要JVM动态加载的类的源代码如下</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">class</span> ASMTest {
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span>() {
-        System.<span class="keyword">out</span>.println(<span class="string">"Hello ASM"</span>);
-    }
-}
-</pre></td></tr></table></figure>
-
-<p>此时这类并不再当前应用所对应的classpath中。当然我们可以自己去分析这个类的字节码，然后一步一步去构造这个类的字节码，但是这样比较麻烦，ASM提供了这样一个工具，可以把一个编译过的class文件转换一段java代码，运行这段java代码可以产生这个编译过的class文件对应的字节数组。</p>
-<p>因此，我们先执行</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>javac ASMTest<span class="preprocessor">.java</span>
-</pre></td></tr></table></figure>
-
-<p>生成ASMTest对应的class文件。接下来我们使用ASMifier来生成可以产生字节数组的代码</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>java -classpath asm-debug-all-<span class="number">4.1</span><span class="preprocessor">.jar</span>:. org<span class="preprocessor">.objectweb</span><span class="preprocessor">.asm</span><span class="preprocessor">.util</span><span class="preprocessor">.ASMifier</span> ASMTest &gt; ASMTestDump<span class="preprocessor">.java</span>
-</pre></td></tr></table></figure>
-
-<p>在执行java命令的时候我们指定了classpath,多个classpath使用冒号分隔，此时一定要保证ASMTest的所在的路径被加入到classpath中，生成的ASMTestDump类如下。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ASMTestDump</span> <span class="keyword">implements</span> <span class="title">Opcodes</span> {</span>
-
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] <span class="title">dump</span>() <span class="keyword">throws</span> Exception {
-
-        ClassWriter cw = <span class="keyword">new</span> ClassWriter(<span class="number">0</span>);
-        MethodVisitor mv;
-
-        cw.visit(V1_6, ACC_PUBLIC + ACC_SUPER, <span class="string">"ASMTest"</span>, <span class="keyword">null</span>, <span class="string">"java/lang/Object"</span>, <span class="keyword">null</span>);
-        {
-            mv = cw.visitMethod(ACC_PUBLIC, <span class="string">"&lt;init&gt;"</span>, <span class="string">"()V"</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);
-            mv.visitCode();
-            mv.visitVarInsn(ALOAD, <span class="number">0</span>);
-            mv.visitMethodInsn(INVOKESPECIAL, <span class="string">"java/lang/Object"</span>, <span class="string">"&lt;init&gt;"</span>, <span class="string">"()V"</span>);
-            mv.visitInsn(RETURN);
-            mv.visitMaxs(<span class="number">1</span>, <span class="number">1</span>);
-            mv.visitEnd();
-        }
-        {
-            mv = cw.visitMethod(ACC_PUBLIC, <span class="string">"hello"</span>, <span class="string">"()V"</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);
-            mv.visitCode();
-            mv.visitFieldInsn(GETSTATIC, <span class="string">"java/lang/System"</span>, <span class="string">"out"</span>, <span class="string">"Ljava/io/PrintStream;"</span>);
-            mv.visitLdcInsn(<span class="string">"Hello ASM"</span>);
-            mv.visitMethodInsn(INVOKEVIRTUAL, <span class="string">"java/io/PrintStream"</span>, <span class="string">"println"</span>, <span class="string">"(Ljava/lang/String;)V"</span>);
-            mv.visitInsn(RETURN);
-            mv.visitMaxs(<span class="number">2</span>, <span class="number">1</span>);
-            mv.visitEnd();
-        }
-        cw.visitEnd();
-
-        <span class="keyword">return</span> cw.toByteArray();
-    }
-}
-</pre></td></tr></table></figure>
-
-<p>接下来定义自己的classloader</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> {</span>
-
-    <span class="keyword">public</span> Class <span class="title">defineClass</span>(String clazz, <span class="keyword">byte</span>[] bytes) {
-        <span class="keyword">return</span> defineClass(clazz, bytes, <span class="number">0</span>, bytes.length);
-    }
-}
-</pre></td></tr></table></figure>
-
-<p>使用自己的classloader加载ASMTestDump产生的字节数组,并通过反射来调用ASMTest类的Hello方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassWriterTest</span> {</span>
-
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
-        MyClassLoader mycl = <span class="keyword">new</span> MyClassLoader();
-        Class classInstance = <span class="keyword">null</span>;
-        <span class="keyword">try</span> {
-            classInstance =  mycl.defineClass(<span class="string">"ASMTest"</span>, ASMTestDump.dump());
-        } <span class="keyword">catch</span> (Exception e) {
-            e.printStackTrace();
-        }
-        
-        <span class="keyword">if</span> (classInstance != <span class="keyword">null</span>) {
-            <span class="keyword">try</span> {
-                Object oo = classInstance.newInstance();
-                Method method = classInstance.getMethod(<span class="string">"hello"</span>, <span class="keyword">null</span>);
-                method.invoke(oo, <span class="keyword">null</span>);
-            } <span class="keyword">catch</span> (InstantiationException e) {
-                e.printStackTrace();
-            } <span class="keyword">catch</span> (IllegalAccessException e) {
-                e.printStackTrace();
-            } <span class="keyword">catch</span> (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-}
-</pre></td></tr></table></figure>
-
-<p>使用ASMifier就这么简单。</p>
-<h4 id="三-总结">三.总结</h4>
-<p>ASMifier其实也可以认为是一个编译器，把class文件转换成java代码，这里的java代码并不是反编译后的java代码，而是一段可以生成当前class字节数组的代码，可能很多人会有以为，class文件到字节数组需要这么麻烦吗？我们直接读取class文件，然后字节转换成字节数组不就搞定了么，不用这么绕一大圈的么，关键是有时候字节码并不是存在磁盘上的，需要在内存中动态构建，如果你愿意在内存中写字节码也行。</p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>ASM这个字节码处理框架，不仅能够读字节码，而且还能修改字节码，我们经常是先写好JAVA代码，然后编译(IDE或者javac)生成class文件，最后classloader再把相应的class文件加载到内存，但是有了ASM后，我们可以直接使用ASM生成class文件的字节数组，即面向字节码写JAVA代码，这样可以让JVM动态去加载一个类，但是这个类的class文件并不存在磁盘上，也就是说这个类的class文件是在内存中构建出来的。</p>
-]]></summary>
-    
-      <category term="ASM" scheme="http://yangbolin.cn/tags/ASM/"/>
-    
-      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   
