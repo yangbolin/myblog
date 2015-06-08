@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/06/08/java-reflect/">
+  <time datetime="2015-06-08T14:48:54.000Z">
+    Jun 8 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/06/08/java-reflect/">JAVA反射调用总结</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>这几天一直在忙于一个框架的开发，我们的初衷是基于配置产出业务数据，不要让开发工程师去编写JAVA代码来产出账单，一开始觉得这件事情很难，很难做到不开发JAVA代码，事实确实如此，不过数据如果规整的话，基于配置完全可以，一行java代码都不用写。当然这个框架目前还在测试中，核心功能已经开发结束了，开发一个框架和开发一个业务功能要考虑的事情完全不一样，在开发框架之前，需要把所有可能出现的需求都要考虑一下，其实框架就是高度的抽象，我们把平时所做的一些功能逻辑梳理清楚，再上一个高度就能梳理出一个框架。在开发这个框架的过程中用到了反射，感觉JDK的反射写起来代码有点多，于是考虑用Spring框架提供反射工具类，还有木有其他处理反射调用框架或者工具呢？</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/06/08/java-reflect/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/21/javac-accessbash00/">
   <time datetime="2015-03-21T02:07:34.000Z">
     Mar 21 2015
@@ -415,55 +455,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/27/java-generic-extends/">
-  <time datetime="2014-05-27T12:43:57.000Z">
-    May 27 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/27/java-generic-extends/">接口中使用泛型参数的思考</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>今天在使用一个别人提供的接口时，发现该接口的定义如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">xxxService</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">BasicModel</span>&gt; {</span>
-    <span class="keyword">public</span> T getXXX();
-    <span class="keyword">public</span> T countXXX();
-}
-</pre></td></tr></table></figure>
-
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/27/java-generic-extends/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -506,7 +497,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>19</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -537,6 +528,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/06/08/java-reflect/" title="JAVA反射调用总结">JAVA反射调用总结</a>
+      </li>
     
       <li>
         <a href="/2015/05/18/os-timer-call/" title="操作系统定时调度">操作系统定时调度</a>
@@ -574,10 +569,6 @@
         <a href="/2014/10/31/transaction-attention/" title="使用事务的一个注意点">使用事务的一个注意点</a>
       </li>
     
-      <li>
-        <a href="/2014/10/31/log4j-additivity/" title="关于log4j的additivity">关于log4j的additivity</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -610,7 +601,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>29</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>30</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		
