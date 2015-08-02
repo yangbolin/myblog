@@ -39,6 +39,8 @@
       
         <li><a href="/reading">Reading</a></li>
       
+        <li><a href="/archives">Archives</a></li>
+      
         <li><a href="/about">About</a></li>
       
       
@@ -57,251 +59,118 @@
 
 
   
+  
+    
+    
+      
+      
+      <section class="archives-wrapper">
+        
+        <div class="archives">
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/07/spring-application-event/">
+    <a href="/2014/07/07/spring-application-event/">
   <time datetime="2014-07-07T05:08:20.000Z">
-    Jul 7 2014
+    Jul 07
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/07/07/spring-application-event/">Spring容器的事件机制</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>Spring容器暴漏了很多扩展点给框架的使用者，让框架的使用者能够干涉一些容器内部的事情，也让框架的使用能够感知到容器内部发生了什么事情，比如Spring容器在初始化完后，就会广播一个容器初始化完成的事件，然后事件的监听者监听到这个事件后做相应的事情，这也是Spring容器的一个非常有用的扩展点。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/07/spring-application-event/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/01/sqlmap-load-by-spring-container/">
+    <a href="/2014/07/01/sqlmap-load-by-spring-container/">
   <time datetime="2014-07-01T12:10:20.000Z">
-    Jul 1 2014
+    Jul 01
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/07/01/sqlmap-load-by-spring-container/">sqlmap被Spring容器加载了</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-现象">一.现象</h4>
-<p>最近发布需求升级一个中间件，一个web应用在启动的时候，偶尔会会报下面的错误，报错的规律无法跟踪，导致应用启动失败。<br><img src="http://bolinyoung.qiniudn.com/ibatis-spring.png" alt="ibatis-psring"><br>有时候启动应用就会出现上面的异常，有时候启动应用没有异常，在发布的时候要是机器启动失败，我们就不断重启，直到机器重启成功。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/01/sqlmap-load-by-spring-container/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">
+    <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">
   <time datetime="2014-06-24T15:29:37.000Z">
-    Jun 24 2014
+    Jun 24
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">BeanFactoryPostProcessor和BeanPostProcessor</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <p>一.概述<br>我们经常使用Spring框架，Spring帮我托管bean的创建以及bean的管理，同时又暴漏出一些可扩展的地方，方面程序员去干涉bean或者Spring容器的创建。今天有同学问BeanPostProcessor相关的东西，由此很容易想到BeanFactoryPostProcessor，这里总结一下，方便后面在开发的过程中灵活使用。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/03/after-returning-advice-error/">
+    <a href="/2014/05/03/after-returning-advice-error/">
   <time datetime="2014-05-03T06:40:00.000Z">
-    May 3 2014
+    May 03
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/03/after-returning-advice-error/">一个在方法返回前使用AOP的BUG分析</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="源代码">源代码</h4>
-<p>最近使用AOP拦截一个方法的返回值，并且修改一下方法的返回值，然后再返回，于是写了下面的代码：</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/03/after-returning-advice-error/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/19/spring-ioc-aop-idea/">
+    <a href="/2014/04/19/spring-ioc-aop-idea/">
   <time datetime="2014-04-19T07:56:47.000Z">
-    Apr 19 2014
+    Apr 19
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/04/19/spring-ioc-aop-idea/">谈谈自己对Spring IOC 和 AOP理解</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-谈谈自己对IOC的理解">一.谈谈自己对IOC的理解</h4>
-<p>Spring提供了一个容器，把我们业务代码中需要的一些bean都管理起来，这个Spring容器负责管理这些bean的生命周期，同时保证被依赖的bean能够正确找到自己所属的bean,能够根据代码中的依赖关系正确的实例化一个bean。要是没有Spring容器，我们就需要自己去创建bean，同时设置bean所依赖的bean，Spring容器把这些事情从业务代码中剥</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/19/spring-ioc-aop-idea/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/15/spring-aop-practice/">
+    <a href="/2014/04/15/spring-aop-practice/">
   <time datetime="2014-04-15T11:58:15.000Z">
-    Apr 15 2014
+    Apr 15
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/04/15/spring-aop-practice/">如何不用修改原来的代码呢？</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-需求描述">一.需求描述</h4>
-<p>最近遇到这样一个需求，有个数据计算的方法，我们需要优化一下，因为有些数据在一段时间内计算出的结果总是一样的，为了提高性能，我们把这些数据的计算结果缓存起来，这样下次计算的时候就先去缓存中查一下，要是缓存中存在，就直接把缓存中的数据返回，要是缓存中不存在就走原来的计算逻辑去计算，面对这个需求，我们需要做两件事情，在调用计算方法之前读取一下缓存，在调用方法之后把值写入缓存。这样的计算方法有10多个，相应的类也有10多个。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/15/spring-aop-practice/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
-  
-
-  <nav id="pagination">
   
   
-  <div class="clearfix"></div>
-</nav>
+    </div></section>
+  
 
 </div>
 	  </div>
@@ -336,7 +205,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -367,6 +236,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
     
       <li>
         <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
@@ -404,10 +277,6 @@
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
-      <li>
-        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -431,6 +300,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		

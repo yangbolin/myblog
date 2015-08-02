@@ -39,6 +39,8 @@
       
         <li><a href="/reading">Reading</a></li>
       
+        <li><a href="/archives">Archives</a></li>
+      
         <li><a href="/about">About</a></li>
       
       
@@ -51,6 +53,46 @@
 </header>
 		<div class="content">
 
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/07/16/class-bytecode-constant-pool-num/">
+  <time datetime="2014-07-16T09:50:43.000Z">
+    Jul 16 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/07/16/class-bytecode-constant-pool-num/">JAVA字节码常量池中常量编号的疑问</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-问题描述">一.问题描述</h4>
+<p>最近在解析JAVA字节码的时候，发现常量池中常量编号不连续了，导致解析程序经常NPE，然后仔细测试了一下，发现常量类型如果是Long或者Double的话，就会导致常量池中常量的编号不连续了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/07/16/class-bytecode-constant-pool-num/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
 
 
 
@@ -417,46 +459,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/06/07/how-to-debug-hbase-source/">
-  <time datetime="2014-06-07T14:36:16.000Z">
-    Jun 7 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/06/07/how-to-debug-hbase-source/">如何在本地通过eclipse来调试HBase的源代码</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>要想把HBase的源代码梳理清楚，需要在本地调试一下，可能直接看代码也能搞清楚，但是调试能让我们尽快搞清楚HBase的源代码，下面就来看一下如何在eclipse中调试HBase的源代码。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/06/07/how-to-debug-hbase-source/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -501,7 +503,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -532,6 +534,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
     
       <li>
         <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
@@ -569,10 +575,6 @@
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
-      <li>
-        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -596,6 +598,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		

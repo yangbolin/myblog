@@ -39,6 +39,8 @@
       
         <li><a href="/reading">Reading</a></li>
       
+        <li><a href="/archives">Archives</a></li>
+      
         <li><a href="/about">About</a></li>
       
       
@@ -57,92 +59,50 @@
 
 
   
+  
+    
+    
+      
+      
+      <section class="archives-wrapper">
+        
+        <div class="archives">
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/27/how-to-use-asmifier/">
+    <a href="/2014/07/27/how-to-use-asmifier/">
   <time datetime="2014-07-27T05:53:45.000Z">
-    Jul 27 2014
+    Jul 27
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/07/27/how-to-use-asmifier/">如何使用ASMifier</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>ASM这个字节码处理框架，不仅能够读字节码，而且还能修改字节码，我们经常是先写好JAVA代码，然后编译(IDE或者javac)生成class文件，最后classloader再把相应的class文件加载到内存，但是有了ASM后，我们可以直接使用ASM生成class文件的字节数组，即面向字节码写JAVA代码，这样可以让JVM动态去加载一个类，但是这个类的class文件并不存在磁盘上，也就是说这个类的class文件是在内存中构建出来的。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/27/how-to-use-asmifier/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/16/asm-read-class-bytes/">
+    <a href="/2014/07/16/asm-read-class-bytes/">
   <time datetime="2014-07-16T12:18:54.000Z">
-    Jul 16 2014
+    Jul 16
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/07/16/asm-read-class-bytes/">使用ASM读取class的字节码</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>我们平时写的JAVA代码经过编译后就是class文件，class文件其实有非常严谨的结构，具体可以参考<a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.1" target="_blank">JVM class文件格式规范</a>,认真读完这个规范，只要你按照这个规范来解析class文件，你就一定能写个javap出来。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/16/asm-read-class-bytes/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
-  
-
-  <nav id="pagination">
   
   
-  <div class="clearfix"></div>
-</nav>
+    </div></section>
+  
 
 </div>
 	  </div>
@@ -177,7 +137,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -208,6 +168,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
     
       <li>
         <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
@@ -245,10 +209,6 @@
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
-      <li>
-        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -272,6 +232,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		

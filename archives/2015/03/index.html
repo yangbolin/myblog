@@ -39,6 +39,8 @@
       
         <li><a href="/reading">Reading</a></li>
       
+        <li><a href="/archives">Archives</a></li>
+      
         <li><a href="/about">About</a></li>
       
       
@@ -57,52 +59,33 @@
 
 
   
+  
+    
+    
+      
+      
+      <section class="archives-wrapper">
+        
+        <div class="archives">
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/03/21/javac-accessbash00/">
+    <a href="/2015/03/21/javac-accessbash00/">
   <time datetime="2015-03-21T02:07:34.000Z">
-    Mar 21 2015
+    Mar 21
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2015/03/21/javac-accessbash00/">javac生成的access$000方法</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>最近在做字节码分析的时候，发现字节码中出现了access$000的方法，这个方法不是开发工程师写的，是编译器生成的，那么编译器生成这个方法是为了解决什么问题呢？我们知道编译会为静态代码块生成执行的方法，在类没有构造函数时为类生成缺省构造函数，这个access$000究竟是在什么场景下面用的呢？仔细分析包含access$000的类，发现该类中存在内部类，结合google搜索，原来acess$000是为了解决内部类访问外部类的成员，包括成员变量和成员方法。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/03/21/javac-accessbash00/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
-  
-
-  <nav id="pagination">
   
   
-  <div class="clearfix"></div>
-</nav>
+    </div></section>
+  
 
 
 </div>
@@ -138,7 +121,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -169,6 +152,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
     
       <li>
         <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
@@ -206,10 +193,6 @@
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
-      <li>
-        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -233,6 +216,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		

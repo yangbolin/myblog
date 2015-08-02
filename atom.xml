@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-07-02T01:34:16.639Z</updated>
+  <updated>2015-08-02T07:07:55.002Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,47 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Java并发编程艺术读书笔记一]]></title>
+    <link href="http://yangbolin.cn/2015/08/02/java-concurrent-note-1/"/>
+    <id>http://yangbolin.cn/2015/08/02/java-concurrent-note-1/</id>
+    <published>2015-08-02T05:44:15.000Z</published>
+    <updated>2015-08-02T07:01:50.000Z</updated>
+    <content type="html"><![CDATA[<ul>
+<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p>synchronized<br>对于普通方法，锁是当前实例对象。对于静态方法，锁是当前类的Class对象。对于同步方法块，所示synchronized括号里面配置的对象，代码块的同步是基于monitorenter和monitorexit来实现的。</p>
+</li>
+<li><p>Java对象头<br>synchronized用的锁是存在JAVA对象头里面的。JAVA对象头里的Mark Word默认存储了对象的HashCode，分代年龄和锁标记。</p>
+</li>
+<li><p>偏向锁<br>偏向锁使用了一种等到竞争出现才释放锁的机制。它首先会暂停拥有偏向缩的线程，然后检查持有偏向缩的线程是否活着，如果线程处于不活动状态，则将对象头设置为无锁状态；如果线程仍然活着，持有偏向锁的栈会被执行，遍历偏向对象的锁记录，栈中的锁记录和对象头的Mark Word要么重新偏向于其他线程，要么恢复到无锁或者标记对象不适合作为偏向锁，最后唤醒暂停的线程。可以通过JVM参数关闭偏向锁:-XX:-UseBiasedLocking=false。</p>
+</li>
+<li><p>轻量级锁<br>使用CAS将对象头中的Mark Word替换为指向锁记录的指针。如果成功，当前线程获得锁，如果失败，表示其他线程竞争锁，当前线程尝试使用自旋来获取锁。</p>
+</li>
+<li><p>重量级锁<br>自旋获取锁失败，轻量级线程就会转换成重量级线程。</p>
+</li>
+<li><p>总线锁<br>所谓总线锁就是使用处理器提供的一个LOCK #信号，当一个处理器在总线上输出此信号时，其他处理器请求将被阻塞住，那么该处理器可以独占共享内存。</p>
+</li>
+<li><p>ABA问题<br>如果一个变量的值从A变到B又变到A，此时可以通过版本来感知到这一变化，注意版本思想在实际开发工作中的灵活使用。</p>
+</li>
+<li><p>CAS<br>在修改一个变量值的时候先判断一下变量当前的值是否和我们期望的值一样，入股一样就修改，不一样就不修改。</p>
+</li>
+</ul>
+]]></content>
+    <summary type="html"><![CDATA[<ul>
+<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。</li>
+</ul>
+]]></summary>
+    
+      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
+    
+      <category term="并发编程" scheme="http://yangbolin.cn/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[使用svn merge命令来回滚代码]]></title>
@@ -2586,32 +2627,6 @@ ThreadLocalMap getMap(Thread t) {
       <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
     
       <category term="JVM学习" scheme="http://yangbolin.cn/categories/JVM%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[裂变思想]]></title>
-    <link href="http://yangbolin.cn/2014/09/06/fission-thought/"/>
-    <id>http://yangbolin.cn/2014/09/06/fission-thought/</id>
-    <published>2014-09-06T02:49:07.000Z</published>
-    <updated>2014-09-06T03:16:44.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>关于裂变这个词语，一开始想到的就是双11的时候红包的裂变，一个红包经过裂变后变成多个红包，让更多的人参与进来，这个红包裂变的想法当时就给自己留下了深刻的印象，其实这不是什么业务的创新，而是算法思想在业务上的经典使用。</p>
-<a id="more"></a>
-
-<p>在算法中一个经典的思想就是分治，要解决一个问题A，先把问题A分解为A1，A2，A3三个子问题，这三个子问题解决了，问题A也就得到相应的解决，此时可以理解为问题A在需要解决的时候裂变成3个子问题。问题变多了，但是原来的问题更好解决了，因此在这种状况下面问题变多不一定是坏事情。</p>
-<h4 id="二-裂变">二.裂变</h4>
-<p>当一些业务点没法在一个实体体现出来的时候，考虑把这个实体裂变，然后修改裂变后实体的相关状态以满足业务需求，此时实体A裂变成两个实体A1和A2，裂变后实体A就不存在了，但是通过A1和A2上的一些关联信息一定能推理出A1和A2是实体A裂变而来的。<br><img src="http://bolinyoung.qiniudn.com/%E8%A3%82%E5%8F%98.png" alt="裂变"></p>
-<h4 id="三-总结">三.总结</h4>
-<p>在设计的时候注意裂变思想的灵活使用，虽然很简单，但是能不能灵活使用是另外一个问题。</p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>关于裂变这个词语，一开始想到的就是双11的时候红包的裂变，一个红包经过裂变后变成多个红包，让更多的人参与进来，这个红包裂变的想法当时就给自己留下了深刻的印象，其实这不是什么业务的创新，而是算法思想在业务上的经典使用。</p>
-]]></summary>
-    
-      <category term="Algorithm" scheme="http://yangbolin.cn/tags/Algorithm/"/>
-    
-      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   

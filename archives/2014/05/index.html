@@ -39,6 +39,8 @@
       
         <li><a href="/reading">Reading</a></li>
       
+        <li><a href="/archives">Archives</a></li>
+      
         <li><a href="/about">About</a></li>
       
       
@@ -57,420 +59,322 @@
 
 
   
+  
+    
+    
+      
+      
+      <section class="archives-wrapper">
+        
+        <div class="archives">
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/">
+    <a href="/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/">
   <time datetime="2014-05-31T15:52:45.000Z">
-    May 31 2014
+    May 31
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/">NoClassDefFoundError VS ClassNotFoundException</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <p>在开发JAVA项目的时候，我们经常会遇到这样两种异常，一种是java.lang.NoClassDefFoundError,另外一种是java.lang.ClassNotFoundException。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/31/noclassdeffounderror-vs-classnotfoundexception/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/31/futuretask/">
+    <a href="/2014/05/31/futuretask/">
   <time datetime="2014-05-31T12:18:57.000Z">
-    May 31 2014
+    May 31
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/31/futuretask/">FutureTask</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/31/futuretask/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/31/future-cancel-task/">
+    <a href="/2014/05/31/future-cancel-task/">
   <time datetime="2014-05-31T11:01:51.000Z">
-    May 31 2014
+    May 31
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/31/future-cancel-task/">通过Future来取消任务</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>在多线程程序中，我们经常使用Future来获取线程的执行结果，我们想线程的执行是异步的，因此要想获取线程执行结束后的结果，我们就需要等线程执行结束，这是一种主动获取线程执行结果的方法，当然你也可以让线程拿到结果后通知你。在使用Future的时候我们经常会设置一个超时时间，要是过了这个超时时间，线程的结果还没返回，那么我们经常就会忽略这个结果，但是这个获取结果的线程怎么办呢？让他自生自灭？我看代码中经常有这种写法，让这样的线程自生自灭。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/31/future-cancel-task/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/27/java-generic-extends/">
+    <a href="/2014/05/27/java-generic-extends/">
   <time datetime="2014-05-27T12:43:57.000Z">
-    May 27 2014
+    May 27
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/27/java-generic-extends/">接口中使用泛型参数的思考</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <p>今天在使用一个别人提供的接口时，发现该接口的定义如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">xxxService</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">BasicModel</span>&gt; {</span>
-    <span class="keyword">public</span> T getXXX();
-    <span class="keyword">public</span> T countXXX();
-}
-</pre></td></tr></table></figure>
-
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/27/java-generic-extends/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/18/java-annotation-summarize/">
+    <a href="/2014/05/18/java-annotation-summarize/">
   <time datetime="2014-05-18T08:51:38.000Z">
-    May 18 2014
+    May 18
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/18/java-annotation-summarize/">Java 注解总结</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>在写JAVA代码的时候，我们经常会使用注解来简化代码，这些注解是需要我们自己定义的，当然JAVA本身也提供了一些标准注解。同时我们也建议大家在自己的代码中定义自己的注解，为了能够在代码中灵活使用注解，这里总结一下注解相关的东西。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/18/java-annotation-summarize/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/17/misunderstand-for-future-of-executorservice/">
+    <a href="/2014/05/17/misunderstand-for-future-of-executorservice/">
   <time datetime="2014-05-17T12:54:15.000Z">
-    May 17 2014
+    May 17
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/17/misunderstand-for-future-of-executorservice/">关于ExecutorService的Future的误解</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>在多线程编程中我们经常使用ExecutorService的Future来实现等待多个线程返回的需求。此时需要调用ExecutorService的相关方法来实现，比如</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/17/misunderstand-for-future-of-executorservice/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/17/ibatis-dtd-convert/">
+    <a href="/2014/05/17/ibatis-dtd-convert/">
   <time datetime="2014-05-17T12:26:28.000Z">
-    May 17 2014
+    May 17
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/17/ibatis-dtd-convert/">IBatis DTD 文件的转换</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>我们经常使用IBatis这个ORM框架来操作数据库，在使用IBatis的时候我们需要编写sqlMap以及sqlMapConfig的配置文件。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/17/ibatis-dtd-convert/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/17/maven-notice/">
+    <a href="/2014/05/17/maven-notice/">
   <time datetime="2014-05-17T11:39:59.000Z">
-    May 17 2014
+    May 17
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/17/maven-notice/">maven的一些注意点</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>目前maven被广泛用于java项目的开发中，统一管理项目依赖，以及项目的打包部署等，我们经常需要编写maven的pom文件，包括顶级pom以及子pom。maven既可以用来构建单工程项目，也可以用来构建多工程项目，子工程和子工程之间有相互依赖。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/17/maven-notice/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/17/final-local-variable-for-jvm/">
+    <a href="/2014/05/17/final-local-variable-for-jvm/">
   <time datetime="2014-05-17T10:08:12.000Z">
-    May 17 2014
+    May 17
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/17/final-local-variable-for-jvm/">Java局部变量有没有final关键字对JVM性能影响不大</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>在写Java代码中我们经常使用final这个关键字，被final修饰的变量，编译器不允许我们修改它的值，如果是基本类型，编译器不允许我们在第一次赋值后再修改基本类型的值，如果是引用类型，编译器不允许我们在第一次赋值后再修改引用的指向，这都是编译器层面的限制，因为如果你试图去修改它，就会得到一个编译错误。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/17/final-local-variable-for-jvm/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/">
+    <a href="/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/">
   <time datetime="2014-05-17T09:35:04.000Z">
-    May 17 2014
+    May 17
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/">maven dependencies 和 dependencyManagement的区别</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <p>曾经有人问我maven中dependencies和dependencyManagement的区别，我当时主要从版本控制以及依赖引入这两方面来回答</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
+  
+    
+    
+    <article class="post">
+  <header>
+    <a href="/2014/05/17/why-odd-number-machine-for-zookeeper/">
+  <time datetime="2014-05-17T07:39:29.000Z">
+    May 17
+  </time>
+</a>
+    
+  
+    <h1 class="title"><a href="/2014/05/17/why-odd-number-machine-for-zookeeper/">为什么zookeeper集群个需要奇数台机器</a></h1>
   
 
-  <nav id="pagination">
+  </header>
+</article>
+  
+    
+    
+    <article class="post">
+  <header>
+    <a href="/2014/05/14/btrace-for-production-problem/">
+  <time datetime="2014-05-14T07:55:55.000Z">
+    May 14
+  </time>
+</a>
+    
+  
+    <h1 class="title"><a href="/2014/05/14/btrace-for-production-problem/">使用BTrace来定位方法中Catch住的异常</a></h1>
+  
+
+  </header>
+</article>
+  
+    
+    
+    <article class="post">
+  <header>
+    <a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">
+  <time datetime="2014-05-11T13:11:11.000Z">
+    May 11
+  </time>
+</a>
+    
+  
+    <h1 class="title"><a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">CountDownLatch和CyclicBarrier</a></h1>
+  
+
+  </header>
+</article>
+  
+    
+    
+    <article class="post">
+  <header>
+    <a href="/2014/05/10/consistent-hashing/">
+  <time datetime="2014-05-10T14:03:25.000Z">
+    May 10
+  </time>
+</a>
+    
+  
+    <h1 class="title"><a href="/2014/05/10/consistent-hashing/">聊聊一致性哈希算法</a></h1>
+  
+
+  </header>
+</article>
+  
+    
+    
+    <article class="post">
+  <header>
+    <a href="/2014/05/10/svn-command/">
+  <time datetime="2014-05-10T08:20:24.000Z">
+    May 10
+  </time>
+</a>
+    
+  
+    <h1 class="title"><a href="/2014/05/10/svn-command/">谈谈几个svn命令</a></h1>
+  
+
+  </header>
+</article>
+  
+    
+    
+    <article class="post">
+  <header>
+    <a href="/2014/05/09/class-conflict-analyse-1/">
+  <time datetime="2014-05-09T10:59:01.000Z">
+    May 09
+  </time>
+</a>
+    
+  
+    <h1 class="title"><a href="/2014/05/09/class-conflict-analyse-1/">一个jar包冲突的解决</a></h1>
+  
+
+  </header>
+</article>
+  
+    
+    
+    <article class="post">
+  <header>
+    <a href="/2014/05/03/after-returning-advice-error/">
+  <time datetime="2014-05-03T06:40:00.000Z">
+    May 03
+  </time>
+</a>
+    
+  
+    <h1 class="title"><a href="/2014/05/03/after-returning-advice-error/">一个在方法返回前使用AOP的BUG分析</a></h1>
+  
+
+  </header>
+</article>
+  
+    
+    
+    <article class="post">
+  <header>
+    <a href="/2014/05/02/hash-map-infinite-loop/">
+  <time datetime="2014-05-02T04:11:27.000Z">
+    May 02
+  </time>
+</a>
+    
+  
+    <h1 class="title"><a href="/2014/05/02/hash-map-infinite-loop/">Java HashMap死循环分析</a></h1>
+  
+
+  </header>
+</article>
   
   
-    <a href="/archives/2014/05/page/2/" class="next">Next</a>
+    </div></section>
   
-  <div class="clearfix"></div>
-</nav>
 
 
 </div>
@@ -506,7 +410,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -537,6 +441,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
     
       <li>
         <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
@@ -574,10 +482,6 @@
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
-      <li>
-        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -601,6 +505,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		

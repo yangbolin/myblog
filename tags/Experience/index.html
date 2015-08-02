@@ -39,6 +39,8 @@
       
         <li><a href="/reading">Reading</a></li>
       
+        <li><a href="/archives">Archives</a></li>
+      
         <li><a href="/about">About</a></li>
       
       
@@ -57,131 +59,67 @@
 
 
   
+  
+    
+    
+      
+      
+      <section class="archives-wrapper">
+        
+        <div class="archives">
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/10/31/transaction-attention/">
+    <a href="/2014/10/31/transaction-attention/">
   <time datetime="2014-10-31T09:12:19.000Z">
-    Oct 31 2014
+    Oct 31
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/10/31/transaction-attention/">使用事务的一个注意点</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <p>最近在代码中配置了一个事务，事务的意思就是当前这件事情要么全部正常做完，要么全部不做。为了避免数据库中出现脏数据，我给XXX类的ff方法配置了事务。在ff方法主要做下面这几件事情</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/10/31/transaction-attention/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/10/19/project-accumulation-1/">
+    <a href="/2014/10/19/project-accumulation-1/">
   <time datetime="2014-10-19T08:21:50.000Z">
-    Oct 19 2014
+    Oct 19
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/10/19/project-accumulation-1/">项目中的点点滴滴</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>最近一直在忙项目中的事情，不过在整个开发过程中自己也有一些体会，写写这些体会，就当是自己的经验了，这里不会涉及到太深的原理，只是记录一些技巧以及一些值得注意的地方，形成一些编程的思想，理念，可以更好地运用到后续的项目之中。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/10/19/project-accumulation-1/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/10/07/idempotency-and-db-lock/">
+    <a href="/2014/10/07/idempotency-and-db-lock/">
   <time datetime="2014-10-07T10:52:48.000Z">
-    Oct 7 2014
+    Oct 07
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/10/07/idempotency-and-db-lock/">幂等性&amp;&amp;数据库的锁</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-幂等性">一.幂等性</h4>
-<p>幂等性是高等代数中的概念，这里不是讨论数学上幂等性的概念，而是讨论程序中幂等性。幂等性是系统的接口对外一种承诺(而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的. 声明为幂等的接口会认为外部调用失败是常态, 并且失败之后必然会有重试.</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/10/07/idempotency-and-db-lock/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
-  
-
-  <nav id="pagination">
   
   
-  <div class="clearfix"></div>
-</nav>
+    </div></section>
+  
 
 </div>
 	  </div>
@@ -216,7 +154,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -247,6 +185,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
     
       <li>
         <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
@@ -284,10 +226,6 @@
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
-      <li>
-        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -311,6 +249,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		

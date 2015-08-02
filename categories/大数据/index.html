@@ -39,6 +39,8 @@
       
         <li><a href="/reading">Reading</a></li>
       
+        <li><a href="/archives">Archives</a></li>
+      
         <li><a href="/about">About</a></li>
       
       
@@ -57,132 +59,67 @@
 
 
   
+  
+    
+    
+      
+      
+      <section class="archives-wrapper">
+        
+        <div class="archives">
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/20/hbase-keyvalue-type/">
+    <a href="/2014/07/20/hbase-keyvalue-type/">
   <time datetime="2014-07-20T08:22:39.000Z">
-    Jul 20 2014
+    Jul 20
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/07/20/hbase-keyvalue-type/">HBase的基础类型KeyValue</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>HBase是面向列的存储数据的，最终的存储单元都是KeyValue的结构，HBase本身也定义了一个KeyValue的类型，这是HBase数据存储的基本类型。那么KeyValue本身会存储那些信息呢？</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/20/hbase-keyvalue-type/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/06/07/how-to-debug-hbase-source/">
+    <a href="/2014/06/07/how-to-debug-hbase-source/">
   <time datetime="2014-06-07T14:36:16.000Z">
-    Jun 7 2014
+    Jun 07
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/06/07/how-to-debug-hbase-source/">如何在本地通过eclipse来调试HBase的源代码</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>要想把HBase的源代码梳理清楚，需要在本地调试一下，可能直接看代码也能搞清楚，但是调试能让我们尽快搞清楚HBase的源代码，下面就来看一下如何在eclipse中调试HBase的源代码。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/06/07/how-to-debug-hbase-source/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
   
+    
+    
     <article class="post">
   <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/09/hbase-idea/">
+    <a href="/2014/04/09/hbase-idea/">
   <time datetime="2014-04-09T11:25:55.000Z">
-    Apr 9 2014
+    Apr 09
   </time>
 </a>
-    
     
   
     <h1 class="title"><a href="/2014/04/09/hbase-idea/">HBase理解</a></h1>
   
 
   </header>
-  
-  <div class="entry">
-    
-      <h3 id="一-概述">一.概述</h3>
-<p>在互联网应用中，经常需要存储大量的用户数据，然后对这些数据进行加工，分析最终产出对用户有价值的数据，关于数据的存储，我们可以选择文件，缓存以及数据库等，在数据库我们经常使用关系型数据库(mysql,oracle等)来存储，当数据达到一定量就需要进行分表分库，以便提高数据库的查询效率，例如在mysql中当表记录行数超过400万的时候，通常就需要分表。但是如果我们存储数据的时候选择的是HBase，这时候就不用分表，HBase中的表可以支撑上亿行，上百万列，这些数据最终存储都是分布在多台机器上的，因此HBase可以存储大量的数据，但是HBase就不具备关系型数据库的关联查询，就是说在HBase中不存在表和表的JOIN查询，关系型的查询是关系型数据库天生的优势，这样在HBase中存储的数据一定是一些弱关系的数据，要是数据之间有很强的关系，那就不太适合存储在HBase中了。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/09/hbase-idea/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
 </article>
-
-
-
-  
-
-  <nav id="pagination">
   
   
-  <div class="clearfix"></div>
-</nav>
+    </div></section>
+  
 
 
 </div>
@@ -218,7 +155,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -249,6 +186,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
     
       <li>
         <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
@@ -286,10 +227,6 @@
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
-      <li>
-        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -313,6 +250,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		

@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>Category: 编程语言 | BolinYoung&#39;s Blog</title>
+  <title>Java并发编程艺术读书笔记一 | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="Coder @Alibaba">
+  <meta name="description" content="volatile轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
+  <meta property="og:title" content="Java并发编程艺术读书笔记一"/>
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -39,6 +39,8 @@
       
         <li><a href="/reading">Reading</a></li>
       
+        <li><a href="/archives">Archives</a></li>
+      
         <li><a href="/about">About</a></li>
       
       
@@ -49,63 +51,89 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-		<div class="content">
-
-
-<h2 class="archives-title category"><span>编程语言</span></h2>
-
-
-
-  
-    <article class="post">
+		<div class="content"><article class="post">
   <header>
     
       <div class="icon"></div>
-      <a href="/2014/04/08/java-parameter-reference/">
-  <time datetime="2014-04-08T14:05:56.000Z">
-    Apr 8 2014
+      <a href="/2015/08/02/java-concurrent-note-1/">
+  <time datetime="2015-08-02T05:44:15.000Z">
+    Aug 2 2015
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2014/04/08/java-parameter-reference/">Java 函数参数引用思考</a></h1>
+    <h1 class="title">Java并发编程艺术读书笔记一</h1>
   
 
   </header>
   
   <div class="entry">
     
-      <h3 id="一-概述">一.概述</h3>
-<p>Java是一门纯粹的面向对象语言，除了8种基本类型意外，其他都是对象。函数是编程语言中的一个非常重要的概念，Java中的函数都不是孤立存在的，不像C或者JS你可以定义一个孤立的函数，有函数就有函数调用，在Java中函数参数就两种类型，要么函数参数是基本类型，要么函数参数是引用类型。函数调用就会涉及到的参数的传递，在Java中，参数传递就一种方式，既所谓值传递，其实就是传递变量值的拷贝，如果参数类型是基本类型，那么传递的就是基本类型参数值的一份拷贝，如果参数类型是引用类型，那么传递的就是引用值的一份拷贝，而不是引用对象的一份拷贝，其实用C语言的指针来说，传递的就是指针所指内存空间地址的一份拷贝，正所谓Java中虽然没有指针，但全是指针。</p>
+      <ul>
+<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p>synchronized<br>对于普通方法，锁是当前实例对象。对于静态方法，锁是当前类的Class对象。对于同步方法块，所示synchronized括号里面配置的对象，代码块的同步是基于monitorenter和monitorexit来实现的。</p>
+</li>
+<li><p>Java对象头<br>synchronized用的锁是存在JAVA对象头里面的。JAVA对象头里的Mark Word默认存储了对象的HashCode，分代年龄和锁标记。</p>
+</li>
+<li><p>偏向锁<br>偏向锁使用了一种等到竞争出现才释放锁的机制。它首先会暂停拥有偏向缩的线程，然后检查持有偏向缩的线程是否活着，如果线程处于不活动状态，则将对象头设置为无锁状态；如果线程仍然活着，持有偏向锁的栈会被执行，遍历偏向对象的锁记录，栈中的锁记录和对象头的Mark Word要么重新偏向于其他线程，要么恢复到无锁或者标记对象不适合作为偏向锁，最后唤醒暂停的线程。可以通过JVM参数关闭偏向锁:-XX:-UseBiasedLocking=false。</p>
+</li>
+<li><p>轻量级锁<br>使用CAS将对象头中的Mark Word替换为指向锁记录的指针。如果成功，当前线程获得锁，如果失败，表示其他线程竞争锁，当前线程尝试使用自旋来获取锁。</p>
+</li>
+<li><p>重量级锁<br>自旋获取锁失败，轻量级线程就会转换成重量级线程。</p>
+</li>
+<li><p>总线锁<br>所谓总线锁就是使用处理器提供的一个LOCK #信号，当一个处理器在总线上输出此信号时，其他处理器请求将被阻塞住，那么该处理器可以独占共享内存。</p>
+</li>
+<li><p>ABA问题<br>如果一个变量的值从A变到B又变到A，此时可以通过版本来感知到这一变化，注意版本思想在实际开发工作中的灵活使用。</p>
+</li>
+<li><p>CAS<br>在修改一个变量值的时候先判断一下变量当前的值是否和我们期望的值一样，入股一样就修改，不一样就不修改。</p>
+</li>
+</ul>
 
     
   </div>
-  <footer class="end-sep">
+  <footer>
     
       
-        <div class="alignleft">
-          <a href="/2014/04/08/java-parameter-reference/#more" class="more-link">Read More</a>
-        </div>
+  <div class="categories">
+    <a class="categories-link" href="/categories/并发编程/">并发编程</a>
+  </div>
+
       
-      
+  <div class="tags">
+    <a class="tags-link" href="/tags/JAVA/">JAVA</a>
+  </div>
+
     
     <div class="clearfix"></div>
   </footer>
 </article>
 
 
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="Java并发编程艺术读书笔记一">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
 
-  
 
-  <nav id="pagination">
-  
-    <a href="/categories/编程语言/" class="prev">Prev</a>
-  
-  
-  <div class="clearfix"></div>
-</nav>
-
+</section>
 
 </div>
 	  </div>
@@ -140,7 +168,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -171,6 +199,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
     
       <li>
         <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
@@ -208,10 +240,6 @@
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
-      <li>
-        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -235,6 +263,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		

@@ -39,6 +39,8 @@
       
         <li><a href="/reading">Reading</a></li>
       
+        <li><a href="/archives">Archives</a></li>
+      
         <li><a href="/about">About</a></li>
       
       
@@ -51,6 +53,47 @@
 </header>
 		<div class="content">
 
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/08/02/java-concurrent-note-1/">
+  <time datetime="2015-08-02T05:44:15.000Z">
+    Aug 2 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/08/02/java-concurrent-note-1/">Java并发编程艺术读书笔记一</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <ul>
+<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。</li>
+</ul>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/08/02/java-concurrent-note-1/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
 
 
 
@@ -416,46 +459,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/11/17/akka-spring/">
-  <time datetime="2014-11-17T14:08:04.000Z">
-    Nov 17 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/11/17/akka-spring/">akka如何和Spring集成起来</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>最近又重新学习了一下akka，并且在一个web应用中成功使用了akka提升了系统的性能。我们在web应用中一般都会有dao&amp;&amp;service，这些都是spring的bean，我们定义一个actor，这个actor中可能调用dao读写数据库，也可能调用service做业务逻辑，因此我们就希望actor也是从spring容器中获取到的，这样就可以在actor中注入service&amp;&amp;dao了。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/11/17/akka-spring/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -498,7 +501,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>20</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
 		
@@ -529,6 +532,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
     
       <li>
         <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
@@ -566,10 +573,6 @@
         <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
-      <li>
-        <a href="/2014/11/17/akka-spring/" title="akka如何和Spring集成起来">akka如何和Spring集成起来</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -593,6 +596,8 @@
 			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
 		
 			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		
