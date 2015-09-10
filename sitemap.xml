@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2015/09/09/awk-command/</loc>
+    <lastmod>2015-09-09T13:12:36.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2015/08/02/java-concurrent-note-1/</loc>
     <lastmod>2015-08-02T05:44:15.000Z</lastmod>
   </url>

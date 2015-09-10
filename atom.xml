@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-08-02T07:07:55.002Z</updated>
+  <updated>2015-09-10T02:02:04.505Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -15,13 +15,78 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[awk使用总结]]></title>
+    <link href="http://yangbolin.cn/2015/09/09/awk-command/"/>
+    <id>http://yangbolin.cn/2015/09/09/awk-command/</id>
+    <published>2015-09-09T13:12:36.000Z</published>
+    <updated>2015-09-10T02:01:58.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>在平时工作中经常会遇到一些文本的处理，awk就是一种文本处理语言，很方便，很轻量，可以说awk也是一种编程语言。</p>
+<p>awk的工作流程是这样的：读入有’\n’换行符分割的一条记录，然后将记录按指定的域分隔符划分域，填充域，\$0则表示所有域，\$1表示第一个域，\$n表示第n个域。默认域的分隔符是”空白键”或”tab键”。<br><a id="more"></a></p>
+<h4 id="二-常用命令">二.常用命令</h4>
+<h5 id="1-显示指定分隔符分隔后的第一列">1.显示指定分隔符分隔后的第一列</h5>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="title">awk</span> -F <span class="string">':'</span> <span class="string">'{print <span class="variable">$1</span>}'</span> /etc/passwd
+</pre></td></tr></table></figure>
+
+<p>-F ‘:’ 指定了awk处理行文本的分隔符号<br>{print $1}表示是action，对于文本中的没一行都要执行这个action<br>这个文本处理模式是awk+action</p>
+<h5 id="2-搜索文件中包含某一关键字的行">2.搜索文件中包含某一关键字的行</h5>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>awk -<span class="literal">F</span>: <span class="string">'/root/'</span> /etc/passwd
+</pre></td></tr></table></figure>
+
+<p>这里使用的pattern，匹配了pattern的行才会执行后面的action，没有指定action默认输出正行内容。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>awk -<span class="literal">F</span>: <span class="string">'/^root/'</span> /etc/passwd
+</pre></td></tr></table></figure>
+
+<p>匹配所有以root开头的行</p>
+<h5 id="3-awk内置变量">3.awk内置变量</h5>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="title">awk</span> -F <span class="string">':'</span> <span class="string">'{printf("filename:%s,linenumber:%s,linecontents:%s columns:%s\n",FILENAME,NR,NF,<span class="variable">$0</span>)}'</span> /etc/passwd
+</pre></td></tr></table></figure>
+
+<p>FILENAME awk浏览的文件名<br>NR 已读出的记录数目<br>NF 浏览记录的域的个数<br>printf用于格式化输出</p>
+<h5 id="4-变量和赋值">4.变量和赋值</h5>
+<p>统计一个文件中的行数</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>awk '{count++;print $0} <span class="operator"><span class="keyword">END</span>{print <span class="string">"user count is "</span>, <span class="aggregate">count</span>}<span class="string">' /etc/passwd</span></span>
+</pre></td></tr></table></figure>
+
+<p>注意这里的count虽然没有被初始化，但是它的值是0，但是稳妥的做法还是初始化一下</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>awk '<span class="operator"><span class="keyword">BEGIN</span> {<span class="aggregate">count</span>=<span class="number">0</span>;</span>print "[<span class="operator"><span class="keyword">start</span>]<span class="keyword">user</span> <span class="aggregate">count</span> <span class="keyword">is</span> <span class="string">", count}' {count=count+1;print $0} END {print "</span>[<span class="keyword">end</span>] <span class="keyword">user</span> <span class="aggregate">count</span> <span class="keyword">is</span> <span class="string">", count}' /etc/passwd</span></span>
+</pre></td></tr></table></figure>
+
+<p>BEGIN后面的action只有在开始的时候才会执行，END后面的语句只有结束的时候才会执行</p>
+<p>统计某个文件夹下的文件占用的字节数</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>ls -l | awk '<span class="operator"><span class="keyword">BEGIN</span> {<span class="keyword">size</span>=<span class="number">0</span>} {<span class="keyword">size</span>=<span class="keyword">size</span>+$<span class="number">5</span>} <span class="keyword">END</span>{print <span class="string">"[end]size is "</span>,<span class="keyword">size</span>}<span class="string">'</span></span>
+</pre></td></tr></table></figure>
+
+<p>如果以M为单位显示：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>ls -l | awk '<span class="operator"><span class="keyword">BEGIN</span> {<span class="keyword">size</span>=<span class="number">0</span>} {<span class="keyword">size</span>=<span class="keyword">size</span>+$<span class="number">5</span>} <span class="keyword">END</span>{print <span class="string">"[end] size is "</span>, <span class="keyword">size</span>/<span class="number">1024</span>/<span class="number">1024</span>, <span class="string">"M"</span>}<span class="string">'</span></span>
+</pre></td></tr></table></figure>
+
+<p>这个统计命令在排查线上日志超出限制时很有用。</p>
+]]></content>
+    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
+<p>在平时工作中经常会遇到一些文本的处理，awk就是一种文本处理语言，很方便，很轻量，可以说awk也是一种编程语言。</p>
+<p>awk的工作流程是这样的：读入有’\n’换行符分割的一条记录，然后将记录按指定的域分隔符划分域，填充域，\$0则表示所有域，\$1表示第一个域，\$n表示第n个域。默认域的分隔符是”空白键”或”tab键”。<br>]]></summary>
+    
+      <category term="awk" scheme="http://yangbolin.cn/tags/awk/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Java并发编程艺术读书笔记一]]></title>
     <link href="http://yangbolin.cn/2015/08/02/java-concurrent-note-1/"/>
     <id>http://yangbolin.cn/2015/08/02/java-concurrent-note-1/</id>
     <published>2015-08-02T05:44:15.000Z</published>
-    <updated>2015-08-02T07:01:50.000Z</updated>
+    <updated>2015-08-09T03:47:16.000Z</updated>
     <content type="html"><![CDATA[<ul>
-<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。</li>
+<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。③volatile写代表锁的释放，volatile读代表锁的获取。</li>
 </ul>
 <a id="more"></a>
 
@@ -45,7 +110,7 @@
 </ul>
 ]]></content>
     <summary type="html"><![CDATA[<ul>
-<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。</li>
+<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。③volatile写代表锁的释放，volatile读代表锁的获取。</li>
 </ul>
 ]]></summary>
     
@@ -2602,31 +2667,6 @@ ThreadLocalMap getMap(Thread t) {
       <category term="Experience" scheme="http://yangbolin.cn/tags/Experience/"/>
     
       <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[JVM常用命令总结]]></title>
-    <link href="http://yangbolin.cn/2014/09/17/jvm-cmd/"/>
-    <id>http://yangbolin.cn/2014/09/17/jvm-cmd/</id>
-    <published>2014-09-17T11:38:19.000Z</published>
-    <updated>2014-11-19T13:36:44.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="GC相关">GC相关</h4>
-<p>jstat -gcutil pid time<br>实时查看JAVA进程PID的垃圾回收情况，PID表示JAVA进程的ID，time表示统计的时间频率，单位是ms，比如jstat -gcutil 8888 1000 表示每隔1000ms统计一次JAVA进程8888的GC回收。</p>
-<a id="more"></a>
-
-<h4 id="内存相关">内存相关</h4>
-<p>jmap -dump:format=b,file=/home/admin/xxx.bin PID<br>获取JVM的内存的dump文件</p>
-<p>jinfo -flag +HeapDumpBeforeFullGC PID<br>jinfo -flag +HeapDumpAfterFullGC PID<br>设置这两个标记后，可以让JVM在发生FGC前后自动dump堆内存，等dump完后，执行下面的命令去掉这两个标记<br>jinfo -flag -HeapDumpBeforeFullGC PID<br>jinfo -flag -HeapDumpAfterFullGC PID<br>在dump结束后，记得去掉这两个标记</p>
-<p>jmap -histo:live PID<br>查看系统中存活的实例数目</p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="GC相关">GC相关</h4>
-<p>jstat -gcutil pid time<br>实时查看JAVA进程PID的垃圾回收情况，PID表示JAVA进程的ID，time表示统计的时间频率，单位是ms，比如jstat -gcutil 8888 1000 表示每隔1000ms统计一次JAVA进程8888的GC回收。</p>
-]]></summary>
-    
-      <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
-    
-      <category term="JVM学习" scheme="http://yangbolin.cn/categories/JVM%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   

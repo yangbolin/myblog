@@ -7,7 +7,7 @@
   <title>Java并发编程艺术读书笔记一 | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="volatile轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。">
+  <meta name="description" content="volatile轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。③volatile写代表锁的释放，volatile读代表锁的获取。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -71,7 +71,7 @@
   <div class="entry">
     
       <ul>
-<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。</li>
+<li>volatile<br>轻量级的同步机制，有volatile修饰的变量在进行写操作的时候会多出一条lock前缀的指令，比如lock addl $0 x 0,(%esp)。lock前缀的指令在多核处理器下面会引发下面两件事情：①将当前处理器缓存行的数据写回到系统内存。②这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。③volatile写代表锁的释放，volatile读代表锁的获取。</li>
 </ul>
 <a id="more"></a>
 
@@ -178,6 +178,8 @@ var duoshuoQuery = {short_name:"bolin"};
 		
 			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
 		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
 			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
 		
 			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
@@ -185,8 +187,6 @@ var duoshuoQuery = {short_name:"bolin"};
 			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
 		
 			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
-		
-			<li><a href="/tags/log4j/" title="log4j">log4j<sup>1</sup></a></li>
 		
 		</ul>
 </div>
@@ -199,6 +199,10 @@ var duoshuoQuery = {short_name:"bolin"};
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
+      </li>
     
       <li>
         <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
@@ -234,10 +238,6 @@ var duoshuoQuery = {short_name:"bolin"};
     
       <li>
         <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
-      </li>
-    
-      <li>
-        <a href="/2014/11/17/servlet-extend/" title="一次关于servlet的扩展">一次关于servlet的扩展</a>
       </li>
     
   </ul>
