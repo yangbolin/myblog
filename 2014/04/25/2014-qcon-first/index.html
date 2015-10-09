@@ -1,15 +1,368 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>2014.04.25 Qcon北京第一天总结 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+今天是2014北京Qcon第一天，也是自己第一次来北京，上午先去北京国际会议中心签到，领入场证和餐券，一进场就有人问我们要名片，感觉很多公司的人借此机会来挖其他公司里面的人。上午大家一起参加开场致词，接下来是三位国际友人的分享，上午的会议都是大家一起开的，下午我有选择性的听了四场会议，第一场是讲企业个人成长的，其余三场都是讲互联网架构的。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="2014.04.25 Qcon北京第一天总结"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/25/2014-qcon-first/">
+  <time datetime="2014-04-25T14:46:14.000Z">
+    Apr 25 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">2014.04.25 Qcon北京第一天总结</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>今天是2014北京Qcon第一天，也是自己第一次来北京，上午先去北京国际会议中心签到，领入场证和餐券，一进场就有人问我们要名片，感觉很多公司的人借此机会来挖其他公司里面的人。上午大家一起参加开场致词，接下来是三位国际友人的分享，上午的会议都是大家一起开的，下午我有选择性的听了四场会议，第一场是讲企业个人成长的，其余三场都是讲互联网架构的。</p>
+<a id="more"></a>
+
+<h4 id="二-InfoQ的CEO开场致词">二.InfoQ的CEO开场致词</h4>
+<p>InfoQ的CEO做了开场致词，他的致词都是在宣传InfoQ的作用以及InfoQ的用户分析，最后还感谢了一下本次Qcon的赞助商，之前没怎么逛过InfoQ，看来后面需要抽时间去逛逛InfoQ了，目前InfoQ上大多数文章都是翻译过来的，CEO有提到要增加原创的文章数目，争取做到原创文章和翻译文章的比例是1:1，从他的发言中感觉到InfoQ上的文章质量还是很高的。</p>
+<h3 id="三-亚马逊NoSql数据产品的介绍">三.亚马逊NoSql数据产品的介绍</h3>
+<p>一个亚马逊的工程师介绍了一下他们自己研发的NoSql数据库产品，首先他阐述的关系型数据库的优缺点，比如关系型数据库能进行很容易的查询操作，多表的JOIN操作，但是当数据量很大的时候，关系型数据库的分区操作比较困难，同时关系型数据库不具备纵向扩展的功能，于是他们自己研发了dynamo，dynamo是一个library不是一个service,dynamo缺乏数据的强一致性，学习曲线比较陡峭，继而产生了dynamoDB这种NoSql数据产品，数据写三份，冗余存储，数据之间互为备份。</p>
+<h3 id="四-大型前端应用的组件与模块">四.大型前端应用的组件与模块</h3>
+<p>一个英国人宣传了一下他们自己的一个前端组件，名称是origami，他们自己定义了一些前端的标准，基于这些标准，他们提供了丰富的前端组件，这样使用方只要在页面上引入相关的CSS/JS就可以直接使用相关的组件了。他讲到我们在构建小型的模块化组件，一个组件不要做太多事情，同时为别人做的事情要让别人用起来很方便。</p>
+<h3 id="五-大规模脑计算">五.大规模脑计算</h3>
+<p>一个国外的神经学科学家讲述了他们研究神经元的手段，由于数据量很大，每次实验都有T级别的数据，这些数据的计算他们采用spark这个开源的东西来做，spark是用来做在线大规模数据计算的，关于spark我也不太了解，这个老外讲的神经元相关的东西我听的不是很懂。</p>
+<h3 id="六-高效能人才成长">六.高效能人才成长</h3>
+<p>大会日程上说是高效能人才成长，我理解成个人成长，结果人家讲的是团队管理相关的东西，我不太care，就临时写了笔记，基本上都是从讲师的ppt抄下来的。</p>
+<ul>
+<li><p>高效能的理解<br>1.高价值产出，持续创新<br>2.团队高效率高质量<br>3.持续能力成长</p>
+</li>
+<li><p>成功的关键<br>1.原则的力量<br>2.组织的力量<br>3.体系的力量</p>
+</li>
+<li><p>管理的核心<br>1.创新管理<br>2.项目管理<br>3.人才成长</p>
+</li>
+<li><p>人才管理导向原则<br>1.人员招聘导向<br>  高级:内部成长，空降<br>  中级:内部成长<br>  初级:校招<br>2.人才成长导向<br>  合格上岗<br>  学习型组织<br>3.人才激励导向<br>  高级：期权<br>  终极：决策参与<br>  初级：学习成长，员工福利<br>4.人才绩效导向<br>  战略导向<br>  客户全面评价员工产出<br>  绩效</p>
+</li>
+</ul>
+<p>这个我不太care，所以就不做过多的评论和分析。</p>
+<h3 id="七-汽车之家论坛架构分析">七.汽车之家论坛架构分析</h3>
+<p>InfoQ请来了汽车之家的一位架构师来分享汽车之家论坛的架构，汽车之家也是一家比较有名的互联网公司，目前已经成功上市。这位架构师描述了汽车之家的三板斧：</p>
+<ul>
+<li>快<br>对于浏览器的请求能够快速处理，就是说服务端的数据返回速度一定要有足够快的速度。</li>
+<li>稳<br>稳指的就是稳定性，他们的目标是4个9或者3个9的稳定性，其实在互联网产品中工程师喜欢优化产品的性能，因为这个更能锻炼工程师，但是稳定性要比快重要一些，因此保持网张的稳定性很重要，这个关系到用户的切身利益。</li>
+<li>爱<br>他们的目标是做一个用户喜爱的网站，这个在互联网产品中很重要，要是用户不喜欢，或者用户讨厌，那么这个产品估计离淘汰就不远了。</li>
+</ul>
+<p>汽车之家的架构师也提到了做一个论坛的三和核心东西：</p>
+<ul>
+<li>列表<br>他们使用Redis排序列表实现分页，并且能够在O(1)的时间内找到某一个帖子，直接根据数组下标获取数组元素。</li>
+<li>帖子<br>Nigix Cache缓存帖子，使用MQ清楚缓存。</li>
+<li>发帖传图<br>分布式上传图片</li>
+</ul>
+<p>另外这位架构师还提到了他们的日志分析，使用AOP做到方法级别的日志，然后使用storm来实时分析日志，使用spark来分析历史数据，感觉这个日志系统的架构还是比较NB的，不过不知道AOP拦截方法打日志对系统性能的影响有多大。</p>
+<p>最后，他也提到他们的推荐做的不好，其实论坛上的推荐功能还是很重要的，这貌似是每个网站所必须具有的一项功能，按照用户的行为和喜好推荐相关的内容，这样用户会爱上你的网站。</p>
+<h3 id="八-聚石塔介绍">八.聚石塔介绍</h3>
+<p>其实不太想去听聚石塔的，之前就听过聚石塔，也看过相关的文章，但是主讲的人是陈皓，酷壳的博主，很有名的一个人，仰慕大师风范所以去听，不过听的人很多，会场都是爆满。聚石塔是淘宝天猫对接外部商家IT系统的平台，目前被打造成一个云平台，为商家提供云服务，他把万网从聚石塔中剥离出去，让聚石塔只和阿里云打交道，同时优化了一些阿里云的系统，陈皓对阿里云的同学评价很高的。由于商家的IT服务性能很差，他们就对第三方应用做性能测试，发现很多问题都是因为数据库没有建立索引导致，可能小卖家不太会注意这个事情，因为他们的量小，没有必要给数据库字段建立索引，但是双11的时候订单量一旦上去，要是数据库没有建立索引，对卖家来说就是很大的损失了。</p>
+<p>做平台的时候需要先制定标准，无标准不平台。<br>开发人员说明天或者后续会做的事情等于永远不会去做，其实他的意思是事情要一次性做到极致，不要托泥带水，这个我比较认同，追求卓越。<br>这次他也强调了系统监控和运维的重要性，这可以保证系统的稳定性，不会导致系统挂掉很长时间。<br>国内开发和运维分开搞，开发不知运维是怎么搞的，运维不知开发是怎么搞的。国外系统的开发和运维都由写代码的人搞定，运维工程师负责开发一些工具帮助写代码的人搞运维。<br>很多人喜欢使用数据库来搞状态机器。<br>给数据不如给功能来的安全，给用户提供相关数据的同时思考一下他们用这些数据来做什么事情。<br>关于服务的监控，目前有两种方式，一是服务自己主动上报自己的状态，二是探测服务的状态，因为服务自己挂了，它就没法上报自己的状态了。</p>
+<h3 id="九-京东大规模内存存储平台">九.京东大规模内存存储平台</h3>
+<p>京东中间件负责人介绍了他们最新研发的内存存储平台，基于Redis的改造，这个感觉和阿里巴巴的tair有点相似。他们利用RAM和SSD做存储介质，存储引擎也基于B+Tree构建，其实和mysql的索引树是一样的结构，在内存中维护一颗B+Tree，同时他们把热数据一直留在内存，SSD存储全量数据。</p>
+<p>感觉他们的难点在于存储的扩容，他们的扩容分为纵向扩容和横向扩容，横向扩容是增加分片的数目，纵向扩容是增加分片的容量，扩容就要考虑数据的一致性，他们使用一个proxy来控制扩容时数据的读写，但是感觉他们在讲如何保持数据一致性方面没讲清楚，他们号称扩容过程中不会丢任何数据，不知tair是如何保持数据一致性的，等回去后和tair那边沟通一下他们是如何做到扩容时不丢数据的，了解一下实现思路。另外他们给人传达的一个思想就是他们产品的诞生是为了满足业务需求，不是自己凭空构建出来的一个东西，这个确实，大家都喜欢玩技术，并且产出一些有用的东西来，这些东西不是凭空产生，要学会去把实际的业务场景进行抽象，用最终抽象出来的东西去解决某一类问题。</p>
+<p>之前一直觉得JD没啥技术含量，不过今天算是见识了，他们能对Redis结合自己的业务场景不断定制，优化，同时还引入分布式选举的思想，paxo算法，很佩服这种自主研发的精神。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/技术交流/">技术交流</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Qcon/">Qcon</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="2014.04.25 Qcon北京第一天总结">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>7</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/06/08/java-reflect/" title="JAVA反射调用总结">JAVA反射调用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/05/18/os-timer-call/" title="操作系统定时调度">操作系统定时调度</a>
+      </li>
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
+      </li>
+    
+      <li>
+        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
+      </li>
+    
+      <li>
+        <a href="/2014/12/26/short-ref-equal/" title="Short对象的比较">Short对象的比较</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>5</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>30</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>
