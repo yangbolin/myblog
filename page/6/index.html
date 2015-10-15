@@ -61,6 +61,45 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/05/31/futuretask/">
+  <time datetime="2014-05-31T12:18:57.000Z">
+    May 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/31/futuretask/">FutureTask</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在juc的包中有这么一个类FutureTask,我们可以直接用来创建一个该类的实例，然后调用run方法，最后调用get来获取线程的执行结果。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/31/futuretask/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/05/31/future-cancel-task/">
   <time datetime="2014-05-31T11:01:51.000Z">
     May 31 2014
@@ -424,46 +463,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/14/btrace-for-production-problem/">
-  <time datetime="2014-05-14T07:55:55.000Z">
-    May 14 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/14/btrace-for-production-problem/">使用BTrace来定位方法中Catch住的异常</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-问题">一.问题</h4>
-<p>今天在自己应用中引入了一个新的中间件，发布到线上后，发现一个接口一直获取不到数据，此时找不到日志，因为代码中的日志输出不按常理出牌，误引入了某一中间件自定义的Logger导致日志很难找到，此时要是在测试环境，debug一下就搞定，但是线上不能这么搞，如何去查看一下本次调用接口返回的数据到底是什么呢？</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/14/btrace-for-production-problem/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -483,55 +482,17 @@
   
     
       
-      
+      <% if (site.tags.length){ %>
 <div class="widget tagslist">
-		<h3>标签</h3>
+		<h3><%= __('标签') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
-		
-			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
-		
-			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
-		
-			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
-		
-			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
-		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>21</sup></a></li>
-		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>8</sup></a></li>
-		
-			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
-		
-			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
-		
-			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
-			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
-		
-			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
-		
+		<% site.tags.sort('name').limit(20).each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
@@ -539,6 +500,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
+      </li>
     
       <li>
         <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
@@ -576,10 +541,6 @@
         <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
       </li>
     
-      <li>
-        <a href="/2015/03/21/javac-accessbash00/" title="javac生成的access$000方法">javac生成的access$000方法</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -614,7 +575,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>30</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>31</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		
@@ -650,14 +611,26 @@
 </div>
 <div class="clearfix"></div>
 </footer>
-  <script src="/js/jquery-1.7.2.min.js"></script>
-<script src="/js/scale.fix.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+  <script src="<%- config.root %>js/jquery-1.7.2.min.js"></script>
+<script src="<%- config.root %>js/scale.fix.js"></script>
+<script src="<%- config.root %>js/jquery.imagesloaded.min.js"></script>
+<script src="<%- config.root %>js/gallery.js"></script>
 
-
+<% if (config.disqus_shortname){ %>
 <script type="text/javascript">
-  var duoshuoQuery = { short_name: 'bolin' };
+  var disqus_shortname = '<%= config.disqus_shortname %>';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/<% if (page.comments){ %>embed.js<% } else { %>count.js<% } %>';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+<% } else if (theme.duoshuo_shortname){ %>
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: '<%= theme.duoshuo_shortname %>' };
   (function() {
     var ds = document.createElement('script');
     ds.type = 'text/javascript';
@@ -667,17 +640,17 @@
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
   })();
 </script>
+<% } %>
 
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<% if (theme.fancybox){ %>
+<link rel="stylesheet" href="<%- config.root %>fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="<%- config.root %>fancybox/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
   (function($){
     $('.fancybox').fancybox();
   })(jQuery);
 </script>
-
+<% } %>
 
 </body>
 </html>
