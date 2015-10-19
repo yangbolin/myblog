@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-10-15T12:53:04.247Z</updated>
+  <updated>2015-10-19T03:12:55.402Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yangbolin.cn/2015/10/15/velocity-utils-stream-to-string/"/>
     <id>http://yangbolin.cn/2015/10/15/velocity-utils-stream-to-string/</id>
     <published>2015-10-15T12:41:33.000Z</published>
-    <updated>2015-10-15T12:50:38.000Z</updated>
+    <updated>2015-10-19T03:03:10.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一-背景">一.背景</h4>
 <p>最近在做需求的时候，需要在程序中把一个vm文件渲染成一个字符串，同时也需要把一个InputStream流转换成一个字符串，虽然说很简单，但是自己还是翻了翻以前的代码，也在网上找了相关的例子，为了下次使用的是能能够快速找到，专门记录一下。<br><a id="more"></a></p>
 <h4 id="二-实现">二.实现</h4>
@@ -117,6 +117,7 @@
 }
 </pre></td></tr></table></figure>
 
+<p>也可以直接使用org.apache.commons.io.IOUtils这个工具函数，注意commons-io包中工具函数的使用。</p>
 ]]></content>
     <summary type="html"><![CDATA[<h4 id="一-背景">一.背景</h4>
 <p>最近在做需求的时候，需要在程序中把一个vm文件渲染成一个字符串，同时也需要把一个InputStream流转换成一个字符串，虽然说很简单，但是自己还是翻了翻以前的代码，也在网上找了相关的例子，为了下次使用的是能能够快速找到，专门记录一下。<br>]]></summary>
