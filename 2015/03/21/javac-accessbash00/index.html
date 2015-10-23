@@ -226,55 +226,17 @@ var duoshuoQuery = {short_name:"bolin"};
   
     
       
-      
+      <% if (site.tags.length){ %>
 <div class="widget tagslist">
-		<h3>标签</h3>
+		<h3><%= __('标签') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
-		
-			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
-		
-			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
-		
-			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
-		
-			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
-		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>22</sup></a></li>
-		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>8</sup></a></li>
-		
-			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
-		
-			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
-		
-			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
-			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
-		
-			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
-		
+		<% site.tags.sort('name').limit(20).each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
@@ -282,6 +244,10 @@ var duoshuoQuery = {short_name:"bolin"};
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
     
       <li>
         <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
@@ -319,10 +285,6 @@ var duoshuoQuery = {short_name:"bolin"};
         <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
       </li>
     
-      <li>
-        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -351,7 +313,7 @@ var duoshuoQuery = {short_name:"bolin"};
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		
-			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
 		
 			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
 		

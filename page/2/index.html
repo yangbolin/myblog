@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2015/04/12/guava-multimap/">
+  <time datetime="2015-04-12T06:32:31.000Z">
+    Apr 12 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/04/12/guava-multimap/">guava中的Multimap</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>我们在日常开发过程中都会使用Map这个数据结构，使用这个数据结构能够很方便维护一些映射关系，有时候，我们存储的结构是Key-Collection的映射关系，关于这个映射关系调用put方法的时候，我们需要先调用get方法，然后看看对应的Key是否在当前映射关系中已经存在Collection，如果不存在，我们直接忘Collection中增加一个元素，不存在我们需要手动去创建，然后在往我们手工创建的Collection中增加一个元素，最后再把这个Collection写入我们的Map中，很麻烦。对于C++ STL有过了解的人都知道，STL中有一个Multimap这个数据结构，该数据结构能方便地解决上面映射关系的问题。但是JDK本身不存在这样的数据结构。。。好在guava这个开源的二方库中自己定义了这个容器，该容器既能维护好Key-Collection这个数据结构，也能很方便往这个数据结构中写数据。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/04/12/guava-multimap/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/03/21/javac-accessbash00/">
   <time datetime="2015-03-21T02:07:34.000Z">
     Mar 21 2015
@@ -416,46 +456,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/10/12/btrace-for-exception/">
-  <time datetime="2014-10-12T10:06:18.000Z">
-    Oct 12 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/10/12/btrace-for-exception/">使用BTrace监控方法入参</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-现象">一.现象</h4>
-<p>昨天在生产环境出现一个类的方法被调用然后出现了异常，这个异常没有被catch而是直接抛给上层的调用，我们想知道抛异常时调用该方法的参数是什么样子的，然后根据这个参数分析问题聚图出现在什么地方。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/10/12/btrace-for-exception/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -475,55 +475,17 @@
   
     
       
-      
+      <% if (site.tags.length){ %>
 <div class="widget tagslist">
-		<h3>标签</h3>
+		<h3><%= __('标签') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
-		
-			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
-		
-			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
-		
-			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
-		
-			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
-		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>22</sup></a></li>
-		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>8</sup></a></li>
-		
-			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
-		
-			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
-		
-			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
-			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
-		
-			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
-		
+		<% site.tags.sort('name').limit(20).each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
@@ -531,6 +493,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
     
       <li>
         <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
@@ -568,10 +534,6 @@
         <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
       </li>
     
-      <li>
-        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -600,7 +562,7 @@
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		
-			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
 		
 			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
 		

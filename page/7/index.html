@@ -61,6 +61,45 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/05/17/why-odd-number-machine-for-zookeeper/">
+  <time datetime="2014-05-17T07:39:29.000Z">
+    May 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/17/why-odd-number-machine-for-zookeeper/">为什么zookeeper集群个需要奇数台机器</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>我们通常使用zookeeper集群来协同管理另外一个集群，比如HBase集群，一个HBase集群必然对应一个zookeeper集群。在部署zookeeper集群的时候，我们为什么选择奇数台机器呢？</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/17/why-odd-number-machine-for-zookeeper/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/05/14/btrace-for-production-problem/">
   <time datetime="2014-05-14T07:55:55.000Z">
     May 14 2014
@@ -419,46 +458,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/25/2014-qcon-first/">
-  <time datetime="2014-04-25T14:46:14.000Z">
-    Apr 25 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/04/25/2014-qcon-first/">2014.04.25 Qcon北京第一天总结</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>今天是2014北京Qcon第一天，也是自己第一次来北京，上午先去北京国际会议中心签到，领入场证和餐券，一进场就有人问我们要名片，感觉很多公司的人借此机会来挖其他公司里面的人。上午大家一起参加开场致词，接下来是三位国际友人的分享，上午的会议都是大家一起开的，下午我有选择性的听了四场会议，第一场是讲企业个人成长的，其余三场都是讲互联网架构的。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/25/2014-qcon-first/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -478,55 +477,17 @@
   
     
       
-      
+      <% if (site.tags.length){ %>
 <div class="widget tagslist">
-		<h3>标签</h3>
+		<h3><%= __('标签') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
-		
-			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
-		
-			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
-		
-			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
-		
-			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
-		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>22</sup></a></li>
-		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>8</sup></a></li>
-		
-			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
-		
-			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
-		
-			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
-			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
-		
-			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
-		
+		<% site.tags.sort('name').limit(20).each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
@@ -534,6 +495,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
     
       <li>
         <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
@@ -571,10 +536,6 @@
         <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
       </li>
     
-      <li>
-        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -603,7 +564,7 @@
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		
-			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
 		
 			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
 		

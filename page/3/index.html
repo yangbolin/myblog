@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/10/12/btrace-for-exception/">
+  <time datetime="2014-10-12T10:06:18.000Z">
+    Oct 12 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/12/btrace-for-exception/">使用BTrace监控方法入参</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-现象">一.现象</h4>
+<p>昨天在生产环境出现一个类的方法被调用然后出现了异常，这个异常没有被catch而是直接抛给上层的调用，我们想知道抛异常时调用该方法的参数是什么样子的，然后根据这个参数分析问题聚图出现在什么地方。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/12/btrace-for-exception/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/10/07/thread-local-analyze/">
   <time datetime="2014-10-07T13:01:03.000Z">
     Oct 7 2014
@@ -415,45 +455,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/26/ut-failed-problems/">
-  <time datetime="2014-07-26T07:47:22.000Z">
-    Jul 26 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/26/ut-failed-problems/">单元测试Failed的排查</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>最近各种中间件升级的事情，升级中间件可能会出现很多诡异的问题，此时我们需要定位这些问题是自己升级导致还是其他原因导致，升级中间件可能会出现很多JAR包冲突的问题，此时需要一一排查。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/26/ut-failed-problems/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -473,55 +474,17 @@
   
     
       
-      
+      <% if (site.tags.length){ %>
 <div class="widget tagslist">
-		<h3>标签</h3>
+		<h3><%= __('标签') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
-		
-			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
-		
-			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
-		
-			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
-		
-			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
-		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>22</sup></a></li>
-		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>8</sup></a></li>
-		
-			<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
-		
-			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
-		
-			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
-			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
-		
-			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
-		
+		<% site.tags.sort('name').limit(20).each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
@@ -529,6 +492,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
     
       <li>
         <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
@@ -566,10 +533,6 @@
         <a href="/2015/04/26/git-command/" title="GIT常用命令总结">GIT常用命令总结</a>
       </li>
     
-      <li>
-        <a href="/2015/04/12/guava-multimap/" title="guava中的Multimap">guava中的Multimap</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -598,7 +561,7 @@
 		
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>11</sup></a></li>
 		
-			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>1</sup></a></li>
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
 		
 			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>3</sup></a></li>
 		
