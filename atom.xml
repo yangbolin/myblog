@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-10-29T05:53:28.751Z</updated>
+  <updated>2015-10-30T01:24:09.432Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -15,13 +15,38 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[mac-svn-problem]]></title>
+    <title><![CDATA[mac遇到的一个svn的问题]]></title>
     <link href="http://yangbolin.cn/2015/10/29/mac-svn-problem/"/>
     <id>http://yangbolin.cn/2015/10/29/mac-svn-problem/</id>
     <published>2015-10-29T05:34:37.000Z</published>
-    <updated>2015-10-29T05:34:37.000Z</updated>
-    <content type="html"><![CDATA[]]></content>
+    <updated>2015-10-30T01:23:50.000Z</updated>
+    <content type="html"><![CDATA[<p>今天在mac使用svn pe svn:ignore 来设置忽略文件夹时出现了下面的错误</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>svn: E205007: None of the environment variables SVN_EDITOR, VISUAL or EDITOR are <span class="operator"><span class="keyword">set</span>, <span class="keyword">and</span> <span class="keyword">no</span> <span class="string">'editor-cmd'</span> run-<span class="keyword">time</span> configuration <span class="keyword">option</span> was <span class="keyword">found</span></span>
+</pre></td></tr></table></figure>
+
+<p>解决办法，在.bash_profile中增加下面一行，然后source生效即可</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="keyword">export</span> SVN_EDITOR=vim
+</pre></td></tr></table></figure>
+
+<p>注意使用</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>svn pe svn:<span class="built_in">global</span><span class="attribute">-ignores</span> <span class="built_in">.</span>
+</pre></td></tr></table></figure>
+
+<p>进行全局设置，避免给每个目录执行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="tag">svn</span> <span class="tag">pe</span> <span class="tag">svn</span><span class="pseudo">:ignore</span> .
+</pre></td></tr></table></figure>
+
+<p>来设置</p>
+]]></content>
     
+    
+      <category term="svn" scheme="http://yangbolin.cn/tags/svn/"/>
+    
+      <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
