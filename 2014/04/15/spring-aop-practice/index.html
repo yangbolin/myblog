@@ -269,19 +269,55 @@ var duoshuoQuery = {short_name:"bolin"};
 
     
       
-      <% if (site.posts.length){ %>
+      
 <div class="widget recent-posts">
-  <h3 class="title"><%= __('最新文章') %></h3>
+  <h3 class="title">最新文章</h3>
   <ul class="clearfix">
-    <% site.posts.sort('date', -1).limit(10).each(function(post){ %>
+    
       <li>
-        <a href="<%= config.root %><%= post.path %>" title="<%= post.title %>"><%= post.title %></a>
+        <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
       </li>
-    <% }); %>
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/06/08/java-reflect/" title="JAVA反射调用总结">JAVA反射调用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/05/18/os-timer-call/" title="操作系统定时调度">操作系统定时调度</a>
+      </li>
+    
+      <li>
+        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
+      </li>
+    
   </ul>
 </div>
 <div class="widget-seperator"></div>
-<% } %>
+
 
     
       
@@ -348,14 +384,26 @@ var duoshuoQuery = {short_name:"bolin"};
 </div>
 <div class="clearfix"></div>
 </footer>
-  <script src="/js/jquery-1.7.2.min.js"></script>
-<script src="/js/scale.fix.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+  <script src="<%- config.root %>js/jquery-1.7.2.min.js"></script>
+<script src="<%- config.root %>js/scale.fix.js"></script>
+<script src="<%- config.root %>js/jquery.imagesloaded.min.js"></script>
+<script src="<%- config.root %>js/gallery.js"></script>
 
-
+<% if (config.disqus_shortname){ %>
 <script type="text/javascript">
-  var duoshuoQuery = { short_name: 'bolin' };
+  var disqus_shortname = '<%= config.disqus_shortname %>';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/<% if (page.comments){ %>embed.js<% } else { %>count.js<% } %>';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+<% } else if (theme.duoshuo_shortname){ %>
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: '<%= theme.duoshuo_shortname %>' };
   (function() {
     var ds = document.createElement('script');
     ds.type = 'text/javascript';
@@ -365,17 +413,17 @@ var duoshuoQuery = {short_name:"bolin"};
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
   })();
 </script>
+<% } %>
 
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<% if (theme.fancybox){ %>
+<link rel="stylesheet" href="<%- config.root %>fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="<%- config.root %>fancybox/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
   (function($){
     $('.fancybox').fancybox();
   })(jQuery);
 </script>
-
+<% } %>
 
 </body>
 </html>
