@@ -3,47 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <%
-  var title = page.title;
   
-  if (is_archive()) {
-    title = __('archive_title');
-
-    if (is_month()) {
-      title += ': ' + page.year + '/' + page.month;
-    } else if (is_year()) {
-      title += ': ' + page.year;
-    }
-  } else if (is_category()) {
-    title = __('category_title') + ': ' + page.category;
-  } else if (is_tag()) {
-    title = __('tag_title') + ': ' + page.tag;
-  }
-  %>
-  <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
-  <% if (config.author){ %><meta name="author" content="<%= config.author %>"><% } %>
-  <% if (page.description){ %>
-  <meta name="description" content="<%= page.description %>">
-  <% } else if (page.excerpt){ %>
-  <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '') %>">
-  <% } else if (page.content){ %>
-  <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
-  <% } else if (config.description){ %>
-  <meta name="description" content="<%= config.description %>">
-  <% } %>
-  <% if (page.keywords){ %><meta name="keywords" content="<%= page.keywords %>"><% } %>
+  <title>HBase理解 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+在互联网应用中，经常需要存储大量的用户数据，然后对这些数据进行加工，分析最终产出对用户有价值的数据，关于数据的存储，我们可以选择文件，缓存以及数据库等，在数据库我们经常使用关系型数据库(mysql,oracle等)来存储，当数据达到一定量就需要进行分表分库，以便提高数据库的查询效率，例如在mysql中当表记录行数超过400万的时候，通常就需要分表。但是如果我们存储数据的时候选择的是HBase，这时候就不用分表，HBase中的表可以支撑上亿行，上百万列，这些数据最终存储都是分布在多台机器上的，因此HBase可以存储大量的数据，但是HBase就不具备关系型数据库的关联查询，就是说在HBase中不存在表和表的JOIN查询，关系型的查询是关系型数据库天生的优势，这样在HBase中存储的数据一定是一些弱关系的数据，要是数据之间有很强的关系，那就不太适合存储在HBase中了。">
+  
+  
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <% if (page.title){ %><meta property="og:title" content="<%= page.title %>"/><% } %>
-  <meta property="og:site_name" content="<%= config.title %>"/>
-  <% if (theme.rss){ %>
-  <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
-  <% } %>
-  <% if (theme.favicon){ %>
-    <link rel="icon" type="image/x-icon" href="<%- theme.favicon %>">
-  <% } %>
-  <%- css('css/style.css') %>
+  <meta property="og:title" content="HBase理解"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <%- partial('google-analytics') %>
+  
 </head>
 
 <body>
@@ -224,55 +203,19 @@ var duoshuoQuery = {short_name:"bolin"};
 
     
       
-      
+      <% if (site.posts.length){ %>
 <div class="widget recent-posts">
-  <h3 class="title">最新文章</h3>
+  <h3 class="title"><%= __('最新文章') %></h3>
   <ul class="clearfix">
-    
+    <% site.posts.sort('date', -1).limit(10).each(function(post){ %>
       <li>
-        <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
+        <a href="<%= config.root %><%= post.path %>" title="<%= post.title %>"><%= post.title %></a>
       </li>
-    
-      <li>
-        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
-      </li>
-    
-      <li>
-        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
-      </li>
-    
-      <li>
-        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
-      </li>
-    
-      <li>
-        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
-      </li>
-    
-      <li>
-        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
-      </li>
-    
-      <li>
-        <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
-      </li>
-    
-      <li>
-        <a href="/2015/06/08/java-reflect/" title="JAVA反射调用总结">JAVA反射调用总结</a>
-      </li>
-    
-      <li>
-        <a href="/2015/05/18/os-timer-call/" title="操作系统定时调度">操作系统定时调度</a>
-      </li>
-    
-      <li>
-        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
-      </li>
-    
+    <% }); %>
   </ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
