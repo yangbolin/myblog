@@ -4,14 +4,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>Archives: 2014/6 | BolinYoung&#39;s Blog</title>
+  <title>使用xstream解析utf-8格式的字符串 | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="Coder @Alibaba">
+  <meta name="description" content="最近在使用xstream解析一个xml字符串时，出现了解析失败的问题，出错原因很简单，xml字符串中指定了utf-8的编码，此时我们直接构造一个
+1
+XStream xstream = new XStream();
+
+
+这样构造的话，一定会解析失败。需要按照下面的方式来构造才能正确解析utf-8格式">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
+  <meta property="og:title" content="使用xstream解析utf-8格式的字符串"/>
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -51,229 +56,77 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-		<div class="content">
-
-
-<h2 class="archives-title"><span>2014</span></h2>
-
-
-
-  
-  
+		<div class="content"><article class="post">
+  <header>
     
+      <div class="icon"></div>
+      <a href="/2015/11/18/xstream-skills-for-utf8/">
+  <time datetime="2015-11-18T06:26:04.000Z">
+    Nov 18 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">使用xstream解析utf-8格式的字符串</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近在使用xstream解析一个xml字符串时，出现了解析失败的问题，出错原因很简单，xml字符串中指定了utf-8的编码，此时我们直接构造一个</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>XStream xstream = <span class="keyword">new</span> XStream();
+</pre></td></tr></table></figure>
+
+<p>这样构造的话，一定会解析失败。<br>需要按照下面的方式来构造才能正确解析utf-8格式的xml字符串</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>XStream xstream = <span class="keyword">new</span> XStream(<span class="keyword">new</span> DomDriver(<span class="string">"UTF-8"</span>));
+</pre></td></tr></table></figure>
+
+<p>xstream是一个比较方便的工具，能够实现xml和object之间的相互转换，注意在平时开发过程中的灵活使用。</p>
+
+    
+  </div>
+  <footer>
     
       
+  <div class="categories">
+    <a class="categories-link" href="/categories/编程开发/">编程开发</a>
+  </div>
+
       
-      <section class="archives-wrapper">
-        
-        <div class="archives">
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">
-  <time datetime="2014-06-24T15:29:37.000Z">
-    Jun 24
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/24/beanfactorypostprocessor-and-beanpostprocessor/">BeanFactoryPostProcessor和BeanPostProcessor</a></h1>
-  
+  <div class="tags">
+    <a class="tags-link" href="/tags/JAVA/">JAVA</a>
+  </div>
 
-  </header>
+    
+    <div class="clearfix"></div>
+  </footer>
 </article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/19/how-to-aware-jvm-exit/">
-  <time datetime="2014-06-19T14:42:58.000Z">
-    Jun 19
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/19/how-to-aware-jvm-exit/">JAVA代码中如何感知到JVM退出</a></h1>
-  
 
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/18/maven-default-arbitration/">
-  <time datetime="2014-06-18T14:09:25.000Z">
-    Jun 18
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/18/maven-default-arbitration/">maven自己的仲裁机制</a></h1>
-  
 
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/17/sql-size/">
-  <time datetime="2014-06-17T13:52:39.000Z">
-    Jun 17
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/17/sql-size/">sql语句的大小</a></h1>
-  
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="使用xstream解析utf-8格式的字符串">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
 
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/14/how-to-get-java-pid/">
-  <time datetime="2014-06-14T01:24:39.000Z">
-    Jun 14
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/14/how-to-get-java-pid/">如何获取当前JAVA进程的PID</a></h1>
-  
 
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/13/linux-command/">
-  <time datetime="2014-06-13T06:30:04.000Z">
-    Jun 13
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/13/linux-command/">Linux命令总结</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/07/how-to-debug-hbase-source/">
-  <time datetime="2014-06-07T14:36:16.000Z">
-    Jun 07
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/07/how-to-debug-hbase-source/">如何在本地通过eclipse来调试HBase的源代码</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/04/how-to-dev-maven-hello-world-plugin/">
-  <time datetime="2014-06-04T12:32:22.000Z">
-    Jun 04
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/04/how-to-dev-maven-hello-world-plugin/">如何编写maven的helloworld插件</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/03/join-wait-notify-notifyall/">
-  <time datetime="2014-06-03T14:19:16.000Z">
-    Jun 03
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/03/join-wait-notify-notifyall/">JAVA线程中join,wait,notify&amp;&amp;notifyAll</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/03/sql-join/">
-  <time datetime="2014-06-03T11:42:36.000Z">
-    Jun 03
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/03/sql-join/">SQL的JOIN总结</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/02/java-memory-model-abstract/">
-  <time datetime="2014-06-02T07:54:49.000Z">
-    Jun 02
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/02/java-memory-model-abstract/">Java Memory Model抽象</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/01/vi-command/">
-  <time datetime="2014-05-31T16:39:35.000Z">
-    Jun 01
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/01/vi-command/">vim 命令</a></h1>
-  
-
-  </header>
-</article>
-  
-  
-    </div></section>
-  
-
+</section>
 
 </div>
 	  </div>

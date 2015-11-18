@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/06/02/java-memory-model-abstract/">
+  <time datetime="2014-06-02T07:54:49.000Z">
+    Jun 2 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/06/02/java-memory-model-abstract/">Java Memory Model抽象</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-JVM运行时的数据区">一.JVM运行时的数据区</h4>
+<p>我们写的JAVA代码最终都会编译成字节码，然后在JVM虚拟机上运行。在运行字节码的时候，JVM需要知道要运行的字节码是什么，也就是说JVM本身需要存储字节码，那么字节码存储在JVM的什么地方呢？同时在运行字节码的时候，会产生一些运行时数据，这这些数据都存储在什么地方呢？我们new一个Object的时候，这时候我们就获得了一个对象的引用，那么这个引用指向的内存空间在哪里呢？在C/C++中我们经常使用malloc去给分派一块内存空间，然后返回一个指针，当然在JAVA中内存空间的分派也是少不了的，只不过JVM帮你分派了，你就不需要手动去分派了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/06/02/java-memory-model-abstract/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/06/01/vi-command/">
   <time datetime="2014-05-31T16:39:35.000Z">
     Jun 1 2014
@@ -423,46 +463,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/17/final-local-variable-for-jvm/">
-  <time datetime="2014-05-17T10:08:12.000Z">
-    May 17 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/17/final-local-variable-for-jvm/">Java局部变量有没有final关键字对JVM性能影响不大</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>在写Java代码中我们经常使用final这个关键字，被final修饰的变量，编译器不允许我们修改它的值，如果是基本类型，编译器不允许我们在第一次赋值后再修改基本类型的值，如果是引用类型，编译器不允许我们在第一次赋值后再修改引用的指向，这都是编译器层面的限制，因为如果你试图去修改它，就会得到一个编译错误。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/17/final-local-variable-for-jvm/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -507,7 +507,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>23</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>24</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>8</sup></a></li>
 		
@@ -538,6 +538,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2015/11/18/xstream-skills-for-utf8/" title="使用xstream解析utf-8格式的字符串">使用xstream解析utf-8格式的字符串</a>
+      </li>
     
       <li>
         <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
@@ -575,10 +579,6 @@
         <a href="/2015/05/18/os-timer-call/" title="操作系统定时调度">操作系统定时调度</a>
       </li>
     
-      <li>
-        <a href="/2015/05/07/css-break-line/" title="css换行">css换行</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -613,7 +613,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>31</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>32</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		
