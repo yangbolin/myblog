@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2015-11-18T07:28:55.522Z</updated>
+  <updated>2015-11-20T08:06:59.358Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -1288,7 +1288,7 @@ Object retValue = <span class="keyword">new</span> Mirror().on(oo).invoke().meth
     <link href="http://yangbolin.cn/2014/11/17/akka-spring/"/>
     <id>http://yangbolin.cn/2014/11/17/akka-spring/</id>
     <published>2014-11-17T14:08:04.000Z</published>
-    <updated>2014-11-17T15:16:08.000Z</updated>
+    <updated>2015-11-20T08:06:40.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
 <p>最近又重新学习了一下akka，并且在一个web应用中成功使用了akka提升了系统的性能。我们在web应用中一般都会有dao&amp;&amp;service，这些都是spring的bean，我们定义一个actor，这个actor中可能调用dao读写数据库，也可能调用service做业务逻辑，因此我们就希望actor也是从spring容器中获取到的，这样就可以在actor中注入service&amp;&amp;dao了。</p>
 <a id="more"></a>
@@ -1606,6 +1606,7 @@ Future&lt;Object&gt; future = Patterns.ask(bootstrapAnalyzeActor, bootstrapAnaly
 </pre></td></tr></table></figure>
 
 <p>3.actor在系统中的名字必须唯一。</p>
+<p>4.自己动手写了一个完整的小例子 <a href="https://github.com/yangbolin/akka-demo" target="_blank">https://github.com/yangbolin/akka-demo</a></p>
 ]]></content>
     <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
 <p>最近又重新学习了一下akka，并且在一个web应用中成功使用了akka提升了系统的性能。我们在web应用中一般都会有dao&amp;&amp;service，这些都是spring的bean，我们定义一个actor，这个actor中可能调用dao读写数据库，也可能调用service做业务逻辑，因此我们就希望actor也是从spring容器中获取到的，这样就可以在actor中注入service&amp;&amp;dao了。</p>
