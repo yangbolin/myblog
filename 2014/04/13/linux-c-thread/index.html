@@ -3,47 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <%
-  var title = page.title;
   
-  if (is_archive()) {
-    title = __('archive_title');
-
-    if (is_month()) {
-      title += ': ' + page.year + '/' + page.month;
-    } else if (is_year()) {
-      title += ': ' + page.year;
-    }
-  } else if (is_category()) {
-    title = __('category_title') + ': ' + page.category;
-  } else if (is_tag()) {
-    title = __('tag_title') + ': ' + page.tag;
-  }
-  %>
-  <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
-  <% if (config.author){ %><meta name="author" content="<%= config.author %>"><% } %>
-  <% if (page.description){ %>
-  <meta name="description" content="<%= page.description %>">
-  <% } else if (page.excerpt){ %>
-  <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '') %>">
-  <% } else if (page.content){ %>
-  <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
-  <% } else if (config.description){ %>
-  <meta name="description" content="<%= config.description %>">
-  <% } %>
-  <% if (page.keywords){ %><meta name="keywords" content="<%= page.keywords %>"><% } %>
+  <title>Linux下面使用C语言写多线程程序 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+在Linux系统中编写多线程程序，需要使用Linux系统本身的一个库函数来创建线程">
+  
+  
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <% if (page.title){ %><meta property="og:title" content="<%= page.title %>"/><% } %>
-  <meta property="og:site_name" content="<%= config.title %>"/>
-  <% if (theme.rss){ %>
-  <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
-  <% } %>
-  <% if (theme.favicon){ %>
-    <link rel="icon" type="image/x-icon" href="<%- theme.favicon %>">
-  <% } %>
-  <%- css('css/style.css') %>
+  <meta property="og:title" content="Linux下面使用C语言写多线程程序"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <%- partial('google-analytics') %>
+  
 </head>
 
 <body>
