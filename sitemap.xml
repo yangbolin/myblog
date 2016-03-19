@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2016/03/19/jvm-systemdictionary/</loc>
+    <lastmod>2016-03-19T10:01:23.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2014/06/01/vi-command/</loc>
     <lastmod>2014-05-31T16:39:35.000Z</lastmod>
   </url>

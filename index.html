@@ -61,6 +61,71 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2016/03/19/jvm-systemdictionary/">
+  <time datetime="2016-03-19T10:01:23.000Z">
+    Mar 19 2016
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2016/03/19/jvm-systemdictionary/">关于YGC时间变长的记录</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近看见很多同事都在讨论一个JVM YGC时间变长的问题，在平时业务开发的过程中，我们经常使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>XStream xs = <span class="keyword">new</span> XStream();
+</pre></td></tr></table></figure>
+
+<p>来实现XML和JavaBean之间的相互转换，看看实现就知道在上面的构造函数中不断创建新的classloader出来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="title">XStream</span>(
+            ReflectionProvider reflectionProvider, Mapper mapper, HierarchicalStreamDriver driver) {
+        <span class="keyword">this</span>(reflectionProvider, driver, <span class="keyword">new</span> ClassLoaderReference(<span class="keyword">new</span> CompositeClassLoader()), mapper, <span class="keyword">new</span> DefaultConverterLookup(), <span class="keyword">null</span>);
+    }
+</pre></td></tr></table></figure>
+
+<p>不断创建新的classloader会导致YGC的时间变长。JVM的类加载机制都是双亲委派机制。<br>假如：AClassLoader-&gt;BClassLoader-&gt;CClassLoader，现在需要加载X这个类，AClassLoader首先会交给BClassLoader去加载，BClassLoader会交给CClassLoader去加载，如果CClassLoader能加载到，那么X这个类就被加载了。此时在SystemDictionary这个HashTable数据结构中会存储3条记录。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>X-AClassLoader-X.cls
+X-BClassLoader-X.cls
+X-CClassLoader-X.cls
+
+此时SystemDictionary中有三条关于X的加载记录，如果发现任何一条，就认为X已经加载过了。
+</pre></td></tr></table></figure>
+
+<p>其中AClassLoader和BClassLoader叫做X的出始类加载器。CClassLoader叫做X的定义类加载器。如果不断自定义ClassLoader的话，SystemDictionary中会不断增加K-V记录，这样YGC扫描的范围就越大，YGC耗时就越多。</p>
+<p>最后，在使用XStream时，最好别每次都创建一个新的ClassLoader来，减少YGC的时间，提升性能。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2015/11/18/xstream-skills-for-utf8/">
   <time datetime="2015-11-18T06:26:04.000Z">
     Nov 18 2015
@@ -437,46 +502,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/05/18/os-timer-call/">
-  <time datetime="2015-05-18T12:13:29.000Z">
-    May 18 2015
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/05/18/os-timer-call/">操作系统定时调度</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>最近需要开发一些定时任务，提到定时任务，我们都会想到quartz，为了让我们的定时任务能够更加灵活的被控制，我们通过shell脚本去执行一个java类，然后定时去执行这个shell脚本即可。如何去定时执行这个shell脚本，我们想到Linux本身提供后台进程去定时执行一些命令，那就是crontab，因此我们编写好自己的shell脚本再写好crontab后就能定时执行我们的任务了。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/05/18/os-timer-call/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -521,7 +546,7 @@
 		
 			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>24</sup></a></li>
 		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>8</sup></a></li>
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
 		
 			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
 		
@@ -550,6 +575,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
+      </li>
     
       <li>
         <a href="/2015/11/18/xstream-skills-for-utf8/" title="使用xstream解析utf-8格式的字符串">使用xstream解析utf-8格式的字符串</a>
@@ -587,10 +616,6 @@
         <a href="/2015/06/08/java-reflect/" title="JAVA反射调用总结">JAVA反射调用总结</a>
       </li>
     
-      <li>
-        <a href="/2015/05/18/os-timer-call/" title="操作系统定时调度">操作系统定时调度</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -625,7 +650,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>32</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>33</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		

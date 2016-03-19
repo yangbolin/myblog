@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2016-03-19T09:58:02.996Z</updated>
+  <updated>2016-03-19T10:28:47.379Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,52 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[关于YGC时间变长的记录]]></title>
+    <link href="http://yangbolin.cn/2016/03/19/jvm-systemdictionary/"/>
+    <id>http://yangbolin.cn/2016/03/19/jvm-systemdictionary/</id>
+    <published>2016-03-19T10:01:23.000Z</published>
+    <updated>2016-03-19T10:28:42.000Z</updated>
+    <content type="html"><![CDATA[<p>最近看见很多同事都在讨论一个JVM YGC时间变长的问题，在平时业务开发的过程中，我们经常使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>XStream xs = <span class="keyword">new</span> XStream();
+</pre></td></tr></table></figure>
+
+<p>来实现XML和JavaBean之间的相互转换，看看实现就知道在上面的构造函数中不断创建新的classloader出来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="title">XStream</span>(
+            ReflectionProvider reflectionProvider, Mapper mapper, HierarchicalStreamDriver driver) {
+        <span class="keyword">this</span>(reflectionProvider, driver, <span class="keyword">new</span> ClassLoaderReference(<span class="keyword">new</span> CompositeClassLoader()), mapper, <span class="keyword">new</span> DefaultConverterLookup(), <span class="keyword">null</span>);
+    }
+</pre></td></tr></table></figure>
+
+<p>不断创建新的classloader会导致YGC的时间变长。JVM的类加载机制都是双亲委派机制。<br>假如：AClassLoader-&gt;BClassLoader-&gt;CClassLoader，现在需要加载X这个类，AClassLoader首先会交给BClassLoader去加载，BClassLoader会交给CClassLoader去加载，如果CClassLoader能加载到，那么X这个类就被加载了。此时在SystemDictionary这个HashTable数据结构中会存储3条记录。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>X-AClassLoader-X.cls
+X-BClassLoader-X.cls
+X-CClassLoader-X.cls
+
+此时SystemDictionary中有三条关于X的加载记录，如果发现任何一条，就认为X已经加载过了。
+</pre></td></tr></table></figure>
+
+<p>其中AClassLoader和BClassLoader叫做X的出始类加载器。CClassLoader叫做X的定义类加载器。如果不断自定义ClassLoader的话，SystemDictionary中会不断增加K-V记录，这样YGC扫描的范围就越大，YGC耗时就越多。</p>
+<p>最后，在使用XStream时，最好别每次都创建一个新的ClassLoader来，减少YGC的时间，提升性能。</p>
+]]></content>
+    
+    
+      <category term="JVM" scheme="http://yangbolin.cn/tags/JVM/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[使用xstream解析utf-8格式的字符串]]></title>
@@ -1725,221 +1771,6 @@ Future&lt;Object&gt; future = Patterns.ask(bootstrapAnalyzeActor, bootstrapAnaly
       <category term="log4j" scheme="http://yangbolin.cn/tags/log4j/"/>
     
       <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Akka入门]]></title>
-    <link href="http://yangbolin.cn/2014/10/25/akka-start/"/>
-    <id>http://yangbolin.cn/2014/10/25/akka-start/</id>
-    <published>2014-10-25T14:35:44.000Z</published>
-    <updated>2014-10-25T14:55:41.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>为了提高一个数据计算平台的吞吐了，最近抽空看了看akka，之前听同事说akka能够提高并发吞吐量，高容错，很稳定，今天抽时间先简单看了相关的文档，写了个简单的例子，主要演示如何使用akka，当然我们也可以搭建一个akka的集群。</p>
-<a id="more"></a>
-
-<h4 id="二-快速开始">二.快速开始</h4>
-<p>akka相关的依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-</pre></td><td class="code"><pre><span class="comment">&lt;!--  akka starting --&gt;</span>
-<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.typesafe.akka<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>akka-actor_2.10<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.3<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.typesafe.akka<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>akka-remote_2.10<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.3<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.typesafe.akka<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>akka-kernel_2.10<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.3<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.typesafe.akka<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>akka-cluster_2.10<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.3<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.typesafe.akka<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>akka-contrib_2.10<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.3<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.typesafe.akka<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>akka-slf4j_2.10<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.3<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.fusesource<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>sigar<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">version</span>&gt;</span>1.6.4<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.typesafe.akka<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>akka-cluster_2.10<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-	<span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.3<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-<span class="comment">&lt;!--  akka ending  --&gt;</span>
-</pre></td></tr></table></figure>
-
-<p>java代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> Msg {
-    GREET, DONE, WELCOME;
-}
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Greeter</span> <span class="keyword">extends</span> <span class="title">UntypedActor</span> {</span>
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span>(Object msg) <span class="keyword">throws</span> Exception {
-        <span class="keyword">if</span> (msg == Msg.GREET) {
-            System.out.println(<span class="string">"Greeter Messgae!"</span>);
-            <span class="comment">// 收到GREET消息后发出一个DONE的应答</span>
-            getSender().tell(Msg.DONE, getSelf());
-        }
-    }
-}
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Welcome</span> <span class="keyword">extends</span> <span class="title">UntypedActor</span> {</span>
-
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span>(Object arg0) <span class="keyword">throws</span> Exception {
-        <span class="keyword">if</span> (arg0 == Msg.WELCOME) {  
-            System.out.println(<span class="string">"Welcome Messgae!"</span>);
-            <span class="comment">// 收到WELCOME消息后，发出一个WELCOME的应答</span>
-            getSender().tell(Msg.WELCOME, getSelf());
-        }
-    }
-}
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> <span class="keyword">extends</span> <span class="title">UntypedActor</span> {</span>
-
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">preStart</span>() {
-        <span class="comment">// 发送WELCOME消息给welcome这个Actor</span>
-        <span class="keyword">final</span> ActorRef welcome = getContext().actorOf(Props.create(Welcome.class), <span class="string">"welcome"</span>);
-        welcome.tell(Msg.WELCOME, getSelf());
-        
-        <span class="comment">// 发送GREET消息给greet这个Actor</span>
-        <span class="keyword">final</span> ActorRef greeter = getContext().actorOf(Props.create(Greeter.class), <span class="string">"greeter"</span>);
-        greeter.tell(Msg.GREET, getSelf());
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span>(Object msg) <span class="keyword">throws</span> Exception {
-        <span class="keyword">if</span> (msg == Msg.DONE) {
-            System.out.println(<span class="string">"Message DONE"</span>);
-            getContext().stop(getSelf());
-        } <span class="keyword">else</span> {
-            System.out.println(msg);
-        }
-    }
-}
-</pre></td></tr></table></figure>
-
-<p>这里的HelloWorld，Welcome，Greeter是三个Actor，在上述代码中HelloWorld向Welcome，Greeter发消息，Welcome，Greeter收到消息后分别向HelloWorld发出回应。<br>HelloWorld在收到DONE消息后会终止自己。通过akka.Main来启动，设置启动参数com.bolin.young.akka.HelloWorld，这样就能看到相关的输出了。</p>
-<h4 id="三-总结">三.总结</h4>
-<p>通过上面这个小例子，我们发现akka中有一个核心的东西，那就是actor，actor之间通过消息通信，actorA发消息给actorB，actorB收到actorA的消息后，也可以对actorA发送一个回应的消息。</p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>为了提高一个数据计算平台的吞吐了，最近抽空看了看akka，之前听同事说akka能够提高并发吞吐量，高容错，很稳定，今天抽时间先简单看了相关的文档，写了个简单的例子，主要演示如何使用akka，当然我们也可以搭建一个akka的集群。</p>
-]]></summary>
-    
-      <category term="Akka" scheme="http://yangbolin.cn/tags/Akka/"/>
-    
-      <category term="并发技术" scheme="http://yangbolin.cn/categories/%E5%B9%B6%E5%8F%91%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   
