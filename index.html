@@ -3,25 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <%
+  var title = page.title;
   
-  <title>BolinYoung&#39;s Blog</title>
-  <meta name="author" content="BolinYoung">
-  
-  <meta name="description" content="Coder @Alibaba">
-  
-  
+  if (is_archive()) {
+    title = __('archive_title');
+
+    if (is_month()) {
+      title += ': ' + page.year + '/' + page.month;
+    } else if (is_year()) {
+      title += ': ' + page.year;
+    }
+  } else if (is_category()) {
+    title = __('category_title') + ': ' + page.category;
+  } else if (is_tag()) {
+    title = __('tag_title') + ': ' + page.tag;
+  }
+  %>
+  <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
+  <% if (config.author){ %><meta name="author" content="<%= config.author %>"><% } %>
+  <% if (page.description){ %>
+  <meta name="description" content="<%= page.description %>">
+  <% } else if (page.excerpt){ %>
+  <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '') %>">
+  <% } else if (page.content){ %>
+  <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
+  <% } else if (config.description){ %>
+  <meta name="description" content="<%= config.description %>">
+  <% } %>
+  <% if (page.keywords){ %><meta name="keywords" content="<%= page.keywords %>"><% } %>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
-  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
-  
-  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <% if (page.title){ %><meta property="og:title" content="<%= page.title %>"/><% } %>
+  <meta property="og:site_name" content="<%= config.title %>"/>
+  <% if (theme.rss){ %>
+  <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
+  <% } %>
+  <% if (theme.favicon){ %>
+    <link rel="icon" type="image/x-icon" href="<%- theme.favicon %>">
+  <% } %>
+  <%- css('css/style.css') %>
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
+  <%- partial('google-analytics') %>
 </head>
 
 <body>
@@ -53,40 +75,6 @@
 </header>
 		<div class="content">
 
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/12/08/beancopier-exception/">
-  <time datetime="2015-12-08T09:25:31.000Z">
-    Dec 8 2015
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/12/08/beancopier-exception/">beancopier-exception</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
 
 
 
@@ -471,6 +459,46 @@
 
 
   
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/05/18/os-timer-call/">
+  <time datetime="2015-05-18T12:13:29.000Z">
+    May 18 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/05/18/os-timer-call/">操作系统定时调度</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>最近需要开发一些定时任务，提到定时任务，我们都会想到quartz，为了让我们的定时任务能够更加灵活的被控制，我们通过shell脚本去执行一个java类，然后定时去执行这个shell脚本即可。如何去定时执行这个shell脚本，我们想到Linux本身提供后台进程去定时执行一些命令，那就是crontab，因此我们编写好自己的shell脚本再写好crontab后就能定时执行我们的任务了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2015/05/18/os-timer-call/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
 
   <nav id="pagination">
   
@@ -546,10 +574,6 @@
   <ul class="clearfix">
     
       <li>
-        <a href="/2015/12/08/beancopier-exception/" title="beancopier-exception">beancopier-exception</a>
-      </li>
-    
-      <li>
         <a href="/2015/11/18/xstream-skills-for-utf8/" title="使用xstream解析utf-8格式的字符串">使用xstream解析utf-8格式的字符串</a>
       </li>
     
@@ -583,6 +607,10 @@
     
       <li>
         <a href="/2015/06/08/java-reflect/" title="JAVA反射调用总结">JAVA反射调用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/05/18/os-timer-call/" title="操作系统定时调度">操作系统定时调度</a>
       </li>
     
   </ul>
