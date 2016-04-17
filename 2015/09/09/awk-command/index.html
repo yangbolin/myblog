@@ -1,15 +1,386 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>awk使用总结 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+在平时工作中经常会遇到一些文本的处理，awk就是一种文本处理语言，很方便，很轻量，可以说awk也是一种编程语言。
+awk的工作流程是这样的：读入有’\n’换行符分割的一条记录，然后将记录按指定的域分隔符划分域，填充域，\$0则表示所有域，\$1表示第一个域，\$n表示第n个域。默认域的分隔符是”空白键”或”tab键”。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="awk使用总结"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','Et1J2-wE4hZdMNZyTfCZ','2.0.0');
+</script>
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/09/09/awk-command/">
+  <time datetime="2015-09-09T13:12:36.000Z">
+    Sep 9 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">awk使用总结</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在平时工作中经常会遇到一些文本的处理，awk就是一种文本处理语言，很方便，很轻量，可以说awk也是一种编程语言。</p>
+<p>awk的工作流程是这样的：读入有’\n’换行符分割的一条记录，然后将记录按指定的域分隔符划分域，填充域，\$0则表示所有域，\$1表示第一个域，\$n表示第n个域。默认域的分隔符是”空白键”或”tab键”。<br><a id="more"></a></p>
+<h4 id="二-常用命令">二.常用命令</h4>
+<h5 id="1-显示指定分隔符分隔后的第一列">1.显示指定分隔符分隔后的第一列</h5>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="title">awk</span> -F <span class="string">':'</span> <span class="string">'{print <span class="variable">$1</span>}'</span> /etc/passwd
+</pre></td></tr></table></figure>
+
+<p>-F ‘:’ 指定了awk处理行文本的分隔符号<br>{print $1}表示是action，对于文本中的没一行都要执行这个action<br>这个文本处理模式是awk+action</p>
+<h5 id="2-搜索文件中包含某一关键字的行">2.搜索文件中包含某一关键字的行</h5>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>awk -<span class="literal">F</span>: <span class="string">'/root/'</span> /etc/passwd
+</pre></td></tr></table></figure>
+
+<p>这里使用的pattern，匹配了pattern的行才会执行后面的action，没有指定action默认输出正行内容。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>awk -<span class="literal">F</span>: <span class="string">'/^root/'</span> /etc/passwd
+</pre></td></tr></table></figure>
+
+<p>匹配所有以root开头的行</p>
+<h5 id="3-awk内置变量">3.awk内置变量</h5>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="title">awk</span> -F <span class="string">':'</span> <span class="string">'{printf("filename:%s,linenumber:%s,linecontents:%s columns:%s\n",FILENAME,NR,NF,<span class="variable">$0</span>)}'</span> /etc/passwd
+</pre></td></tr></table></figure>
+
+<p>FILENAME awk浏览的文件名<br>NR 已读出的记录数目<br>NF 浏览记录的域的个数<br>printf用于格式化输出</p>
+<h5 id="4-变量和赋值">4.变量和赋值</h5>
+<p>统计一个文件中的行数</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>awk '{count++;print $0} <span class="operator"><span class="keyword">END</span>{print <span class="string">"user count is "</span>, <span class="aggregate">count</span>}<span class="string">' /etc/passwd</span></span>
+</pre></td></tr></table></figure>
+
+<p>注意这里的count虽然没有被初始化，但是它的值是0，但是稳妥的做法还是初始化一下</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>awk '<span class="operator"><span class="keyword">BEGIN</span> {<span class="aggregate">count</span>=<span class="number">0</span>;</span>print "[<span class="operator"><span class="keyword">start</span>]<span class="keyword">user</span> <span class="aggregate">count</span> <span class="keyword">is</span> <span class="string">", count}' {count=count+1;print $0} END {print "</span>[<span class="keyword">end</span>] <span class="keyword">user</span> <span class="aggregate">count</span> <span class="keyword">is</span> <span class="string">", count}' /etc/passwd</span></span>
+</pre></td></tr></table></figure>
+
+<p>BEGIN后面的action只有在开始的时候才会执行，END后面的语句只有结束的时候才会执行</p>
+<p>统计某个文件夹下的文件占用的字节数</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>ls -l | awk '<span class="operator"><span class="keyword">BEGIN</span> {<span class="keyword">size</span>=<span class="number">0</span>} {<span class="keyword">size</span>=<span class="keyword">size</span>+$<span class="number">5</span>} <span class="keyword">END</span>{print <span class="string">"[end]size is "</span>,<span class="keyword">size</span>}<span class="string">'</span></span>
+</pre></td></tr></table></figure>
+
+<p>如果以M为单位显示：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>ls -l | awk '<span class="operator"><span class="keyword">BEGIN</span> {<span class="keyword">size</span>=<span class="number">0</span>} {<span class="keyword">size</span>=<span class="keyword">size</span>+$<span class="number">5</span>} <span class="keyword">END</span>{print <span class="string">"[end] size is "</span>, <span class="keyword">size</span>/<span class="number">1024</span>/<span class="number">1024</span>, <span class="string">"M"</span>}<span class="string">'</span></span>
+</pre></td></tr></table></figure>
+
+<p>这个统计命令在排查线上日志超出限制时很有用。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/awk/">awk</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="awk使用总结">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      <div class="seach">
+	<h3 class="title">搜索</h3>
+	<div style="padding-left:5px;padding-bottom: 10px;">
+		<input type="text" class="st-default-search-input" />
+	</div>
+</div>
+<div class="widget-seperator"></div>
+
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>24</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/18/xstream-skills-for-utf8/" title="使用xstream解析utf-8格式的字符串">使用xstream解析utf-8格式的字符串</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/06/08/java-reflect/" title="JAVA反射调用总结">JAVA反射调用总结</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>6</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>12</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>33</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

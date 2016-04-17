@@ -1,15 +1,397 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>2014.04.27 Qcon北京第三天总结 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+2014Qcon北京第三天我主要关注了一个主题，尖端之上的Java,分享者主要讲了一些自己公司中如何使用Java开进行日常开发，这个主题也比较火。下午关于文化科研相关的演讲，我没怎么仔细听。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="2014.04.27 Qcon北京第三天总结"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','Et1J2-wE4hZdMNZyTfCZ','2.0.0');
+</script>
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/30/2014-qcon-third/">
+  <time datetime="2014-04-30T03:03:53.000Z">
+    Apr 30 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">2014.04.27 Qcon北京第三天总结</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>2014Qcon北京第三天我主要关注了一个主题，尖端之上的Java,分享者主要讲了一些自己公司中如何使用Java开进行日常开发，这个主题也比较火。下午关于文化科研相关的演讲，我没怎么仔细听。</p>
+<a id="more"></a>
+
+<h4 id="二-你应该更新的Java知识">二.你应该更新的Java知识</h4>
+<p>这位分享者已经有10年的开发经验了，他的博客也很有名<a href="http://dreamhead.blogbus.com/" target="_blank">dreamhead</a>,有空可以去翻翻。</p>
+<p>10多年来，软件的开发方式没有发生本质上的改变。<br>Rails 约定胜于配置。<br>多核和函数式编程，MapReduce的思想来自函数式编程。<br>每年都去学一门新的语言。</p>
+<ul>
+<li><p>clean code<br>整洁代码，函数越短越好，写代码不要太随便，不是说满足需求，实现功能就行，要能优雅的满足需求，实现功能。<br>重构，rework,有时间读读这本书，<a href="http://book.douban.com/subject/3889178/" target="_blank">rework</a><br>自定义注解，使用annotation来简化代码</p>
+</li>
+<li><p>函数式编程<br>懒加载</p>
+</li>
+<li>DSL<br>领域特定语言，可以看看相关的书籍<br>设计并实现自己的DSL</li>
+<li>新风格程序库<br>Guava<br>Joda-Time<br>Hamcrest<br>Mockito<br>DropWizard<br>Junit<br>DSL<br>easyMock<br>JMock</li>
+</ul>
+<p>把getter/setter改造成更加良好的DSL<br>有时间去看看Scala</p>
+<h4 id="三-API单位误解造成严重的故障">三.API单位误解造成严重的故障</h4>
+<p>在socket编程中有一个setLiner方法，我记不清是那个类的了，单位值是秒，但是被开发误以为是毫秒，导致了一个线上故障，出现线上故障的时候注意保留现场，方便后续问题的排查。</p>
+<p>tomcat和jetty都有线程池大小，每个应用都会配置一个活跃线程数。</p>
+<p>线程dump jstack<br>内存dump jmap 使用MAT分析</p>
+<p>-XX:+PrintFlagsFinal 输出所有参数的名称和默认值,也可以使用jinfo -flags来查看值，使用jinfo -flag来设置值。<br>-XX:+TraceClassLoading 跟踪类加载信息。</p>
+<p>应用无响应的排查思路，先看一下应用在干什么，使用jstack<br>jstack -l 打印锁状况<br>jstack -m 把native的堆栈也打印出来</p>
+<p>static代码块初始化的时候，会在类上加上一把锁。</p>
+<p>内存相关<br>-XX:+HeapDumpOnOutOfMemory JVM在OutOfMemory的时候，会拍摄一个堆转储快照，同时转存到一个文件中。<br>线上应用可以带上输出GC日志的JVM参数-XX:+PrintGC，对应用本身不会有太大的影响。</p>
+<p>jmap -histo:live 查看JVM中存活的实例。<br>jmap -dump:file dump JVM的内存。<br>dump出来的内存文件大小和堆大小差不多大，内存太大会导致内存的dump很耗时。</p>
+<p>gcore 命令<br>generates a core file for the process specified by its process ID, pid. By default, the core file is written to core.pid, in the current directory。<br>可以使用 gcore pid 来获取一个进程的core文件。</p>
+<p>使用MAT分析dump下来的内存的时候，没法定位到具体的代码，这时候可以结合BTrace来使用。</p>
+<p><a href="http://www.cnblogs.com/caosiyang/archive/2013/01/25/2876244.html" target="_blank">gperftools</a></p>
+<p>ulimit<br>cat /proc/pid/limits<br>这里的pid是进程ID</p>
+<p>CPU利用率<br>top -H &amp;&amp; jstack<br>1.使用top命令查看占用cpu最高的线程ID<br>2.把线程ID转换成十六进制<br>3.在jstack出来的内从找线程ID相关的线程，看看线程在做什么事情。</p>
+<p>注意:<br>top和jstack之间有时间的误差，就是说我们使用top看到的线程可能在jstack dump出来的线程堆栈的找不到。</p>
+<p>Java进程退出</p>
+<ol>
+<li>打开core dump文件看看</li>
+<li>使用gdb调试</li>
+<li>使用dmesg | grep -i kill 看看是不是os把java进程kill掉</li>
+</ol>
+<h4 id="四-去哪儿网的java开发生态环境">四.去哪儿网的java开发生态环境</h4>
+<ul>
+<li><p>发布相关<br>有相同的类，就不允许发布，解决依赖冲突的问题。</p>
+</li>
+<li><p>架构相关<br>在实际的业务逻辑处理中，有时候我们做完一些业务上的操作后，需要发消息给其他模块或系统，在一些高要求的系统中，我们需要保证业务操作和发消息的事务，为了达到这么目的，在数据库中建立一张消息表，发消息的时候往数据库中插入一条记录，这样往消息表中插入数据的操作和业务表的操作在数据库层面形成事务，最后又有一个后台线程，不断去扫描消息表，然后把消息发送出去。</p>
+</li>
+</ul>
+<p>为了保证消息和业务逻辑之间的事务，他们借助一张消息表来实现，每次发消息都先往消息表中写一条记录，我个人感觉先尝试去发消息，要是消息发送失败再往消息表中写一条记录，然后使用一个后台线程去轮寻消息表，把这些发送失败的消息再发送出去，不太理解他们为什么每次发消息都往消息表中插入一条记录。</p>
+<ul>
+<li>mock平台<br>很多网站架构中都有mock平台这一部分，这样可以方便测试环境覆盖更多的业务逻辑分支。</li>
+<li>自动化测试<br>产品经理要会写测试用例，这是他们的要求，在他们看来产品经理必须对产品的边边角角都有一个非常清晰的理解，他们通过这样的方法来保证这个点。</li>
+<li>codeReview<br>去哪儿网还是比较重视CodeReview的</li>
+<li>监控体系</li>
+</ul>
+<h4 id="五-大众点评零压力中间件部署">五.大众点评零压力中间件部署</h4>
+<p>大众点评需要解决的问题是降低中间件升级的成本，中间件的升级不需要应用方来修改相关的配置或者代码，由中间件团队自己在生产环境部署升级，实现平台也业务的分离。</p>
+<p>每次中间件的升级，中间件团队把新版本的中间件推送到线上，然后重新部署线上的应用，就可以完成中间件的升级，这时候新版本和老版本的中间件都会存储在线上应用中，他们提供一个规则的配置文件，应用会根据规则的配置文件来决定使用中间件的那个版本。</p>
+<p>技术点：<br>重写tomcat的WebXmlLoader和WebApplicationLoader</p>
+<p>其实这种升级中间件的思路很好，但是他们做的不彻底。比如说今天要升级中间件A了，中间件团队在测试环境找QA测试好之后，便自己直接去线上部署，并且线上运行没啥问题，但是线上应用pom依赖中中间件的版本还是老版本，这个老版本还是需要相应应用的开发自己去改，在他们看来只要应用中依赖的版本不要过低，都没啥问题的。</p>
+<h4 id="六-搜狗商业广告平台java生态演化之路">六.搜狗商业广告平台java生态演化之路</h4>
+<p>这个讲的有点虚，没啥实质性的内容，什么sso啥的都是一笔带过。他们也利用了Thrift，关于Thrift和Restful我不太了解。最后还提到了他们利用Zookeeper的推送机制来实现数据的推送,Zookeeper数据节点发生变化的时候，它会发起相关的通知。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/技术交流/">技术交流</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Qcon/">Qcon</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="2014.04.27 Qcon北京第三天总结">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      <div class="seach">
+	<h3 class="title">搜索</h3>
+	<div style="padding-left:5px;padding-bottom: 10px;">
+		<input type="text" class="st-default-search-input" />
+	</div>
+</div>
+<div class="widget-seperator"></div>
+
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>24</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/18/xstream-skills-for-utf8/" title="使用xstream解析utf-8格式的字符串">使用xstream解析utf-8格式的字符串</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/06/08/java-reflect/" title="JAVA反射调用总结">JAVA反射调用总结</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>6</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>12</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>33</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>
