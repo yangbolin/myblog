@@ -1,15 +1,549 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>如何动态修改JVM的字节码 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+最近在做一个需求的时候，需要在JVM启动好之后，能够动态的修改JVM已经加载的一个类的一个方法，把这个方法的返回值直接改成返回true。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="如何动态修改JVM的字节码"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','Et1J2-wE4hZdMNZyTfCZ','2.0.0');
+</script>
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/">
+  <time datetime="2015-10-13T11:13:30.000Z">
+    Oct 13 2015
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">如何动态修改JVM的字节码</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>最近在做一个需求的时候，需要在JVM启动好之后，能够动态的修改JVM已经加载的一个类的一个方法，把这个方法的返回值直接改成返回true。</p>
+<a id="more"></a>
+
+<p>上述需求概括为动态修改JVM字节码，我们需要借助修改字节码的工具，同时也要让启动中的JVM能感知到我们的修改，这个需要借助java的instrument。下面我们就来看一下具体的实现。</p>
+<h4 id="二-实现">二.实现</h4>
+<h5 id="1-编写修改字节码的agent">1.编写修改字节码的agent</h5>
+<p>在JVM已经加载的类中找到要修改的类，然后使用javassist从磁盘上读取到要修改类的字节码，修改指定方法的返回值后，让JVM重新再加载一下我们刚才修改的这个类，具体代码如下：<br>agent的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XxxmockAgent</span> {</span>
+    <span class="comment">// 指定我们要修改字节码的类的全限定名</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String CLASS_NAME = <span class="string">"xxxCommonBO"</span>;
+    <span class="annotation">@SuppressWarnings</span>(<span class="string">"rawtypes"</span>)
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">agentmain</span>(String agentArgs, Instrumentation inst) <span class="keyword">throws</span> UnmodifiableClassException{
+        System.out.println(<span class="string">"loadagent after main..."</span>);
+        <span class="comment">//获取当前JVM已经加载过的所有类</span>
+        Class[] classes =  inst.getAllLoadedClasses();
+        <span class="keyword">for</span> (Class clazz : classes) {
+	    <span class="comment">//找到需要修改的类</span>
+            <span class="keyword">if</span>(clazz.getName().equals(CLASS_NAME)) {
+                System.out.println(<span class="string">"find class "</span> + CLASS_NAME);
+                <span class="comment">//按照要求字节吗</span>
+                inst.addTransformer(<span class="keyword">new</span> XxxCommonTransformer(), <span class="keyword">true</span>);
+                <span class="comment">//让JVM重新加载修改过字节码的类</span>
+                inst.retransformClasses(clazz);
+            }
+        }
+        System.out.println(<span class="string">"loadagent after main sucess..."</span>);
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>修改字节码的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XxxCommonTransformer</span> <span class="keyword">implements</span> <span class="title">ClassFileTransformer</span> {</span>
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">byte</span>[] <span class="title">transform</span>(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined,
+                            ProtectionDomain protectionDomain,
+                            <span class="keyword">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException {
+        String compareClass = className.replace(<span class="string">'/'</span>, <span class="string">'.'</span>);
+        System.out.println(<span class="string">"transformer..."</span> + compareClass);
+        <span class="keyword">try</span> {
+	    <span class="comment">//构建javassist需要ClassPool</span>
+            ClassPool classPool = ClassPool.getDefault();
+            <span class="comment">//把要修改的类的classpath加入到javassist的ClassPool中</span>
+            classPool.appendClassPath(<span class="string">"/xxx/WEB-INF/lib/*"</span>);
+            <span class="comment">//从磁盘上读取要修改类的字节码，并且转换成javassit中的CtClass模型</span>
+            CtClass ctClass = classPool.get(compareClass);
+            <span class="comment">//获取需要修改的字节码的方法</span>
+            CtMethod ctMethod = ctClass.getDeclaredMethod(<span class="string">"isFromA"</span>);
+            <span class="comment">//修改方法体</span>
+            ctMethod.setBody(<span class="string">"return true;"</span>);
+            <span class="comment">//写入修改后的字节码</span>
+            ctClass.writeFile();
+            <span class="keyword">return</span> ctClass.toBytecode();
+        } <span class="keyword">catch</span> (Exception e) {
+	    e.printStackTrace();
+        }
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+}
+</pre></td></tr></table></figure>
+
+<h5 id="2-编写attach到JVM的client">2.编写attach到JVM的client</h5>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> {</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
+        <span class="keyword">if</span> (args.length != <span class="number">2</span>) {
+            System.out.println(<span class="string">"[usage:java -jar client-1.0.0.jar pid path] and args.lenght="</span>+args.length);
+            <span class="keyword">return</span>;
+        }
+        <span class="comment">// 第0个参数是要attach的JVM进程ID</span>
+        String pid = args[<span class="number">0</span>];
+        <span class="comment">// 第1个参数是agent JAR包所在的路径</span>
+        String agentPath =args[<span class="number">1</span>];
+        System.out.println(<span class="string">"pid:"</span> + pid);
+        System.out.println(<span class="string">"agentPath:"</span> + agentPath);
+        <span class="keyword">try</span> {
+            attach(pid, agentPath);
+        } <span class="keyword">catch</span> (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">attach</span>(String pid, String agentPath) <span class="keyword">throws</span> Exception {
+        <span class="keyword">try</span> {            
+            <span class="comment">//attach到远程JVM上去</span>
+            VirtualMachine  vm = VirtualMachine.attach(pid);
+            <span class="comment">//加载agent</span>
+            vm.loadAgent(agentPath);
+        } <span class="keyword">catch</span> (RuntimeException re) {
+            <span class="keyword">throw</span> re;
+        } <span class="keyword">catch</span> (IOException ioexp) {
+            <span class="keyword">throw</span> ioexp;
+        } <span class="keyword">catch</span> (Exception exp) {
+            exp.printStackTrace();
+            <span class="keyword">throw</span> exp;
+        }
+    }
+}
+</pre></td></tr></table></figure>
+
+<h4 id="三-注意点">三.注意点</h4>
+<p>1.在编写agent的时候我们需要指定要修改的类所在的classpath，此时的类加载器是AppClassLoader，如果你要attach的JVM进程是用jetty&amp;&amp;tomcat等容器启动起来的，必须要指定要修改的类所在的classpath。<br>2.在agent中我们使用到javassit这个开源的操作字节码的二方库，加载javassit中类的类加载器也是AppClassLoader，同样如果你的JVM进程是用jetty或者tomcat启动的话，而且你的应用中已经包含了javassit这个二方库，AppClassLoader也加载不了，会出现ClassPool加载失败的异常，此时需要我们显式地把javassit包含到agent中去，如果你的agent是使用maven构建的话，你可以使用maven-shade-plugin这个maven插件，该插件既能把依赖的jar聚合起来，也能在jar包中自动生成MANIFEST.MF。<br>3.在编写client的时候我们用到了VirtualMachine这个类，这个类在tools.jar中，这个jar是jdk自己携带的。如果你是用maven来构建你的client的话，你可以用下面方式把tools.jar自动引入到你的project中。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">dependency</span>&gt;</span>					
+	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.sun<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>tools<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">version</span>&gt;</span>1.6<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">scope</span>&gt;</span>system<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+	<span class="tag">&lt;<span class="title">systemPath</span>&gt;</span>${JAVA_HOME}/lib/tools.jar<span class="tag">&lt;/<span class="title">systemPath</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>4.在运行client的方式，我们通过java -jar来运行，此时需要tools.jar，如果你不想把tools.jar打包的client中，你需要在运行client JAR的时候带上tools.jar.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>java -Xbootclasspath/a:tools.jar  -jar /home/xxx/client-<span class="number">1.0</span><span class="number">.0</span>.jar <span class="number">22410</span> /home/xxx/agent-<span class="number">1.0</span><span class="number">.0</span>.jar
+</pre></td></tr></table></figure>
+
+<p>22410是进程PID</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/JVM学习/">JVM学习</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/JVM/">JVM</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="如何动态修改JVM的字节码">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      <div class="seach">
+	<h3 class="title">搜索</h3>
+	<div style="padding-left:5px;padding-bottom: 10px;">
+		<input type="text" class="st-default-search-input" />
+	</div>
+</div>
+<div class="widget-seperator"></div>
+
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>24</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/04/17/software-design/" title="关于系统架构设计的心得(一)">关于系统架构设计的心得(一)</a>
+      </li>
+    
+      <li>
+        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/18/xstream-skills-for-utf8/" title="使用xstream解析utf-8格式的字符串">使用xstream解析utf-8格式的字符串</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>6</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>12</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>33</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>

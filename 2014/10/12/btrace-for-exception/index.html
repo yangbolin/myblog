@@ -1,15 +1,508 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>使用BTrace监控方法入参 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.现象
+昨天在生产环境出现一个类的方法被调用然后出现了异常，这个异常没有被catch而是直接抛给上层的调用，我们想知道抛异常时调用该方法的参数是什么样子的，然后根据这个参数分析问题聚图出现在什么地方。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="使用BTrace监控方法入参"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','Et1J2-wE4hZdMNZyTfCZ','2.0.0');
+</script>
 <body>
   <div class="screen">
 	  <div class="wrapper">
-		<%- partial('_partial/header') %>
-		<div class="content"><%- body %></div>
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/10/12/btrace-for-exception/">
+  <time datetime="2014-10-12T10:06:18.000Z">
+    Oct 12 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">使用BTrace监控方法入参</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-现象">一.现象</h4>
+<p>昨天在生产环境出现一个类的方法被调用然后出现了异常，这个异常没有被catch而是直接抛给上层的调用，我们想知道抛异常时调用该方法的参数是什么样子的，然后根据这个参数分析问题聚图出现在什么地方。</p>
+<a id="more"></a>
+
+<p>为了能够清晰的说明问题，这里大致描述一下昨天出问题的类的代码结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">xxxUtil</span> {</span>
+	<span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">decodeXxx</span>(String sSrc, String sSkey,String iVParam) <span class="keyword">throws</span> Exception {
+	<span class="comment">// 在这里做解码，然后在这里抛异常了</span>
+	}
+}
+</pre></td></tr></table></figure>
+
+<p>静态方法decodeXxx被调用时，在方法内部抛出了没有被catch住的异常，这就是基本现象。</p>
+<h4 id="二-排查过程">二.排查过程</h4>
+<p>我们需要知道调用decodeXxx方法是参数是什么样子的，生成环境没法DEBUG只能考虑使用BTrace脚本了，使用BTrace动态监控decodeXxx的调用，然后输出方法调用的参数，于是我准备了如下的BTrace脚本，此时所有decodeXxx方法的调用都会被监控到，如何区分有异常的case呢？我们日志中记录的异常以及异常发生的时间，因此我们需要在监控脚本中输出监控时间，然后和日志中异常发生的时间对比，找出最终出现问题的方法调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="code"><pre><span class="keyword">import</span> <span class="keyword">static</span> com.sun.btrace.BTraceUtils.*;
+<span class="keyword">import</span> com.sun.btrace.annotations.*;
+<span class="keyword">import</span> com.sun.btrace.AnyType;
+
+<span class="annotation">@BTrace</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraceMethodArgsAndReturn</span>{</span>
+
+        <span class="annotation">@OnMethod</span>(
+        clazz=<span class="string">"xxx.xxxUtil"</span>,
+        method=<span class="string">"decodeXxx"</span>,
+        location=<span class="annotation">@Location</span>(Kind.RETURN)
+        )
+        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">traceExecute</span>(AnyType sSrc, AnyType sSkey, AnyType iVParam, @Return Object result){
+                println(<span class="string">"Call xxxUtil.decodeXxx"</span>);
+                <span class="comment">// 打印入参sSrc</span>
+                println(strcat(<span class="string">"sSrc is:"</span>,str(sSrc)));
+                <span class="comment">// 打印入参sSkey</span>
+                println(strcat(<span class="string">"sSkey is:"</span>,str(sSkey)));
+                <span class="comment">// 打印入参iVParam</span>
+                println(strcat(<span class="string">"iVParam is:"</span>,str(iVParam)));
+                <span class="comment">// 打印函数返回结果result</span>
+                println(strcat(<span class="string">"result is:"</span>,str(result)));
+                <span class="comment">// 输出时间,这里之所以输出时间就是为了和日志中的时间对比寻找出错时方法调用的入参，日志中记录了异常时间</span>
+                println(strcat(<span class="string">"time is:"</span>,str(timeMillis()));
+        }
+}
+</pre></td></tr></table></figure>
+
+<p>脚本准备好了，然后在线上和JVM建立链接</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>sudo -u admin /home/boris<span class="preprocessor">.yangbl</span>/btrace/bin/btrace -<span class="keyword">cp</span> /home/boris<span class="preprocessor">.yangbl</span>/btrace/build <span class="number">8485</span> TraceMethodArgsAndReturn<span class="preprocessor">.java</span>
+</pre></td></tr></table></figure>
+
+<p>其中8485是JVM的PID。<br>执行命令后，监控确实被监控到了，但是方法内部抛异常的case没有被监控到，奇怪，此时子写检查上面的监控脚本，发现location=@Location(Kind.RETURN)，这说明方法返回时才会被监控到，要是方法抛异常了，方法的return字节码压根就不会被调用，要是方法的return字节码不会被调用，那BTrace动态增加的字节码也不会被调用，因此需要修改一下BTrace脚本了，输出的时候不要限制方法返回，现在把BTrace脚本修改如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre></td><td class="code"><pre><span class="keyword">import</span> <span class="keyword">static</span> com.sun.btrace.BTraceUtils.*;
+<span class="keyword">import</span> com.sun.btrace.annotations.*;
+<span class="keyword">import</span> com.sun.btrace.AnyType;
+
+<span class="annotation">@BTrace</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraceMethodArgsAndReturn</span>{</span>
+
+        <span class="comment">// 方法返回时的监控</span>
+        <span class="annotation">@OnMethod</span>(
+        clazz=<span class="string">"xxx.xxxUtil"</span>,
+        method=<span class="string">"decodeXxx"</span>,
+        location=<span class="annotation">@Location</span>(Kind.RETURN)
+        )
+        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">traceExecute</span>(AnyType sSrc, AnyType sSkey, AnyType iVParam, @Return Object result){
+                println(<span class="string">"return xxxUtil.decodeXxx"</span>);
+                <span class="comment">// 打印入参sSrc</span>
+                println(strcat(<span class="string">"sSrc is:"</span>,str(sSrc)));
+                <span class="comment">// 打印入参sSkey</span>
+                println(strcat(<span class="string">"sSkey is:"</span>,str(sSkey)));
+                <span class="comment">// 打印入参iVParam</span>
+                println(strcat(<span class="string">"iVParam is:"</span>,str(iVParam)));
+                <span class="comment">// 打印函数返回结果result</span>
+                println(strcat(<span class="string">"result is:"</span>,str(result)));
+        }
+        <span class="comment">// 进入方法的监控</span>
+        <span class="annotation">@OnMethod</span>(
+        clazz=<span class="string">"xxx.xxxUtil"</span>,
+        method=<span class="string">"decodeXxx"</span>
+        )
+        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">traceExecute</span>(AnyType sSrc, AnyType sSkey, AnyType iVParam, @Return Object result){
+                println(<span class="string">"enter xxxUtil.decodeXxx"</span>);
+                <span class="comment">// 打印入参sSrc</span>
+                println(strcat(<span class="string">"sSrc is:"</span>,str(sSrc)));
+                <span class="comment">// 打印入参sSkey</span>
+                println(strcat(<span class="string">"sSkey is:"</span>,str(sSkey)));
+                <span class="comment">// 打印入参iVParam</span>
+                println(strcat(<span class="string">"iVParam is:"</span>,str(iVParam)));
+                <span class="comment">// 打印函数返回结果result</span>
+                println(strcat(<span class="string">"result is:"</span>,str(result)));
+        }
+}
+</pre></td></tr></table></figure>
+
+<p>修改成上面的监控脚本后，我们都不需要在脚本中输出监控时间了，要是有方法抛异常的化了，必然会出现只有enter(进入方法的监控)没有return(方法返回时的监控)的输出，由于线上有两台机器，因此同时在这两台机器上使用了这个BTrace脚本，最终定位到了decodeXxx方法内部抛出异常时方法的入参是什么。后面的分析和业务有关，这里不做过多解释。</p>
+<h4 id="三-最后总结">三.最后总结</h4>
+<p>location=@Location(Kind.RETURN)要是方法内部出现异常的话，此时被BTrace修改后的字节码就没法执行了。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/开发工具/">开发工具</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/BTrace/">BTrace</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="使用BTrace监控方法入参">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
 	  </div>
 	  <div class="widget-wrapper">
-		<%- partial('_partial/sidebar') %>
+		<aside id="sidebar">
+  
+  
+    
+      
+      <div class="seach">
+	<h3 class="title">搜索</h3>
+	<div style="padding-left:5px;padding-bottom: 10px;">
+		<input type="text" class="st-default-search-input" />
+	</div>
+</div>
+<div class="widget-seperator"></div>
+
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>24</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/04/17/software-design/" title="关于系统架构设计的心得(一)">关于系统架构设计的心得(一)</a>
+      </li>
+    
+      <li>
+        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/18/xstream-skills-for-utf8/" title="使用xstream解析utf-8格式的字符串">使用xstream解析utf-8格式的字符串</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>6</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>12</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>33</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
 	  </div>
   </div>
-  <footer id="footer"><%- partial('_partial/footer') %></footer>
-  <%- partial('_partial/after-footer') %>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
 </body>
 </html>
