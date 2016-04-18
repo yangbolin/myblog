@@ -1,0 +1,351 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>关于系统架构设计的心得(一) | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+关于系统的架构设计，其实有很多内容，要想设计出足够灵活的软件系统，确实不是一件容易的事情，特别是面对我们日新月异的业务，业务的变动完全可以推翻你之前所做的所有设计，如何在复杂的业务中剥离出一些固定的规律，这大概就是系统架构的主要目的了。要想做好系统架构，你需要对业务有一个宏观层面的认识和理解，需要把你所面对的业务模块化，结构化，然后再针对每个模块每个结构进行详细的设计。当然这些模块的划分以及抽象，也需要你有一定的经验。下面从模块划分，模型，关系，以及系统交互层面写写自己在设计方面的心得体会。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="关于系统架构设计的心得(一)"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','Et1J2-wE4hZdMNZyTfCZ','2.0.0');
+</script>
+<body>
+  <div class="screen">
+	  <div class="wrapper">
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2016/04/17/software-design/">
+  <time datetime="2016-04-17T13:33:06.000Z">
+    Apr 17 2016
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">关于系统架构设计的心得(一)</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>关于系统的架构设计，其实有很多内容，要想设计出足够灵活的软件系统，确实不是一件容易的事情，特别是面对我们日新月异的业务，业务的变动完全可以推翻你之前所做的所有设计，如何在复杂的业务中剥离出一些固定的规律，这大概就是系统架构的主要目的了。要想做好系统架构，你需要对业务有一个宏观层面的认识和理解，需要把你所面对的业务模块化，结构化，然后再针对每个模块每个结构进行详细的设计。当然这些模块的划分以及抽象，也需要你有一定的经验。下面从模块划分，模型，关系，以及系统交互层面写写自己在设计方面的心得体会。<br><a id="more"></a></p>
+<h4 id="二-模块划分">二.模块划分</h4>
+<p>模块的划分，是系统架构的首先要考虑的问题，我们当前的系统有那些模块，首先我们要考虑的是一个核心模块，我们需要对我们的业务作出一个高度的抽象，把一些共性的东西抽取出来，形成我们的核心系统模块，也就是我们的系统内核，基于系统内核，我们再抽象出一些个性化模块支持差异化的业务，但是核心模块在整个业务发证过程中应该保持不变，或者只需要微调就可以了。<font color=red>话虽这么说，但是达到这个目的并不是很容易，需要你有全局观才能保持内核模块的健壮和鲁棒。</font><br>其实做的好的话，你的内核模块是用来驱动你的差异化模块的，执行到某个核心的动作的时候，可以路由到具体的差异化模块中去执行。</p>
+<h4 id="三-模型">三.模型</h4>
+<p>模型，非常重要，一个模型的设计决定了系统的能够支持的功能，如果模型设计的非常灵活，那么系统能支持的功能也就非常多。所以在设计模型的时候要仔细斟酌，模型中的每一个字段都要思考。看看那些东西是必须的，那些东西是毫无规律的，必须的并且毫无规律的东西都需要在模型中体现出来。那些有规律的可以通过配置来解决，有些场景必须有些场景不是必须的可以通过差异化存储来解决，差异化存储就是通过一个JSON字符串来存储，这是我目前经常使用的手段，而且在很多时候都非常有效。</p>
+<h4 id="四-关系">四.关系</h4>
+<p>关系，也就是模型和模型之间的关系，一对多，多对多等等，模型梳理出来后，模型之间的关系其实显而易见。如果你的模型和模型之间的关系非常复杂，那就说明你梳理出来的模型是不合理的，我们之所以做设计，一个根本的目的就是把复杂的事情简单化，而不是把复杂的事情复杂化，把一个PD看来很复杂的业务做成一个开发看来很复杂的系统。</p>
+<h4 id="五-系统交互">五.系统交互</h4>
+<p>关于系统交互，对于外部的系统，尽量先落库再处理。<br>①先落库，马上去处理，处理完后更新数据，这个是资金操作时需要考虑的一个原则。<br>②先落库，然后异步处理，直到处理成功或者处理一定次数后挂起，这也是一个简单但是非常重要的原则，因为你可以保证自身系统的稳定性，但是你无法要求你依赖的系统和你一样稳定。<br>③重要的操作，不要直接通过消息来交互，虽然消息解耦并且异步，但是你承受不起丢消息给你带来的排查和修复所浪费的时间成本。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/架构设计/">架构设计</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/架构/">架构</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="关于系统架构设计的心得(一)">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
+	  </div>
+	  <div class="widget-wrapper">
+		<aside id="sidebar">
+  
+  
+    
+      
+      <div class="seach">
+	<h3 class="title">搜索</h3>
+	<div style="padding-left:5px;padding-bottom: 10px;">
+		<input type="text" class="st-default-search-input" />
+	</div>
+</div>
+<div class="widget-seperator"></div>
+
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>24</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/04/17/software-design/" title="关于系统架构设计的心得(一)">关于系统架构设计的心得(一)</a>
+      </li>
+    
+      <li>
+        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/18/xstream-skills-for-utf8/" title="使用xstream解析utf-8格式的字符串">使用xstream解析utf-8格式的字符串</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
+      </li>
+    
+      <li>
+        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
+      </li>
+    
+      <li>
+        <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>6</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>12</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>33</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
+	  </div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+</body>
+</html>
