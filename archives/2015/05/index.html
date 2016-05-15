@@ -3,25 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <%
+  var title = page.title;
   
-  <title>Archives: 2015/5 | BolinYoung&#39;s Blog</title>
-  <meta name="author" content="BolinYoung">
-  
-  <meta name="description" content="Coder @Alibaba">
-  
-  
+  if (is_archive()) {
+    title = __('archive_title');
+
+    if (is_month()) {
+      title += ': ' + page.year + '/' + page.month;
+    } else if (is_year()) {
+      title += ': ' + page.year;
+    }
+  } else if (is_category()) {
+    title = __('category_title') + ': ' + page.category;
+  } else if (is_tag()) {
+    title = __('tag_title') + ': ' + page.tag;
+  }
+  %>
+  <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
+  <% if (config.author){ %><meta name="author" content="<%= config.author %>"><% } %>
+  <% if (page.description){ %>
+  <meta name="description" content="<%= page.description %>">
+  <% } else if (page.excerpt){ %>
+  <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '') %>">
+  <% } else if (page.content){ %>
+  <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
+  <% } else if (config.description){ %>
+  <meta name="description" content="<%= config.description %>">
+  <% } %>
+  <% if (page.keywords){ %><meta name="keywords" content="<%= page.keywords %>"><% } %>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
-  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
-  
-  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <% if (page.title){ %><meta property="og:title" content="<%= page.title %>"/><% } %>
+  <meta property="og:site_name" content="<%= config.title %>"/>
+  <% if (theme.rss){ %>
+  <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
+  <% } %>
+  <% if (theme.favicon){ %>
+    <link rel="icon" type="image/x-icon" href="<%- theme.favicon %>">
+  <% } %>
+  <%- css('css/style.css') %>
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
+  <%- partial('google-analytics') %>
 </head>
 
 <script type="text/javascript">
@@ -189,6 +211,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2016/05/15/arrayblockingqueue-put-offer/" title="arrayblockingqueue-put-offer">arrayblockingqueue-put-offer</a>
+      </li>
+    
+      <li>
         <a href="/2016/04/17/software-design/" title="关于系统架构设计的心得(一)">关于系统架构设计的心得(一)</a>
       </li>
     
@@ -224,10 +250,6 @@
         <a href="/2015/08/02/java-concurrent-note-1/" title="Java并发编程艺术读书笔记一">Java并发编程艺术读书笔记一</a>
       </li>
     
-      <li>
-        <a href="/2015/07/02/svn-merge-revert/" title="使用svn merge命令来回滚代码">使用svn merge命令来回滚代码</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -235,43 +257,17 @@
 
     
       
-      
+      <% if (site.categories.length){ %>
 <div class="widget categorieslist">
-		<h3>分类</h3>
+		<h3><%= __('分类') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>6</sup></a></li>
-		
-			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
-		
-			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
-		
-			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
-		
-			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
-		
-			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
-		
-			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
-		
-			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>12</sup></a></li>
-		
-			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
-		
-			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
-		
-			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
-		
-			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
-		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>33</sup></a></li>
-		
-			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
-		
+		<% site.categories.sort('name').each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
