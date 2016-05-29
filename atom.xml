@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2016-05-22T12:57:07.673Z</updated>
+  <updated>2016-05-29T10:36:28.791Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yangbolin.cn/2016/05/22/enum-probolems-in-hessian/"/>
     <id>http://yangbolin.cn/2016/05/22/enum-probolems-in-hessian/</id>
     <published>2016-05-22T03:03:47.000Z</published>
-    <updated>2016-05-22T12:56:59.000Z</updated>
+    <updated>2016-05-29T10:36:06.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
 <p>最近在拆分一个枚举类，但是该枚举类使用在一个RPC接口上，枚举类使用在RPC接口上，必然要考虑序列化和反序列化的问题，需要确保自己对枚举的拆分不会导致序列化和反序列化的问题。</p>
 <a id="more"></a>
@@ -33,13 +33,13 @@
 6
 7
 8
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> xxxEmum {
-	X(<span class="string">"a11"</span>,<span class="string">"a22"</span>),
-	Y(<span class="string">"a111"</span>,<span class="string">"a222"</span>); 
-	<span class="keyword">private</span> String a1;
-	<span class="keyword">private</span> String a2;
-	<span class="keyword">public</span> String <span class="title">getA1</span>(){ <span class="keyword">return</span> a1;}
-	<span class="keyword">public</span> String <span class="title">getA2</span>(){ <span class="keyword">return</span> a2;}
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> xxxEnum {
+  X(<span class="string">"a11"</span>,<span class="string">"a22"</span>),
+  Y(<span class="string">"a111"</span>,<span class="string">"a222"</span>); 
+  <span class="keyword">private</span> String a1;
+  <span class="keyword">private</span> String a2;
+  <span class="keyword">public</span> String <span class="title">getA1</span>(){ <span class="keyword">return</span> a1;}
+  <span class="keyword">public</span> String <span class="title">getA2</span>(){ <span class="keyword">return</span> a2;}
  }
 </pre></td></tr></table></figure>
 
@@ -52,13 +52,13 @@
 6
 7
 8
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> xxxEmum {
-	X(<span class="string">"b11"</span>,<span class="string">"b22"</span>),
-	Y(<span class="string">"b111"</span>,<span class="string">"b222"</span>); 
-	<span class="keyword">private</span> String b1;
-	<span class="keyword">private</span> String b2;
-	<span class="keyword">public</span> String <span class="title">getB1</span>(){ <span class="keyword">return</span> b1;}
-	<span class="keyword">public</span> String <span class="title">getB2</span>(){ <span class="keyword">return</span> b2;}
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> xxxEnum {
+  X(<span class="string">"b11"</span>,<span class="string">"b22"</span>),
+  Y(<span class="string">"b111"</span>,<span class="string">"b222"</span>); 
+  <span class="keyword">private</span> String b1;
+  <span class="keyword">private</span> String b2;
+  <span class="keyword">public</span> String <span class="title">getB1</span>(){ <span class="keyword">return</span> b1;}
+  <span class="keyword">public</span> String <span class="title">getB2</span>(){ <span class="keyword">return</span> b2;}
  }
 </pre></td></tr></table></figure>
 
@@ -114,7 +114,7 @@
             cl = cl.getSuperclass();
 
         <span class="keyword">try</span> {
-	    <span class="comment">// 通过反射来获取枚举类的name方法</span>
+      <span class="comment">// 通过反射来获取枚举类的name方法</span>
             _name = cl.getMethod(<span class="string">"name"</span>, <span class="keyword">new</span> Class[<span class="number">0</span>]);
         } <span class="keyword">catch</span> (Exception e) {
             <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);
@@ -132,7 +132,7 @@
 
         String name = <span class="keyword">null</span>;
         <span class="keyword">try</span> {
-	    <span class="comment">//调用枚举类的name方法来生成枚举序列化的值</span>
+      <span class="comment">//调用枚举类的name方法来生成枚举序列化的值</span>
             name = (String) _name.invoke(obj, (Object[]) <span class="keyword">null</span>);
         } <span class="keyword">catch</span> (Exception e) {
             <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);
@@ -247,7 +247,7 @@
     <span class="keyword">try</span> {
       <span class="comment">// 反射获取枚举类的valueOf方法</span>
       _valueOf = _enumType.getMethod(<span class="string">"valueOf"</span>,
-			     <span class="keyword">new</span> Class[] { Class.class, String.class });
+           <span class="keyword">new</span> Class[] { Class.class, String.class });
     } <span class="keyword">catch</span> (Exception e) {
       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);
     }
@@ -269,7 +269,7 @@
       <span class="keyword">if</span> (key.equals(<span class="string">"name"</span>))
         name = in.readString();
       <span class="keyword">else</span>
-	in.readObject();
+  in.readObject();
     }
 
     in.readMapEnd();
@@ -292,7 +292,7 @@
       <span class="keyword">if</span> (<span class="string">"name"</span>.equals(fieldNames[i]))
         name = in.readString();
       <span class="keyword">else</span>
-	in.readObject();
+  in.readObject();
     }
 
     Object obj = create(name);
@@ -326,9 +326,9 @@
 4
 5
 </pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> A {
-	X,
-	Y,
-	Z;
+  X,
+  Y,
+  Z;
 }
 </pre></td></tr></table></figure>
 
@@ -338,8 +338,8 @@
 3
 4
 </pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> A {
-	X,
-	Y;
+  X,
+  Y;
 }
 </pre></td></tr></table></figure>
 
@@ -352,10 +352,10 @@
 5
 6
 </pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> A {
-	X(<span class="string">"aaa"</span>),
-	Y(<span class="string">"bbbb"</span>);<span class="comment">//此时Y的ordinal为1，对应的value为bbb</span>
-	String value;
-	A(String value) {<span class="keyword">this</span>.value=value}
+  X(<span class="string">"aaa"</span>),
+  Y(<span class="string">"bbbb"</span>);<span class="comment">//此时Y的ordinal为1，对应的value为bbb</span>
+  String value;
+  A(String value) {<span class="keyword">this</span>.value=value}
 }
 </pre></td></tr></table></figure>
 
@@ -368,20 +368,89 @@
 6
 7
 </pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> A {
-	X(<span class="string">"aaa"</span>),
-	Z(<span class="string">"ccc"</span>),
-	Y(<span class="string">"ddd"</span>);<span class="comment">// 此时Y的ordinal为2对应的value为ddd</span>
-	String value;
-	A(String value) {<span class="keyword">this</span>.value=value;}
+  X(<span class="string">"aaa"</span>),
+  Z(<span class="string">"ccc"</span>),
+  Y(<span class="string">"ddd"</span>);<span class="comment">// 此时Y的ordinal为2对应的value为ddd</span>
+  String value;
+  A(String value) {<span class="keyword">this</span>.value=value;}
 }
 </pre></td></tr></table></figure>
 
-<p><font color="red">假如入服务端传递给客户端的是A.Y，此时客户端拿到的A.Y对应的ordinal为2，对应的value为ddd。</font><br>上面这个点非常重要。</p>
+<p><font color="red">假如入服务端传递给客户端的是A.Y，此时客户端拿到的A.Y对应的ordinal为2，对应的value为ddd。</font><br>上面这个点非常重要。<br>3.枚举是单例的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">enum</span> TestEnum {
+    
+    XX(<span class="string">"xx"</span>);
+    
+    TestEnum(String value) {
+        <span class="keyword">this</span>.value = value;
+    }
+    
+    String value;
+
+    
+    <span class="keyword">public</span> String <span class="title">getValue</span>() {
+        <span class="keyword">return</span> value;
+    }
+
+    
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setValue</span>(String value) {
+        <span class="keyword">this</span>.value = value;
+    }
+}
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> {</span>
+    
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] rgs) {
+        TestEnum testEnum1 = TestEnum.XX;
+        TestEnum testEnum2 = TestEnum.XX;
+        
+        testEnum1.setValue(<span class="string">"XX"</span>);
+        testEnum2.setValue(<span class="string">"YY"</span>);
+        System.out.println(testEnum1.value); <span class="comment">// 输出 YY</span>
+        System.out.println(testEnum2.value); <span class="comment">// 输出 YY</span>
+    }
+}
+</pre></td></tr></table></figure>
+
+<p>testEnum1和testEnum2其实指向了同一个枚举引用。每次修改的都是同一个对象，所以前一个set的值被后面的set给覆盖了。</p>
 <h4 id="三-总结">三.总结</h4>
 <ul>
 <li>还是不要在RPC的接口中直接使用枚举类了，直接使用String就行</li>
 <li>在枚举类中使用字符串时直接使用name()就行，不要再做过度封装，尽量保持枚举类的简洁</li>
 <li>枚举类使用在RPC接口上的时候就一定要小心，重构的时候要注意保持ordinal</li>
+<li>枚举在序列化和反序列化的时候，除了name值，其他啥都不带的</li>
+<li>禁止给枚举提供set方法，没用的</li>
 </ul>
 ]]></content>
     <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
