@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2016-07-17T11:16:43.398Z</updated>
+  <updated>2016-07-17T11:23:07.301Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yangbolin.cn/2016/07/17/java-ut-mock-framework/"/>
     <id>http://yangbolin.cn/2016/07/17/java-ut-mock-framework/</id>
     <published>2016-07-17T02:50:10.000Z</published>
-    <updated>2016-07-17T11:16:32.000Z</updated>
+    <updated>2016-07-17T11:22:46.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
 <p>最近在做代码重构，发现系统中的UT很少，重构没有UT的话，全部得人工测试，逻辑覆盖不一定全部能覆盖到，因此UT还是很有必要存在的。在写UT的时候，mock是必须要有的，但是现在适用于java代码做单元测试的mock框架很多，我们该如何选择？</p>
 <a id="more"></a>
@@ -172,7 +172,8 @@ System.out.println(eatInfo);
 </pre></td></tr></table></figure>
 
 <p>此时返回null，按照mockito的官方文档，没有被mock的方法返回默认值，具体可以看mockito的官方文档。<br>那么mockito如何保证不被mock的代码按照原来的逻辑输出呢？</p>
-<font color="red">通过doCallRealMethodl来实现</font><br><figure class="highlight java"><table><tr><td class="gutter"><pre>1
+<p><font color="red">通过doCallRealMethodl来实现</font></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
 3
 4
@@ -184,7 +185,11 @@ String actual = mockClazz.run(<span class="string">"A"</span>);
 System.out.println(actual); <span class="comment">// A begin run... 原样执行</span>
 
 System.out.println(mockClazz.run(<span class="string">"B"</span>)); <span class="comment">// null 返回默认值</span>
-</pre></td></tr></table></figure><br><br>上面的代码显示指定了通过run(“A”)的时候调用原来的代码执行，输出A返回A begin run…<br><font color="red">通过spy来实现</font><br><figure class="highlight java"><table><tr><td class="gutter"><pre>1
+</pre></td></tr></table></figure>
+
+<p>上面的代码显示指定了通过run(“A”)的时候调用原来的代码执行，输出A返回A begin run…</p>
+<p><font color="red">通过spy来实现</font></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
 3
 4
@@ -194,20 +199,30 @@ Mockito.when(mockClazz.run(<span class="string">"A"</span>)).thenReturn(<span cl
 
 String actual = mockClazz.run(<span class="string">"C"</span>);
 System.out.println(actual); <span class="comment">// 输出[C begin run...],原样输出忽略mock逻辑</span>
-</pre></td></tr></table></figure><br><br>此时mockClazz.run(“C”)直接按照原来的代码执行，忽略mock逻辑。<br>在使用spy的时候需要注意一个点，看下面两段代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre>1
+</pre></td></tr></table></figure>
+
+<p>此时mockClazz.run(“C”)直接按照原来的代码执行，忽略mock逻辑。<br>在使用spy的时候需要注意一个点，看下面两段代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
 3
 </pre></td><td class="code"><pre>MockClazz mockClazz = Mockito.spy(<span class="keyword">new</span> MockClazz());
 Mockito.when(mockClazz.run(<span class="string">"A"</span>)).thenReturn(<span class="string">"B"</span>);
 System.out.println(mockClazz.run(<span class="string">"A"</span>)); <span class="comment">// 实际执行run的代码,只是修改返回值（先输出A,再返回B begin run...)</span>
-</pre></td></tr></table></figure><br><br>这段代码只是修改了返回值，实际代码逻辑被执行了，也就是说这种mock逻辑只是mock了返回值，类似SpringAOP在方法返回的时候拦截一下修改了返回值。<br><figure class="highlight java"><table><tr><td class="gutter"><pre>1
+</pre></td></tr></table></figure>
+
+<p>这段代码只是修改了返回值，实际代码逻辑被执行了，也就是说这种mock逻辑只是mock了返回值，类似SpringAOP在方法返回的时候拦截一下修改了返回值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
 2
 3
 </pre></td><td class="code"><pre>MockClazz mockClazz = Mockito.spy(<span class="keyword">new</span> MockClazz());
 Mockito.doReturn(<span class="string">"B"</span>).when(mockClazz).run(<span class="string">"C"</span>);
 System.out.println(mockClazz.run(<span class="string">"C"</span>)); <span class="comment">// 根本不执行run的代码,直接返回</span>
-</pre></td></tr></table></figure><br><br>这段代码不仅该了返回值，同时也真正的代码一行也不会执行。<br>&gt; 注意这两种写法的微妙区别哦<br><font color="red">Mockito.doReturn(“B”).when(mockClazz).run(“C”);</font><br><font color="red">Mockito.when(mockClazz.run(“A”)).thenReturn(“B”);</font>
+</pre></td></tr></table></figure>
 
+<p>这段代码不仅该了返回值，同时也真正的代码一行也不会执行。</p>
+<blockquote>
+<p>注意这两种写法的微妙区别哦<br>Mockito.doReturn(“B”).when(mockClazz).run(“C”);<br>Mockito.when(mockClazz.run(“A”)).thenReturn(“B”);</p>
+</blockquote>
 <p>mockito不支持private,final,static等方法的mock。</p>
 <h4 id="3-powermock">3.powermock</h4>
 <p>powermock实在easymock和mockito的基础上扩展而来的，easymock和mockito不能解决private,final,static等方法的mock，powermock为此提供了解决方案。powermock需要和easymock或者mockito配合起来一起使用。<br>引入依赖</p>
@@ -445,7 +460,7 @@ System.out.println(mockClazz.run(<span class="string">"C"</span>)); <span class=
 </pre></td></tr></table></figure>
 
 <blockquote>
-<p>注意：<br>1.NonStrictExpectations返回缺省值针对没有mock的方法<br>2.Expectations针对没有mock的方法直接抛异常<br>3.官网上的jmockito暂时不支持私有方法的mock，google提供的高版本二方库也不支持私有方法的mock</p>
+<p> 注意：<br> 1.NonStrictExpectations返回缺省值针对没有mock的方法<br> 2.Expectations针对没有mock的方法直接抛异常<br> 3.官网上的jmockito暂时不支持私有方法的mock，google提供的高版本二方库也不支持私有方法的mock</p>
 </blockquote>
 <p>上面例子的代码<a href="https://github.com/yangbolin/java-mock-framework" target="_blank">https://github.com/yangbolin/java-mock-framework</a></p>
 <h4 id="三-总结">三.总结</h4>
