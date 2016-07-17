@@ -105,7 +105,7 @@
 25
 </pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MockClazz</span> {</span>
 
-    <span class="keyword">public</span> String  <span class="title">run</span>(String name) {
+    <span class="keyword">public</span> String <span class="title">run</span>(String name) {
         System.out.println(name);
         <span class="keyword">return</span> name + <span class="string">" begin run..."</span>;
     }
@@ -130,7 +130,7 @@
 }
 </pre></td></tr></table></figure>
 
-<h5 id="<font_color="blue">1-easymock</font>"><font color="blue">1.easymock</font></h5>
+<h4 id="1-easymock">1.easymock</h4>
 <p>easymock是比较早的一个mock框架，做一次mock需要先创建一个mock对象，然后录制mock代码，把mock对象切换到播放状态，执行单元测试，最后再验证mock对象是否按照录制的mock行为执行。<br>引入easymock的依赖</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre>1
 2
@@ -175,24 +175,12 @@ EasyMock.verify(mockClazz);
 </pre></td></tr></table></figure>
 
 <p>上述代码执行的时候出现下面的异常</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-</pre></td><td class="code"><pre>java.lang.AssertionError: 
-  Unexpected method call MockClazz.getEatInfo(<span class="string">"aa"</span>):
+<blockquote>
+<font color="red">java.lang.AssertionError:<br>  Unexpected method call MockClazz.getEatInfo(“aa”):<br>  at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:44)<br>    …..<br></font>
 
-	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:<span class="number">44</span>)
-	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:<span class="number">94</span>)
-	at org.easymock.internal.ClassProxyFactory$MockMethodInterceptor.intercept(ClassProxyFactory.java:<span class="number">97</span>)
-	at cn.yangbolin.mock.code.MockClazz$$EnhancerByCGLIB$$d4f94f43.getEatInfo(&lt;generated&gt;)
-</pre></td></tr></table></figure>
-
+</blockquote>
 <p>可见easymock如果其中一个方法没有被mock但是被调用了，就会抛异常。easymock不支持private,final,static等方法的mock</p>
-<h5 id="<font_color="blue">2-mockito</font>"><font color="blue">2.mockito</font></h5>
+<h4 id="2-mockito">2.mockito</h4>
 <p>mockito是在easymock之后出现的，相对于easymock来说，mockito少了对象状态切换这一步骤。<br>引入mockito的依赖</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre>1
 2
@@ -272,7 +260,7 @@ System.out.println(mockClazz.run(<span class="string">"C"</span>)); <span class=
 </pre></td></tr></table></figure><br><br>这段代码不仅该了返回值，同时也真正的代码一行也不会执行。<br>&gt; 注意这两种写法的微妙区别哦<br><font color="red">Mockito.doReturn(“B”).when(mockClazz).run(“C”);</font><br><font color="red">Mockito.when(mockClazz.run(“A”)).thenReturn(“B”);</font>
 
 <p>mockito不支持private,final,static等方法的mock。</p>
-<h5 id="<font_color="blue">3-powermock</font>"><font color="blue">3.powermock</font></h5>
+<h4 id="3-powermock">3.powermock</h4>
 <p>powermock实在easymock和mockito的基础上扩展而来的，easymock和mockito不能解决private,final,static等方法的mock，powermock为此提供了解决方案。powermock需要和easymock或者mockito配合起来一起使用。<br>引入依赖</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre>1
 2
@@ -362,7 +350,7 @@ System.out.println(mockClazz.run(<span class="string">"C"</span>)); <span class=
 }
 </pre></td></tr></table></figure>
 
-<h5 id="<font_color="blue">4-jmockit</font>"><font color="blue">4.jmockit</font></h5>
+<h5 id="4-jmockit">4.jmockit</h5>
 <p>jmockit是一个轻量级的mock框架，内部采用ASM来修改字节码。<br>引入依赖</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre>1
 2
