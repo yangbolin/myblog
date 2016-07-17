@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/09/17/jvm-cmd/">
+  <time datetime="2014-09-17T11:38:19.000Z">
+    Sep 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/09/17/jvm-cmd/">JVM常用命令总结</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="GC相关">GC相关</h4>
+<p>jstat -gcutil pid time<br>实时查看JAVA进程PID的垃圾回收情况，PID表示JAVA进程的ID，time表示统计的时间频率，单位是ms，比如jstat -gcutil 8888 1000 表示每隔1000ms统计一次JAVA进程8888的GC回收。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/09/17/jvm-cmd/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/09/06/fission-thought/">
   <time datetime="2014-09-06T02:49:07.000Z">
     Sep 6 2014
@@ -414,46 +454,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/16/asm-read-class-bytes/">
-  <time datetime="2014-07-16T12:18:54.000Z">
-    Jul 16 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/16/asm-read-class-bytes/">使用ASM读取class的字节码</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>我们平时写的JAVA代码经过编译后就是class文件，class文件其实有非常严谨的结构，具体可以参考<a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.1" target="_blank">JVM class文件格式规范</a>,认真读完这个规范，只要你按照这个规范来解析class文件，你就一定能写个javap出来。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/16/asm-read-class-bytes/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -498,7 +498,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>26</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>27</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
 		
@@ -529,6 +529,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/07/17/java-ut-mock-framework/" title="JAVA单元测试mock框架">JAVA单元测试mock框架</a>
+      </li>
     
       <li>
         <a href="/2016/05/22/enum-probolems-in-hessian/" title="枚举在hessian序列化和反序列化中的问题">枚举在hessian序列化和反序列化中的问题</a>
@@ -564,10 +568,6 @@
     
       <li>
         <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
-      </li>
-    
-      <li>
-        <a href="/2015/09/09/awk-command/" title="awk使用总结">awk使用总结</a>
       </li>
     
   </ul>
@@ -606,7 +606,7 @@
 		
 			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>35</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>36</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		

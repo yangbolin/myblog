@@ -1,0 +1,765 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>JAVA单元测试mock框架 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+最近在做代码重构，发现系统中的UT很少，重构没有UT的话，全部得人工测试，逻辑覆盖不一定全部能覆盖到，因此UT还是很有必要存在的。在写UT的时候，mock是必须要有的，但是现在适用于java代码做单元测试的mock框架很多，我们该如何选择？">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta property="og:title" content="JAVA单元测试mock框架"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="screen">
+	  <div class="wrapper">
+		<header id="header">
+  <div class="title">
+    <h1><a href="/">BolinYoung&#39;s Blog</a></h1>
+    <p><a href="/">Believe in yourself</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/reading">Reading</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+		<div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2016/07/17/java-ut-mock-framework/">
+  <time datetime="2016-07-17T02:50:10.000Z">
+    Jul 17 2016
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">JAVA单元测试mock框架</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>最近在做代码重构，发现系统中的UT很少，重构没有UT的话，全部得人工测试，逻辑覆盖不一定全部能覆盖到，因此UT还是很有必要存在的。在写UT的时候，mock是必须要有的，但是现在适用于java代码做单元测试的mock框架很多，我们该如何选择？</p>
+<a id="more"></a>
+
+<p>在做选择之前，我们先看看如何使用每个mock框架，再做决定。</p>
+<h4 id="二-mock框架">二.mock框架</h4>
+<p>为了方便描述，我们先写一个简单的测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MockClazz</span> {</span>
+
+    <span class="keyword">public</span> String  <span class="title">run</span>(String name) {
+        System.out.println(name);
+        <span class="keyword">return</span> name + <span class="string">" begin run..."</span>;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">sleep</span> (String name) {
+        System.out.println(name);
+        <span class="keyword">return</span> name + <span class="string">" begin sleep..."</span>;
+    }
+
+    <span class="keyword">private</span> String <span class="title">eat</span>(String name) {
+        System.out.println(name);
+        <span class="keyword">return</span> name + <span class="string">" begin eat..."</span>;
+    }
+
+    <span class="keyword">public</span> String <span class="title">getEatInfo</span>(String name) {
+        <span class="keyword">return</span> eat(name);
+    }
+
+    <span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">create</span>(String name) {
+        <span class="keyword">return</span> name;
+    }
+}
+</pre></td></tr></table></figure>
+
+<h5 id="<font_color="blue">1-easymock</font>"><font color="blue">1.easymock</font></h5>
+<p>easymock是比较早的一个mock框架，做一次mock需要先创建一个mock对象，然后录制mock代码，把mock对象切换到播放状态，执行单元测试，最后再验证mock对象是否按照录制的mock行为执行。<br>引入easymock的依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.easymock<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>easymock<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>3.4<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>如何编写mock代码，分为五个步骤</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="code"><pre><span class="comment">// ① 创建mock对象</span>
+MockClazz mockClazz = EasyMock.createMock(MockClazz.class);
+<span class="comment">// ② 录制mock对象的预期行为和输出</span>
+EasyMock.expect(mockClazz.run(EasyMock.anyString())).andReturn(<span class="string">"mocked string for run"</span>);
+<span class="comment">// ③ 将mock对象切换到播放状态</span>
+EasyMock.replay(mockClazz);
+<span class="comment">// ④ 调用mock对象方法进行测试</span>
+String actualString = mockClazz.run(<span class="string">"name"</span>);
+Assert.assertEquals(<span class="string">"mocked string for run"</span>, actualString);
+<span class="comment">// ⑤ 对mock对象的行为进行验证,验证mock的对象是否按照录制的行为发生</span>
+EasyMock.verify(mockClazz);
+</pre></td></tr></table></figure>
+
+<p>这样我们就使用easymock完成了一个对象的mock测试。<br>在上面的例子中，我们只mock了run这个方法，那没有被mock的方法，在调用的时候会出现什么问题？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>String eatInfo = mockClazz.getEatInfo(<span class="string">"aa"</span>);
+</pre></td></tr></table></figure>
+
+<p>上述代码执行的时候出现下面的异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre>java.lang.AssertionError: 
+  Unexpected method call MockClazz.getEatInfo(<span class="string">"aa"</span>):
+
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:<span class="number">44</span>)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:<span class="number">94</span>)
+	at org.easymock.internal.ClassProxyFactory$MockMethodInterceptor.intercept(ClassProxyFactory.java:<span class="number">97</span>)
+	at cn.yangbolin.mock.code.MockClazz$$EnhancerByCGLIB$$d4f94f43.getEatInfo(&lt;generated&gt;)
+</pre></td></tr></table></figure>
+
+<p>可见easymock如果其中一个方法没有被mock但是被调用了，就会抛异常。easymock不支持private,final,static等方法的mock</p>
+<h5 id="<font_color="blue">2-mockito</font>"><font color="blue">2.mockito</font></h5>
+<p>mockito是在easymock之后出现的，相对于easymock来说，mockito少了对象状态切换这一步骤。<br>引入mockito的依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.mockito<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>mockito-all<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.0.2-beta<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>如何编写mockito的mock代码，分四个步骤</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="comment">// ① 创建mock对象</span>
+MockClazz mockClazz = Mockito.mock(MockClazz.class);
+<span class="comment">// ② 录制mock代码</span>
+Mockito.when(mockClazz.run(<span class="string">"A"</span>)).thenReturn(<span class="string">"B"</span>);
+<span class="comment">// ③ 执行单元测试</span>
+String actual = mockClazz.run(<span class="string">"A"</span>);
+Assert.assertEquals(actual,<span class="string">"B"</span>);
+<span class="comment">// ④ 校验mock对象的行为是否按照mock执行</span>
+Mockito.verify(mockClazz).run(<span class="string">"A"</span>);
+</pre></td></tr></table></figure>
+
+<p>和easymock相比，mockito少了一个环节，就是把对象切换到播放状态。<br>上面的代码中我们mock了run方法，但是getEatInfo方法没有被mock,调用这个方法会出现什么问题</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>String eatInfo = mockClazz.getEatInfo(<span class="string">"aa"</span>);
+System.out.println(eatInfo);
+</pre></td></tr></table></figure>
+
+<p>此时返回null，按照mockito的官方文档，没有被mock的方法返回默认值，具体可以看mockito的官方文档。<br>那么mockito如何保证不被mock的代码按照原来的逻辑输出呢？</p>
+<font color="red">通过doCallRealMethodl来实现</font><br><figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre>MockClazz mockClazz = Mockito.mock(MockClazz.class);
+Mockito.doCallRealMethod().when(mockClazz).run(<span class="string">"A"</span>);
+String actual = mockClazz.run(<span class="string">"A"</span>);
+System.out.println(actual); <span class="comment">// A begin run... 原样执行</span>
+
+System.out.println(mockClazz.run(<span class="string">"B"</span>)); <span class="comment">// null 返回默认值</span>
+</pre></td></tr></table></figure><br><br>上面的代码显示指定了通过run(“A”)的时候调用原来的代码执行，输出A返回A begin run…<br><font color="red">通过spy来实现</font><br><figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>MockClazz mockClazz = Mockito.spy(<span class="keyword">new</span> MockClazz()); <span class="comment">// 注意这里需要new一个</span>
+Mockito.when(mockClazz.run(<span class="string">"A"</span>)).thenReturn(<span class="string">"B"</span>);
+
+String actual = mockClazz.run(<span class="string">"C"</span>);
+System.out.println(actual); <span class="comment">// 输出[C begin run...],原样输出忽略mock逻辑</span>
+</pre></td></tr></table></figure><br><br>此时mockClazz.run(“C”)直接按照原来的代码执行，忽略mock逻辑。<br>在使用spy的时候需要注意一个点，看下面两段代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre>MockClazz mockClazz = Mockito.spy(<span class="keyword">new</span> MockClazz());
+Mockito.when(mockClazz.run(<span class="string">"A"</span>)).thenReturn(<span class="string">"B"</span>);
+System.out.println(mockClazz.run(<span class="string">"A"</span>)); <span class="comment">// 实际执行run的代码,只是修改返回值（先输出A,再返回B begin run...)</span>
+</pre></td></tr></table></figure><br><br>这段代码只是修改了返回值，实际代码逻辑被执行了，也就是说这种mock逻辑只是mock了返回值，类似SpringAOP在方法返回的时候拦截一下修改了返回值。<br><figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre>MockClazz mockClazz = Mockito.spy(<span class="keyword">new</span> MockClazz());
+Mockito.doReturn(<span class="string">"B"</span>).when(mockClazz).run(<span class="string">"C"</span>);
+System.out.println(mockClazz.run(<span class="string">"C"</span>)); <span class="comment">// 根本不执行run的代码,直接返回</span>
+</pre></td></tr></table></figure><br><br>这段代码不仅该了返回值，同时也真正的代码一行也不会执行。<br>&gt; 注意这两种写法的微妙区别哦<br><font color="red">Mockito.doReturn(“B”).when(mockClazz).run(“C”);</font><br><font color="red">Mockito.when(mockClazz.run(“A”)).thenReturn(“B”);</font>
+
+<p>mockito不支持private,final,static等方法的mock。</p>
+<h5 id="<font_color="blue">3-powermock</font>"><font color="blue">3.powermock</font></h5>
+<p>powermock实在easymock和mockito的基础上扩展而来的，easymock和mockito不能解决private,final,static等方法的mock，powermock为此提供了解决方案。powermock需要和easymock或者mockito配合起来一起使用。<br>引入依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.powermock<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>powermock-api-mockito<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.5<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.powermock<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>powermock-module-junit4<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.5<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></td><td class="code"><pre><span class="annotation">@RunWith</span>(PowerMockRunner.class)
+<span class="annotation">@PrepareForTest</span>( { MockClazz.class })
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MockTest</span> {</span>
+
+    <span class="annotation">@Test</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMockStatic</span>() {
+        <span class="comment">// 静态方法的mock</span>
+        PowerMockito.mockStatic(MockClazz.class);
+        PowerMockito.when(MockClazz.sleep(<span class="string">"A"</span>)).thenReturn(<span class="string">"B"</span>);
+        System.out.println(MockClazz.sleep(<span class="string">"A"</span>));
+        PowerMockito.verifyStatic();
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMockPrivate</span>() <span class="keyword">throws</span>  Exception {
+        <span class="comment">// 私有方法的mock,getEatInfo=&gt;eat,eat是私有方法</span>
+        MockClazz mockClazz = PowerMockito.mock(MockClazz.class);
+        PowerMockito.when(mockClazz, <span class="string">"eat"</span>, <span class="string">"A"</span>).thenReturn(<span class="string">"mock"</span>);
+        PowerMockito.doCallRealMethod().when(mockClazz).getEatInfo(<span class="string">"A"</span>);
+        System.out.println(mockClazz.getEatInfo(<span class="string">"A"</span>));
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMockFinal</span>() {
+        <span class="comment">// final方法的mock</span>
+        MockClazz mockClazz = PowerMockito.mock(MockClazz.class);
+        PowerMockito.when(mockClazz.create(<span class="string">"A"</span>)).thenReturn(<span class="string">"B"</span>);
+        System.out.println(mockClazz.create(<span class="string">"A"</span>));
+    }
+}
+</pre></td></tr></table></figure>
+
+<h5 id="<font_color="blue">4-jmockit</font>"><font color="blue">4.jmockit</font></h5>
+<p>jmockit是一个轻量级的mock框架，内部采用ASM来修改字节码。<br>引入依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.googlecode.jmockit<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>jmockit<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>具体mock的代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+</pre></td><td class="code"><pre><span class="annotation">@RunWith</span>(JMockit.class)
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MockTest</span> {</span>
+
+    <span class="annotation">@Mocked</span>
+    MockClazz mockClazz = <span class="keyword">new</span> MockClazz();
+
+    <span class="annotation">@Test</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testExpectations</span>() { <span class="comment">// 全局mock抛异常</span>
+        <span class="keyword">new</span> Expectations() {
+            {
+                mockClazz.getEatInfo(<span class="string">"A"</span>);
+                returns(<span class="string">"B"</span>);
+            }
+        };
+
+        <span class="comment">// 被mock的方法,返回mock后的值</span>
+        System.out.println(mockClazz.getEatInfo(<span class="string">"A"</span>));
+        <span class="comment">// 没有被mock的方法,mockit.internal.UnexpectedInvocation,jmocit对run没有进行mock</span>
+        System.out.println(mockClazz.run(<span class="string">"A"</span>));
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testNonExpectations</span>() { <span class="comment">//全局mock返回缺省值</span>
+
+        <span class="keyword">new</span> NonStrictExpectations() {
+            {
+                mockClazz.getEatInfo(<span class="string">"A"</span>);
+                returns(<span class="string">"B"</span>);
+            }
+        };
+
+        <span class="comment">// 被mock的方法,返回mock后的值</span>
+        System.out.println(mockClazz.getEatInfo(<span class="string">"A"</span>));
+        <span class="comment">// 没有被mock的方法,返回默认值,jmockit对run方法也进行了mock</span>
+        System.out.println(mockClazz.run(<span class="string">"A"</span>));
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMockStatic</span>() {
+        <span class="comment">// mock静态方法</span>
+        <span class="keyword">new</span> NonStrictExpectations() {
+            {
+                MockClazz.sleep(<span class="string">"A"</span>);
+                result = <span class="string">"B"</span>;
+            }
+        };
+        System.out.println(MockClazz.sleep(<span class="string">"A"</span>));
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMockPrivate</span>() {
+        <span class="comment">// mock静态方法</span>
+        <span class="keyword">final</span> MockClazz obj = <span class="keyword">new</span> MockClazz();
+        <span class="keyword">new</span> NonStrictExpectations(obj) {
+            {
+                <span class="comment">// 私有方法mock</span>
+                <span class="keyword">this</span>.invoke(obj, <span class="string">"eat"</span>, <span class="string">"A"</span>);
+                returns(<span class="string">"B"</span>);
+            }
+        };
+        System.out.println(obj.getEatInfo(<span class="string">"A"</span>)); <span class="comment">// 私有方法被mock了</span>
+        System.out.println(obj.run(<span class="string">"A"</span>)); <span class="comment">// run方法不会被mock,走真实逻辑</span>
+    }
+}
+</pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：<br>1.NonStrictExpectations返回缺省值针对没有mock的方法<br>2.Expectations针对没有mock的方法直接抛异常<br>3.官网上的jmockito暂时不支持私有方法的mock，google提供的高版本二方库也不支持私有方法的mock</p>
+</blockquote>
+<p>上面例子的代码<a href="https://github.com/yangbolin/java-mock-framework" target="_blank">https://github.com/yangbolin/java-mock-framework</a></p>
+<h4 id="三-总结">三.总结</h4>
+<p>本文依次对比了easymock,mockito,powermock,jmockito四个java的mock框架，easymock,mockito都存在final,private,static方法没法mock的问题，powermock解决了这个问题，jmockit也没有这个问题，powermock和jmockit的区别就在于API的风格，powermock继承了easymock和mockito的风格，链式的API风格，非常清晰，jmockit有自己的API风格。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/编程开发/">编程开发</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/JAVA/">JAVA</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="JAVA单元测试mock框架">
+  </div>
+<!-- ��˵����JS���� start (һ����ҳֻ������һ��) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"bolin"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- ��˵����JS���� end -->
+
+
+</section>
+
+</div>
+	  </div>
+	  <div class="widget-wrapper">
+		<aside id="sidebar">
+  
+  
+    
+      
+      
+<div class="widget tagslist">
+		<h3>标签</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>27</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
+			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
+		
+			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget recent-posts">
+  <h3 class="title">最新文章</h3>
+  <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/07/17/java-ut-mock-framework/" title="JAVA单元测试mock框架">JAVA单元测试mock框架</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/22/enum-probolems-in-hessian/" title="枚举在hessian序列化和反序列化中的问题">枚举在hessian序列化和反序列化中的问题</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/15/arrayblockingqueue-put-offer/" title="关于ArrayBlockingQueue的put和offer方法">关于ArrayBlockingQueue的put和offer方法</a>
+      </li>
+    
+      <li>
+        <a href="/2016/04/17/software-design/" title="关于系统架构设计的心得(一)">关于系统架构设计的心得(一)</a>
+      </li>
+    
+      <li>
+        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/18/xstream-skills-for-utf8/" title="使用xstream解析utf-8格式的字符串">使用xstream解析utf-8格式的字符串</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
+      </li>
+    
+      <li>
+        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
+      </li>
+    
+  </ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      
+<div class="widget categorieslist">
+		<h3>分类</h3>
+		<ul class="clearfix">
+		
+			<li><a href="/categories/JVM学习/" title="JVM学习">JVM学习<sup>6</sup></a></li>
+		
+			<li><a href="/categories/web开发/" title="web开发">web开发<sup>2</sup></a></li>
+		
+			<li><a href="/categories/分布式/" title="分布式">分布式<sup>2</sup></a></li>
+		
+			<li><a href="/categories/前端开发/" title="前端开发">前端开发<sup>3</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>3</sup></a></li>
+		
+			<li><a href="/categories/并发技术/" title="并发技术">并发技术<sup>2</sup></a></li>
+		
+			<li><a href="/categories/并发编程/" title="并发编程">并发编程<sup>1</sup></a></li>
+		
+			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>12</sup></a></li>
+		
+			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
+		
+			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+		
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>36</sup></a></li>
+		
+			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
+		
+		</ul>
+</div>
+<div class="widget-seperator"></div>
+
+
+    
+      
+      <div class="widget weibo">
+  <h3 class="title">微博</h3>
+  <div class="weibo-context">
+<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2411391267&verifier=dc5f828b&dpc=1"></iframe>
+  </div>
+</div>
+
+    
+  
+</aside>
+<div class="clearfix"></div>
+	  </div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">BolinYoung</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery-1.7.2.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'bolin' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+
+</body>
+</html>
