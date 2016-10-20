@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/12/26/short-ref-equal/">
+  <time datetime="2014-12-26T15:02:20.000Z">
+    Dec 26 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/12/26/short-ref-equal/">Short对象的比较</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-背景">一.背景</h4>
+<p>今天和同事一起分析线下问题，发现代码中有个笔误，对两个Short类型的对象使用==来比较，结果是比较表达式一直为false，导致一个bug的产生。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/12/26/short-ref-equal/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/11/17/servlet-extend/">
   <time datetime="2014-11-17T14:43:31.000Z">
     Nov 17 2014
@@ -416,46 +456,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/10/07/idempotency-and-db-lock/">
-  <time datetime="2014-10-07T10:52:48.000Z">
-    Oct 7 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/10/07/idempotency-and-db-lock/">幂等性&amp;&amp;数据库的锁</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-幂等性">一.幂等性</h4>
-<p>幂等性是高等代数中的概念，这里不是讨论数学上幂等性的概念，而是讨论程序中幂等性。幂等性是系统的接口对外一种承诺(而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的. 声明为幂等的接口会认为外部调用失败是常态, 并且失败之后必然会有重试.</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/10/07/idempotency-and-db-lock/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -506,6 +506,8 @@
 		
 			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
 		
+			<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>1</sup></a></li>
+		
 			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
 		
 			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
@@ -518,8 +520,6 @@
 		
 			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
 		
-			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -531,6 +531,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/10/20/nginx-error-fix/" title="nginx线上出错">nginx线上出错</a>
+      </li>
     
       <li>
         <a href="/2016/07/17/java-ut-mock-framework/" title="JAVA单元测试mock框架">JAVA单元测试mock框架</a>
@@ -568,10 +572,6 @@
         <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
       </li>
     
-      <li>
-        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -607,6 +607,8 @@
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
 			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+		
+			<li><a href="/categories/线上运维/" title="线上运维">线上运维<sup>1</sup></a></li>
 		
 			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>36</sup></a></li>
 		

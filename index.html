@@ -61,6 +61,61 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2016/10/20/nginx-error-fix/">
+  <time datetime="2016-10-20T05:01:10.000Z">
+    Oct 20 2016
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2016/10/20/nginx-error-fix/">nginx线上出错</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近在做nginx的升级，很多网站的架构都是代理服务器(Apache/Nginx)加上应用容器(Tomcat/Jetty/Jboss)，Nginx在性能上由于Apache，在升级的过程中出现了下面的错误</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>nginx: [emerg] could not build the variables_<span class="built_in">hash</span>, you should increase either variables_<span class="built_in">hash</span>_max_size: <span class="number">512</span> or variables_<span class="built_in">hash</span>_bucket_size: <span class="number">64</span>
+</pre></td></tr></table></figure>
+
+<p>查找Nginx的文档，找到解决方案</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre>http  {
+    <span class="attribute">...</span><span class="attribute">...</span>
+    variables_hash_max_size <span class="number">51200</span>;
+    variables_hash_bucket_size <span class="number">6400</span>;
+    <span class="attribute">...</span><span class="attribute">...</span>
+}
+</pre></td></tr></table></figure>
+
+<p>在http的配置中增加上面两个配置即可。<br>另外，对于基础软件的升级一定要注意操作上的顺序，本次升级过程中发现之前老的一些配置都不兼容，如果操作不当很容易引发线上故障。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2016/07/17/java-ut-mock-framework/">
   <time datetime="2016-07-17T02:50:10.000Z">
     Jul 17 2016
@@ -554,46 +609,6 @@ X-CClassLoader-X.cls
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/">
-  <time datetime="2015-10-13T11:13:30.000Z">
-    Oct 13 2015
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/">如何动态修改JVM的字节码</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>最近在做一个需求的时候，需要在JVM启动好之后，能够动态的修改JVM已经加载的一个类的一个方法，把这个方法的返回值直接改成返回true。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -642,6 +657,8 @@ X-CClassLoader-X.cls
 		
 			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
 		
+			<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>1</sup></a></li>
+		
 			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
 		
 			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
@@ -654,8 +671,6 @@ X-CClassLoader-X.cls
 		
 			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
 		
-			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -667,6 +682,10 @@ X-CClassLoader-X.cls
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/10/20/nginx-error-fix/" title="nginx线上出错">nginx线上出错</a>
+      </li>
     
       <li>
         <a href="/2016/07/17/java-ut-mock-framework/" title="JAVA单元测试mock框架">JAVA单元测试mock框架</a>
@@ -704,10 +723,6 @@ X-CClassLoader-X.cls
         <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
       </li>
     
-      <li>
-        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -743,6 +758,8 @@ X-CClassLoader-X.cls
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
 			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+		
+			<li><a href="/categories/线上运维/" title="线上运维">线上运维<sup>1</sup></a></li>
 		
 			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>36</sup></a></li>
 		

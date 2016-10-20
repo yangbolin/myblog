@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">
+  <time datetime="2014-05-11T13:11:11.000Z">
+    May 11 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/11/countdownlatch-and-cyclicbarrier/">CountDownLatch和CyclicBarrier</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>在编写并发程序的时候，我们经常遇到这样的事情，就是当N个线程都走到某一步后再继续做其他事情，都走到某一步包含这N个线程都运行结束这种场景。我们可以使用线程同步的思想来解决这类问题，在C语言中中我们经常使用信号量来解决此类问题。当然要是你自己使用线程同步来解决个问题，你需要做很多事情，不过jdk提供了一些封装好的类帮助我们解决此类问题，这里我们来看如何使用juc包中提供的CountDownLatch和CyclicBarrier来解决这类问题。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/11/countdownlatch-and-cyclicbarrier/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/05/10/consistent-hashing/">
   <time datetime="2014-05-10T14:03:25.000Z">
     May 10 2014
@@ -418,46 +458,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/19/ie-iframe-session-cookie/">
-  <time datetime="2014-04-19T10:13:16.000Z">
-    Apr 19 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/04/19/ie-iframe-session-cookie/">iframe在IE下面session失效了</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-问题">一.问题</h4>
-<p>记得之前做一个项目的时候，把我们自己web系统的中的一个表单提交页面嵌入到其他产品线web系统的一个页面中，在IE浏览器下面出现表单提交失败的场景，查看日志是由于csrfToken失效导致。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/19/ie-iframe-session-cookie/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -508,6 +508,8 @@
 		
 			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
 		
+			<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>1</sup></a></li>
+		
 			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
 		
 			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
@@ -520,8 +522,6 @@
 		
 			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
 		
-			<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>2</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -533,6 +533,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/10/20/nginx-error-fix/" title="nginx线上出错">nginx线上出错</a>
+      </li>
     
       <li>
         <a href="/2016/07/17/java-ut-mock-framework/" title="JAVA单元测试mock框架">JAVA单元测试mock框架</a>
@@ -570,10 +574,6 @@
         <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
       </li>
     
-      <li>
-        <a href="/2015/10/13/how-to-modify-jvm-bytecode-dynamic/" title="如何动态修改JVM的字节码">如何动态修改JVM的字节码</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -609,6 +609,8 @@
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
 		
 			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+		
+			<li><a href="/categories/线上运维/" title="线上运维">线上运维<sup>1</sup></a></li>
 		
 			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>36</sup></a></li>
 		

@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2016/10/20/nginx-error-fix/</loc>
+    <lastmod>2016-10-20T05:01:10.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2016/07/17/java-ut-mock-framework/</loc>
     <lastmod>2016-07-17T02:50:10.000Z</lastmod>
   </url>
