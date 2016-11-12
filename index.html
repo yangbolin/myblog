@@ -61,6 +61,155 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2016/11/12/spring-work-01/">
+  <time datetime="2016-11-12T13:55:20.000Z">
+    Nov 12 2016
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2016/11/12/spring-work-01/">Spring的一些小事</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近有同事看到下面的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">implements</span> <span class="title">IA</span> {</span>
+<span class="keyword">private</span> B b;
+<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setB</span>(B b){}
+}
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="title">implement</span> <span class="title">IB</span> {</span>
+}
+</pre></td></tr></table></figure>
+
+<p>Spring的配置文件如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="code"><pre><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+<span class="attribute">xmlns:context</span>=<span class="value">"http://www.springframework.org/schema/context"</span>
+<span class="attribute">xmlns:tx</span>=<span class="value">"http://www.springframework.org/schema/tx"</span>
+<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"</span>
+<span class="attribute">default-autowire</span>=<span class="value">"byName"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"a"</span> <span class="attribute">class</span>=<span class="value">"A"</span> /&gt;</span>
+<span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"b"</span> <span class="attribute">class</span>=<span class="value">"B"</span> /&gt;</span>
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>这样的代码在运行时a这个bean中的b能注入吗？因为setter方法的注入需要在配置文件中显示去写属性的</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"a"</span> <span class="attribute">class</span>=<span class="value">"A"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"b"</span> <span class="attribute">ref</span>=<span class="value">"b"</span>/&gt;</span>
+<span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>需要这样写才可以，为啥不写也可以呢？我当时也看了半天，最后发现是XML头部schema中的</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="keyword">default</span>-autowire=<span class="string">"byName"</span>
+</pre></td></tr></table></figure>
+
+<p>导致。很简单一个写法，但是一般我们不会直接在XML的头部带上这个的。</p>
+<p>另外最近又重温了一遍Spring的源码，发现了下面这个接口中两个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ConfigurableListableBeanFactory</span>
+<span class="keyword">extends</span> <span class="title">ListableBeanFactory</span>, <span class="title">AutowireCapableBeanFactory</span>, <span class="title">ConfigurableBeanFactory</span> {</span>
+
+<span class="javadoc">/**
+* Ignore the given dependency type for autowiring:
+* for example, String. Default is none.
+*<span class="javadoctag"> @param</span> type the dependency type to ignore
+*/</span>
+<span class="keyword">void</span> ignoreDependencyType(Class type);
+
+<span class="javadoc">/**
+* Ignore the given dependency interface for autowiring.
+* &lt;p&gt;This will typically be used by application contexts to register
+* dependencies that are resolved in other ways, like BeanFactory through
+* BeanFactoryAware or ApplicationContext through ApplicationContextAware.
+* &lt;p&gt;By default, only the BeanFactoryAware interface is ignored.
+* For further types to ignore, invoke this method for each type.
+*<span class="javadoctag"> @param</span> ifc the dependency interface to ignore
+*<span class="javadoctag"> @see</span> org.springframework.beans.factory.BeanFactoryAware
+*<span class="javadoctag"> @see</span> org.springframework.context.ApplicationContextAware
+*/</span>
+<span class="keyword">void</span> ignoreDependencyInterface(Class ifc);
+....
+}
+</pre></td></tr></table></figure>
+
+<p>看上面的注释不是很明白，ignoreDependencyType和ignoreDependencyInterface，从方法名来看一个是忽略某些类的依赖，一个是忽略某些接口的依赖。什么意思呢？在Spring中我们经常使用的是面向接口的编程，也就是在自动注入中，如果发现接口或者类被ignoreDependency了，就不会自动注入了。比如说你不能自动注入BeanFactory和ApplicationContext，它们必须通过BeanFactoryAware和ApplicationContextAware来注入，其实直接看英文注释也非常简单。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2016/10/20/nginx-error-fix/">
   <time datetime="2016-10-20T05:01:10.000Z">
     Oct 20 2016
@@ -570,45 +719,6 @@ X-CClassLoader-X.cls
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/10/15/velocity-utils-stream-to-string/">
-  <time datetime="2015-10-15T12:41:33.000Z">
-    Oct 15 2015
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/10/15/velocity-utils-stream-to-string/">velocity工具函数以及InputStream到String的转换方法</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-背景">一.背景</h4>
-<p>最近在做需求的时候，需要在程序中把一个vm文件渲染成一个字符串，同时也需要把一个InputStream流转换成一个字符串，虽然说很简单，但是自己还是翻了翻以前的代码，也在网上找了相关的例子，为了下次使用的是能能够快速找到，专门记录一下。<br>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2015/10/15/velocity-utils-stream-to-string/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -626,55 +736,17 @@ X-CClassLoader-X.cls
   
     
       
-      
+      <% if (site.tags.length){ %>
 <div class="widget tagslist">
-		<h3>标签</h3>
+		<h3><%= __('标签') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
-		
-			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
-		
-			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
-		
-			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
-		
-			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
-		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>27</sup></a></li>
-		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
-		
-			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
-		
-			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
-		
-			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
-			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
-		
+		<% site.tags.sort('name').limit(20).each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
@@ -682,6 +754,10 @@ X-CClassLoader-X.cls
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/11/12/spring-work-01/" title="Spring的一些小事">Spring的一些小事</a>
+      </li>
     
       <li>
         <a href="/2016/10/20/nginx-error-fix/" title="nginx线上出错">nginx线上出错</a>
@@ -719,10 +795,6 @@ X-CClassLoader-X.cls
         <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
       </li>
     
-      <li>
-        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -752,6 +824,8 @@ X-CClassLoader-X.cls
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>12</sup></a></li>
 		
 			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
+		
+			<li><a href="/categories/开源框架/" title="开源框架">开源框架<sup>1</sup></a></li>
 		
 			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
 		

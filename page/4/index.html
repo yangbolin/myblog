@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/10/07/thread-local-analyze/">
+  <time datetime="2014-10-07T13:01:03.000Z">
+    Oct 7 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/07/thread-local-analyze/">JAVA线程本地存储之ThreadLocal的分析</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>ThreadLocal是JDK的一个线程本地存储的类，我们可以把一些线程私有的数据写在ThreadLocal中，这样这些数据只有一个线程可见，实现了所谓的栈封闭。这样存储一些线程私有的数据，我们就不用去费心考虑如何保证临界资源的互斥访问了，同时对于一个线程，这些私有数据也只做一次初始化。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/07/thread-local-analyze/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/10/07/idempotency-and-db-lock/">
   <time datetime="2014-10-07T10:52:48.000Z">
     Oct 7 2014
@@ -414,46 +454,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/23/ibatis-version-for-parametermap/">
-  <time datetime="2014-07-23T11:58:04.000Z">
-    Jul 23 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/23/ibatis-version-for-parametermap/">IBatis不同版本对parameterMap的处理</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>今天在升级一个监控的中间件时，发现必须升级ibatis的版本到2.3.4,原来ibatis的版本是2.3.0,升级后，发现sqlmap的解析出问题了，对于parameterMap这个标签解析出错，原因是parameterMap对应class没法实例化，为什么原来没有问题，升级后就有问题了呢？这时候只能怀疑版本的问题,2.3.4和2.3.0在解析parameterMap时有所不同。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/23/ibatis-version-for-parametermap/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -473,55 +473,17 @@
   
     
       
-      
+      <% if (site.tags.length){ %>
 <div class="widget tagslist">
-		<h3>标签</h3>
+		<h3><%= __('标签') %></h3>
 		<ul class="clearfix">
-		
-			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
-		
-			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
-		
-			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
-		
-			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
-		
-			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
-		
-			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
-		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>27</sup></a></li>
-		
-			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
-		
-			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>1</sup></a></li>
-		
-			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
-		
-			<li><a href="/tags/Spring/" title="Spring">Spring<sup>6</sup></a></li>
-		
-			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
-		
-			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
-			<li><a href="/tags/guava/" title="guava">guava<sup>1</sup></a></li>
-		
+		<% site.tags.sort('name').limit(20).each(function(item){ %>
+			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
+		<% }); %>
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-
+<% } %>
 
     
       
@@ -529,6 +491,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2016/11/12/spring-work-01/" title="Spring的一些小事">Spring的一些小事</a>
+      </li>
     
       <li>
         <a href="/2016/10/20/nginx-error-fix/" title="nginx线上出错">nginx线上出错</a>
@@ -566,10 +532,6 @@
         <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
       </li>
     
-      <li>
-        <a href="/2015/10/15/velocity-utils-stream-to-string/" title="velocity工具函数以及InputStream到String的转换方法">velocity工具函数以及InputStream到String的转换方法</a>
-      </li>
-    
   </ul>
 </div>
 <div class="widget-seperator"></div>
@@ -599,6 +561,8 @@
 			<li><a href="/categories/开发工具/" title="开发工具">开发工具<sup>12</sup></a></li>
 		
 			<li><a href="/categories/开发杂谈/" title="开发杂谈">开发杂谈<sup>2</sup></a></li>
+		
+			<li><a href="/categories/开源框架/" title="开源框架">开源框架<sup>1</sup></a></li>
 		
 			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
 		
