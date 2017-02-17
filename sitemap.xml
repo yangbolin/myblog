@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2017/02/17/mysql-notice-1/</loc>
+    <lastmod>2017-02-17T11:20:33.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2016/11/12/spring-work-01/</loc>
     <lastmod>2016-11-12T13:55:20.000Z</lastmod>
   </url>

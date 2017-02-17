@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2016-11-12T14:15:04.341Z</updated>
+  <updated>2017-02-17T11:37:53.893Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,32 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[mysql相关的注意点]]></title>
+    <link href="http://yangbolin.cn/2017/02/17/mysql-notice-1/"/>
+    <id>http://yangbolin.cn/2017/02/17/mysql-notice-1/</id>
+    <published>2017-02-17T11:20:33.000Z</published>
+    <updated>2017-02-17T11:37:43.000Z</updated>
+    <content type="html"><![CDATA[<p>最近一直忙于业务系统的开发，在开发过程中少不了sql语句的使用，我们在分页遍历的时候经常需要排序，就会编写如下的sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> x, y, z <span class="keyword">from</span> tableX <span class="keyword">where</span> status=#status#
+<span class="keyword">order</span> <span class="keyword">by</span> apply_time
+limit <span class="number">0</span>,<span class="number">100</span></span>
+</pre></td></tr></table></figure>
+
+<p>这个分页sql看上去没有什么问题，但是在执行过程中发现有数据被重复遍历出来，然后仔细排查发现上面sql中的order by apply_time是存在问题的，因为多条记录如果apply_time是一样的话，会被重复扫描到，排序字段一样，同一条记录可能会出现在不同的页中。在编写mysql分页遍历语句时，一定要注意排序字段的选择，主要重复筛选的问题。</p>
+<p>现在整个业界对于分布式锁暂时还没有一些好的做法，我自己习惯使用mysql的select for update来实现锁，但是在使用select for update时，如果where语句中不带主键id的话，该sql可能会锁表，因为mysql发现where语句匹配到的记录数目比较多，对多行加锁的代价比对单表加锁的代价高，因此mysql会对表加锁。使用select for update最安全的做法是带上主键ID。如果要加锁多行，写个for循环对多条记录按照固定的顺序依次执行select for update。</p>
+]]></content>
+    
+    
+      <category term="mysql" scheme="http://yangbolin.cn/tags/mysql/"/>
+    
+      <category term="数据库" scheme="http://yangbolin.cn/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Spring的一些小事]]></title>
@@ -2029,57 +2055,6 @@ Object retValue = <span class="keyword">new</span> Mirror().on(oo).invoke().meth
       <category term="git" scheme="http://yangbolin.cn/tags/git/"/>
     
       <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[guava中的Multimap]]></title>
-    <link href="http://yangbolin.cn/2015/04/12/guava-multimap/"/>
-    <id>http://yangbolin.cn/2015/04/12/guava-multimap/</id>
-    <published>2015-04-12T06:32:31.000Z</published>
-    <updated>2015-04-12T06:58:30.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>我们在日常开发过程中都会使用Map这个数据结构，使用这个数据结构能够很方便维护一些映射关系，有时候，我们存储的结构是Key-Collection的映射关系，关于这个映射关系调用put方法的时候，我们需要先调用get方法，然后看看对应的Key是否在当前映射关系中已经存在Collection，如果不存在，我们直接忘Collection中增加一个元素，不存在我们需要手动去创建，然后在往我们手工创建的Collection中增加一个元素，最后再把这个Collection写入我们的Map中，很麻烦。对于C++ STL有过了解的人都知道，STL中有一个Multimap这个数据结构，该数据结构能方便地解决上面映射关系的问题。但是JDK本身不存在这样的数据结构。。。好在guava这个开源的二方库中自己定义了这个容器，该容器既能维护好Key-Collection这个数据结构，也能很方便往这个数据结构中写数据。</p>
-<a id="more"></a>
-
-<h4 id="二-Multimap数据结构">二.Multimap数据结构</h4>
-<p><img src="http://bolinyoung.qiniudn.com/key-collection.png" alt="Multimap"></p>
-<h4 id="三-如何使用">三.如何使用</h4>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MultimapTest</span> {</span>
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
-        Multimap&lt;String, Integer&gt; multimap = HashMultimap.create();
-        multimap.put(<span class="string">"A"</span>, <span class="number">1</span>);
-        multimap.put(<span class="string">"A"</span>, <span class="number">2</span>);
-        
-        System.out.println(multimap.get(<span class="string">"A"</span>));
-    }
-}
-输出结果：
-[<span class="number">1</span>, <span class="number">2</span>]
-</pre></td></tr></table></figure>
-
-<p>关于上述代码，我们看到我们的操作很简单，并不需要开发工程师自己去创建一个Collection，然后把这个Collection在手工写入Map中去。</p>
-<h4 id="四-总结">四.总结</h4>
-<p>可能很多工程师自己愿意创建Collection，并且自己写到Map中去，但是这个维护起来很不好维护，其实想想自己创建Collection并且写到Map中，也是一件很麻烦的事情，从此以后对于Key-Collection这种数据结构，直接走Multimap。</p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>我们在日常开发过程中都会使用Map这个数据结构，使用这个数据结构能够很方便维护一些映射关系，有时候，我们存储的结构是Key-Collection的映射关系，关于这个映射关系调用put方法的时候，我们需要先调用get方法，然后看看对应的Key是否在当前映射关系中已经存在Collection，如果不存在，我们直接忘Collection中增加一个元素，不存在我们需要手动去创建，然后在往我们手工创建的Collection中增加一个元素，最后再把这个Collection写入我们的Map中，很麻烦。对于C++ STL有过了解的人都知道，STL中有一个Multimap这个数据结构，该数据结构能方便地解决上面映射关系的问题。但是JDK本身不存在这样的数据结构。。。好在guava这个开源的二方库中自己定义了这个容器，该容器既能维护好Key-Collection这个数据结构，也能很方便往这个数据结构中写数据。</p>
-]]></summary>
-    
-      <category term="guava" scheme="http://yangbolin.cn/tags/guava/"/>
-    
-      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   

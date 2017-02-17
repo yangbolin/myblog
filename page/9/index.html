@@ -61,6 +61,45 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/04/23/install-zookeeper/">
+  <time datetime="2014-04-23T03:40:49.000Z">
+    Apr 23 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/04/23/install-zookeeper/">一台机器上面如何部署3个zookeeper的server</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>今天在自己的电脑上玩了一下zookeeper,这里主要记录一下安装的过程，自己对zookeeper的了解还不够，没法写一些比较深入的东西。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/04/23/install-zookeeper/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/04/21/sql-error-analyse/">
   <time datetime="2014-04-21T11:26:01.000Z">
     Apr 21 2014
@@ -417,46 +456,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/09/hbase-idea/">
-  <time datetime="2014-04-09T11:25:55.000Z">
-    Apr 9 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/04/09/hbase-idea/">HBase理解</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h3 id="一-概述">一.概述</h3>
-<p>在互联网应用中，经常需要存储大量的用户数据，然后对这些数据进行加工，分析最终产出对用户有价值的数据，关于数据的存储，我们可以选择文件，缓存以及数据库等，在数据库我们经常使用关系型数据库(mysql,oracle等)来存储，当数据达到一定量就需要进行分表分库，以便提高数据库的查询效率，例如在mysql中当表记录行数超过400万的时候，通常就需要分表。但是如果我们存储数据的时候选择的是HBase，这时候就不用分表，HBase中的表可以支撑上亿行，上百万列，这些数据最终存储都是分布在多台机器上的，因此HBase可以存储大量的数据，但是HBase就不具备关系型数据库的关联查询，就是说在HBase中不存在表和表的JOIN查询，关系型的查询是关系型数据库天生的优势，这样在HBase中存储的数据一定是一些弱关系的数据，要是数据之间有很强的关系，那就不太适合存储在HBase中了。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/09/hbase-idea/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -534,6 +533,10 @@
   <ul class="clearfix">
     
       <li>
+        <a href="/2017/02/17/mysql-notice-1/" title="mysql相关的注意点">mysql相关的注意点</a>
+      </li>
+    
+      <li>
         <a href="/2016/11/12/spring-work-01/" title="Spring的一些小事">Spring的一些小事</a>
       </li>
     
@@ -567,10 +570,6 @@
     
       <li>
         <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
-      </li>
-    
-      <li>
-        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
       </li>
     
   </ul>
@@ -607,7 +606,7 @@
 		
 			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
 		
-			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>5</sup></a></li>
 		
 			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
 		
@@ -639,7 +638,7 @@
   </div>
   <footer id="footer"><div class="copyright">
   
-  &copy; 2016 <a href="/">BolinYoung</a>
+  &copy; 2017 <a href="/">BolinYoung</a>
   
 </div>
 <div class="theme-copyright">

@@ -61,6 +61,51 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2017/02/17/mysql-notice-1/">
+  <time datetime="2017-02-17T11:20:33.000Z">
+    Feb 17 2017
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2017/02/17/mysql-notice-1/">mysql相关的注意点</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近一直忙于业务系统的开发，在开发过程中少不了sql语句的使用，我们在分页遍历的时候经常需要排序，就会编写如下的sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> x, y, z <span class="keyword">from</span> tableX <span class="keyword">where</span> status=#status#
+<span class="keyword">order</span> <span class="keyword">by</span> apply_time
+limit <span class="number">0</span>,<span class="number">100</span></span>
+</pre></td></tr></table></figure>
+
+<p>这个分页sql看上去没有什么问题，但是在执行过程中发现有数据被重复遍历出来，然后仔细排查发现上面sql中的order by apply_time是存在问题的，因为多条记录如果apply_time是一样的话，会被重复扫描到，排序字段一样，同一条记录可能会出现在不同的页中。在编写mysql分页遍历语句时，一定要注意排序字段的选择，主要重复筛选的问题。</p>
+<p>现在整个业界对于分布式锁暂时还没有一些好的做法，我自己习惯使用mysql的select for update来实现锁，但是在使用select for update时，如果where语句中不带主键id的话，该sql可能会锁表，因为mysql发现where语句匹配到的记录数目比较多，对多行加锁的代价比对单表加锁的代价高，因此mysql会对表加锁。使用select for update最安全的做法是带上主键ID。如果要加锁多行，写个for循环对多条记录按照固定的顺序依次执行select for update。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2016/11/12/spring-work-01/">
   <time datetime="2016-11-12T13:55:20.000Z">
     Nov 12 2016
@@ -679,46 +724,6 @@ X-CClassLoader-X.cls
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/10/23/tec-accumulation-1/">
-  <time datetime="2015-10-23T15:55:18.000Z">
-    Oct 23 2015
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/10/23/tec-accumulation-1/">拓宽技术视野一</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>利用空闲的时间，随便看看一些新的技术，拓宽自己的技术视野。</p>
-<ul>
-<li>Betamax 利用这个开源二方库能够mock一个http请求。 </li>
-<li>cucumber 基于DSL来做单元测试，<a href="https://c0deattack.wordpress.com/2012/03/28/cucumber-jvm-with-cucumber-java-cucumber-junit-example/" target="_blank">具体例子</a></li>
-<li>jOOR 一个简化发射调用的JAVA框架，把反射调用变成一行链式调用，这种框架貌似挺多的，<a href="https://c0deattack.wordpress.com/2012/03/28/cucumber-jvm-with-cucumber-java-cucumber-junit-example/" target="_blank">源码地址</a></li>
-</ul>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -794,6 +799,10 @@ X-CClassLoader-X.cls
   <ul class="clearfix">
     
       <li>
+        <a href="/2017/02/17/mysql-notice-1/" title="mysql相关的注意点">mysql相关的注意点</a>
+      </li>
+    
+      <li>
         <a href="/2016/11/12/spring-work-01/" title="Spring的一些小事">Spring的一些小事</a>
       </li>
     
@@ -827,10 +836,6 @@ X-CClassLoader-X.cls
     
       <li>
         <a href="/2015/10/29/mac-svn-problem/" title="mac遇到的一个svn的问题">mac遇到的一个svn的问题</a>
-      </li>
-    
-      <li>
-        <a href="/2015/10/23/tec-accumulation-1/" title="拓宽技术视野一">拓宽技术视野一</a>
       </li>
     
   </ul>
@@ -867,7 +872,7 @@ X-CClassLoader-X.cls
 		
 			<li><a href="/categories/技术交流/" title="技术交流">技术交流<sup>2</sup></a></li>
 		
-			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>5</sup></a></li>
 		
 			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
 		
@@ -899,7 +904,7 @@ X-CClassLoader-X.cls
   </div>
   <footer id="footer"><div class="copyright">
   
-  &copy; 2016 <a href="/">BolinYoung</a>
+  &copy; 2017 <a href="/">BolinYoung</a>
   
 </div>
 <div class="theme-copyright">
