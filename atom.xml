@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2017-02-17T11:37:53.893Z</updated>
+  <updated>2017-06-22T12:18:49.412Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,22 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[mysql中的null]]></title>
+    <link href="http://yangbolin.cn/2017/06/22/mysql-null-index/"/>
+    <id>http://yangbolin.cn/2017/06/22/mysql-null-index/</id>
+    <published>2017-06-22T12:10:25.000Z</published>
+    <updated>2017-06-22T12:18:40.000Z</updated>
+    <content type="html"><![CDATA[<p>最近在优化系统代码的时候，需要修改一下表结构，增加了一个字段D，原来表中A,B,C三字段构成了唯一性约束，现在增加了D字段，D字段是可控的，没有缺省值。同时新的唯一性约束由A,B,C,D四个字段构成，上线后发现唯一性约束失效啦。<br>a1,b1,c1,null插入数据库后，a1,b1,c1,null还可以插入数据库。也就是说mysql任务[a1,b1,c1,null]和[a1,b1,c1,null]是两条记录，的确是这样，在mysql中null和null是不相等的。</p>
+]]></content>
+    
+    
+      <category term="mysql" scheme="http://yangbolin.cn/tags/mysql/"/>
+    
+      <category term="数据库" scheme="http://yangbolin.cn/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[mysql相关的注意点]]></title>
@@ -2027,34 +2043,6 @@ Object retValue = <span class="keyword">new</span> Mirror().on(oo).invoke().meth
       <category term="CSS" scheme="http://yangbolin.cn/tags/CSS/"/>
     
       <category term="前端开发" scheme="http://yangbolin.cn/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[GIT常用命令总结]]></title>
-    <link href="http://yangbolin.cn/2015/04/26/git-command/"/>
-    <id>http://yangbolin.cn/2015/04/26/git-command/</id>
-    <published>2015-04-26T06:27:34.000Z</published>
-    <updated>2015-04-26T06:49:56.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>最近有个项目分支使用了git托管代码，虽然之前在github上托管过很多代码，但是对git本身的使用以及特性也没有太多的深入的了解，最近使用git出现了一个问题，查到最后是环境问题，很悲摧，为了避免悲剧再次出现，就看了一遍git相关的所有常见命令以及一些git的设计思想，比如工作区，暂存区，本地仓库等等，也算是对平时编写代码思路的一种启发。很多人都说git是分布式的，svn不是分布式的，那么git分布式到底体现在哪里，每个人本地都有一个完整的仓库吗？难道svn每个人本地的代码就不是完善的吗？关于git分布式，我们从下面几个点来解释：</p>
-<a id="more"></a>
-
-<ul>
-<li>1.每个人都可以在本地管理代码的变更，而不像svn如果svn中心挂了，本地代码的管理就无法实现。</li>
-<li>2.使用git人人都可以成为中心，而不像svn中心有且只有1个，中心挂了，只能坐等中心恢复，不然两个开发之间的代码就没法相互感知到。但是git可以在某个中心挂了之后，其他人能快速成为中心。</li>
-<li>3.github的fork功能就一个分布式的典型例子，比如作者A拥有一个仓库repo，此时开源爱好者m对这个repo很感兴趣，想贡献一些代码，因此m就去fork了repo仓库，此时开源爱好者n也知道了这个事情，n和m一起基于fork出来的repo1来贡献代码，此时有两个仓库，一个是repo一个是repo1，repo挂掉不影响repo1，repo1挂掉不影响repo，等m和n都开发结束了，就提交分支合并请求到A那边，A觉得没啥问题就合并代码到repo仓库。</li>
-</ul>
-<h4 id="二-命令">二.命令</h4>
-<p>基于命令维度总结了一下git的一些常用命令<br><img src="http://bolinyoung.qiniudn.com/GIT%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.bmp" alt="GIT-COMMAND"></p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>最近有个项目分支使用了git托管代码，虽然之前在github上托管过很多代码，但是对git本身的使用以及特性也没有太多的深入的了解，最近使用git出现了一个问题，查到最后是环境问题，很悲摧，为了避免悲剧再次出现，就看了一遍git相关的所有常见命令以及一些git的设计思想，比如工作区，暂存区，本地仓库等等，也算是对平时编写代码思路的一种启发。很多人都说git是分布式的，svn不是分布式的，那么git分布式到底体现在哪里，每个人本地都有一个完整的仓库吗？难道svn每个人本地的代码就不是完善的吗？关于git分布式，我们从下面几个点来解释：</p>
-]]></summary>
-    
-      <category term="git" scheme="http://yangbolin.cn/tags/git/"/>
-    
-      <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
