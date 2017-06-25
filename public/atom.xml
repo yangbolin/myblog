@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2017-06-22T12:18:49.412Z</updated>
+  <updated>2017-06-25T14:14:20.325Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,32 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[两种分布式系统中保持数据一致性的设计方案]]></title>
+    <link href="http://yangbolin.cn/2017/06/25/two-consistency-design-tech/"/>
+    <id>http://yangbolin.cn/2017/06/25/two-consistency-design-tech/</id>
+    <published>2017-06-25T09:40:13.000Z</published>
+    <updated>2017-06-25T14:11:14.000Z</updated>
+    <content type="html"><![CDATA[<p>CAP是分布式系统中非常重要的理论依据，任何分布式系统设计的时候都要考虑一下CAP。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre><span class="function">C(一致性)</span>：所有节点上的数据时刻保持同步
+<span class="function">A(可用性)</span>：每个请求都能得到一个响应，不论成功还是失败
+<span class="function">P(分区容错)</span>：系统能够持续提供服务，即使系统内部有消息丢失
+</pre></td></tr></table></figure>
+
+<p>CAP只能满足两条，现在大多数业务系统都是AP without C。<br>在平时的业务开发中，业务系统A更新完自己的数据后，还需要业务系统B更新相关的数据，要么系统A发消息给系统B，系统B受到消息后更新自己的数据，要么系统A通过RPC接口更改系统B的数据。那么如何保证系统A,B的数据一致性呢？如果要强一致的话，就需要分布式事务，但是分布式事务本身有一定的开发成本，同时也会影响系统的稳定性。<br>不使用分布式事务如何来保证一致性呢？只能放弃强一致性，变成最终一致性。一般会有两种方案，一种是通过消息中间件来实现，一种是利用数据库事务加上异步轮询来处理。</p>
+<p>【通过消息中间件来实现】<br><img src="http://7fvbqj.com1.z0.glb.clouddn.com/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%80%E8%87%B4%E6%80%A7.png" alt="消息中间件"><br>这种方案需要相应的消息中间件来支持。<br>【利用数据库事务+异步轮询】<br><img src="http://7fvbqj.com1.z0.glb.clouddn.com/%E4%BA%8B%E5%8A%A1+%E8%BD%AE%E8%AF%A2.png" alt="事务轮询"><br>业务系统A更新完自己的数据后，创建一个事件，创建事件和更新自己业务数据放在一个事务里面，这样业务系统A数据更新和事件创建会一起完成，剩下的就是保证业务事件A一定要处理，要么通过RPC调用业务系统B的接口，要么发消息给业务系统B。</p>
+]]></content>
+    
+    
+      <category term="CAP" scheme="http://yangbolin.cn/tags/CAP/"/>
+    
+      <category term="分布式" scheme="http://yangbolin.cn/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[mysql中的null]]></title>
@@ -2021,28 +2047,6 @@ Object retValue = <span class="keyword">new</span> Mirror().on(oo).invoke().meth
       <category term="crontab" scheme="http://yangbolin.cn/tags/crontab/"/>
     
       <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[css换行]]></title>
-    <link href="http://yangbolin.cn/2015/05/07/css-break-line/"/>
-    <id>http://yangbolin.cn/2015/05/07/css-break-line/</id>
-    <published>2015-05-07T13:55:59.000Z</published>
-    <updated>2015-05-08T01:22:36.000Z</updated>
-    <content type="html"><![CDATA[<p>最近在搞一个后台系统的时候，发现table表格的宽度没法调整，找前端大神看了一下，发现是table表格中的全英文内容过长，不会自动换行导致。因此需要用CSS来实现换行，浏览器默认不会对英文内容进行换行的。具体CSS的写法如下</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre><span class="tag">word-break</span>: <span class="tag">break-all</span>;
-<span class="tag">word-wrap</span>: <span class="tag">break-word</span>;
-</pre></td></tr></table></figure>
-
-]]></content>
-    
-    
-      <category term="CSS" scheme="http://yangbolin.cn/tags/CSS/"/>
-    
-      <category term="前端开发" scheme="http://yangbolin.cn/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   

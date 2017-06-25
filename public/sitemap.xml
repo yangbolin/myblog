@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2017/06/25/two-consistency-design-tech/</loc>
+    <lastmod>2017-06-25T09:40:13.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2017/06/22/mysql-null-index/</loc>
     <lastmod>2017-06-22T12:10:25.000Z</lastmod>
   </url>
