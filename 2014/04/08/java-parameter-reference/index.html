@@ -3,26 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <%
+  var title = page.title;
   
-  <title>Java 函数参数引用思考 | BolinYoung&#39;s Blog</title>
-  <meta name="author" content="BolinYoung">
-  
-  <meta name="description" content="一.概述
-Java是一门纯粹的面向对象语言，除了8种基本类型意外，其他都是对象。函数是编程语言中的一个非常重要的概念，Java中的函数都不是孤立存在的，不像C或者JS你可以定义一个孤立的函数，有函数就有函数调用，在Java中函数参数就两种类型，要么函数参数是基本类型，要么函数参数是引用类型。函数调用就会涉及到的参数的传递，在Java中，参数传递就一种方式，既所谓值传递，其实就是传递变量值的拷贝，如果参数类型是基本类型，那么传递的就是基本类型参数值的一份拷贝，如果参数类型是引用类型，那么传递的就是引用值的一份拷贝，而不是引用对象的一份拷贝，其实用C语言的指针来说，传递的就是指针所指内存空间地址的一份拷贝，正所谓Java中虽然没有指针，但全是指针。">
-  
-  
+  if (is_archive()) {
+    title = __('archive_title');
+
+    if (is_month()) {
+      title += ': ' + page.year + '/' + page.month;
+    } else if (is_year()) {
+      title += ': ' + page.year;
+    }
+  } else if (is_category()) {
+    title = __('category_title') + ': ' + page.category;
+  } else if (is_tag()) {
+    title = __('tag_title') + ': ' + page.tag;
+  }
+  %>
+  <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
+  <% if (config.author){ %><meta name="author" content="<%= config.author %>"><% } %>
+  <% if (page.description){ %>
+  <meta name="description" content="<%= page.description %>">
+  <% } else if (page.excerpt){ %>
+  <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '') %>">
+  <% } else if (page.content){ %>
+  <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
+  <% } else if (config.description){ %>
+  <meta name="description" content="<%= config.description %>">
+  <% } %>
+  <% if (page.keywords){ %><meta name="keywords" content="<%= page.keywords %>"><% } %>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta property="og:title" content="Java 函数参数引用思考"/>
-  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
-  
-  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <% if (page.title){ %><meta property="og:title" content="<%= page.title %>"/><% } %>
+  <meta property="og:site_name" content="<%= config.title %>"/>
+  <% if (theme.rss){ %>
+  <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
+  <% } %>
+  <% if (theme.favicon){ %>
+    <link rel="icon" type="image/x-icon" href="<%- theme.favicon %>">
+  <% } %>
+  <%- css('css/style.css') %>
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
+  <%- partial('google-analytics') %>
 </head>
 
 <body>
@@ -149,17 +170,55 @@ Java是一门纯粹的面向对象语言，除了8种基本类型意外，其他
   
     
       
-      <% if (site.tags.length){ %>
+      
 <div class="widget tagslist">
-		<h3><%= __('标签') %></h3>
+		<h3>标签</h3>
 		<ul class="clearfix">
-		<% site.tags.sort('name').limit(20).each(function(item){ %>
-			<li><a href="<%- config.root %><%- item.path %>" title="<%= item.name %>"><%= item.name %><sup><%= item.posts.length %></sup></a></li>
-		<% }); %>
+		
+			<li><a href="/tags/ASM/" title="ASM">ASM<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
+		
+			<li><a href="/tags/C/" title="C">C<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CAP/" title="CAP">CAP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/CSS/" title="CSS">CSS<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Experience/" title="Experience">Experience<sup>3</sup></a></li>
+		
+			<li><a href="/tags/HBase/" title="HBase">HBase<sup>3</sup></a></li>
+		
+			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
+		
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>27</sup></a></li>
+		
+			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
+		
+			<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Qcon/" title="Qcon">Qcon<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Spring/" title="Spring">Spring<sup>7</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
-<% } %>
+
 
     
       

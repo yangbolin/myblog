@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2017-06-25T14:09:17.961Z</updated>
+  <updated>2017-06-25T14:11:36.786Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yangbolin.cn/2017/06/25/two-consistency-design-tech/"/>
     <id>http://yangbolin.cn/2017/06/25/two-consistency-design-tech/</id>
     <published>2017-06-25T09:40:13.000Z</published>
-    <updated>2017-06-25T14:06:37.000Z</updated>
+    <updated>2017-06-25T14:11:14.000Z</updated>
     <content type="html"><![CDATA[<p>CAP是分布式系统中非常重要的理论依据，任何分布式系统设计的时候都要考虑一下CAP。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
