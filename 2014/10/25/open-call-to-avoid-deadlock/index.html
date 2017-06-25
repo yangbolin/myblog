@@ -3,47 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <%
-  var title = page.title;
   
-  if (is_archive()) {
-    title = __('archive_title');
-
-    if (is_month()) {
-      title += ': ' + page.year + '/' + page.month;
-    } else if (is_year()) {
-      title += ': ' + page.year;
-    }
-  } else if (is_category()) {
-    title = __('category_title') + ': ' + page.category;
-  } else if (is_tag()) {
-    title = __('tag_title') + ': ' + page.tag;
-  }
-  %>
-  <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
-  <% if (config.author){ %><meta name="author" content="<%= config.author %>"><% } %>
-  <% if (page.description){ %>
-  <meta name="description" content="<%= page.description %>">
-  <% } else if (page.excerpt){ %>
-  <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '') %>">
-  <% } else if (page.content){ %>
-  <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
-  <% } else if (config.description){ %>
-  <meta name="description" content="<%= config.description %>">
-  <% } %>
-  <% if (page.keywords){ %><meta name="keywords" content="<%= page.keywords %>"><% } %>
+  <title>通过开放调用来避免死锁 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.概述
+在编写并发程序的时候，我们经常会在一次业务逻辑处理过程中获取多个锁，然后做一些操作，如果这多个锁的获取顺序和其他地方的获取顺序不同的话，很容易发生死锁。为了避免这种死锁，我们必须保证获取多个锁的顺序一致，或者方法调用为开放调用，即调用某个方法时不需要持有锁。">
+  
+  
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <% if (page.title){ %><meta property="og:title" content="<%= page.title %>"/><% } %>
-  <meta property="og:site_name" content="<%= config.title %>"/>
-  <% if (theme.rss){ %>
-  <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
-  <% } %>
-  <% if (theme.favicon){ %>
-    <link rel="icon" type="image/x-icon" href="<%- theme.favicon %>">
-  <% } %>
-  <%- css('css/style.css') %>
+  <meta property="og:title" content="通过开放调用来避免死锁"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <%- partial('google-analytics') %>
+  
 </head>
 
 <body>

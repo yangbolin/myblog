@@ -3,47 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <%
-  var title = page.title;
   
-  if (is_archive()) {
-    title = __('archive_title');
-
-    if (is_month()) {
-      title += ': ' + page.year + '/' + page.month;
-    } else if (is_year()) {
-      title += ': ' + page.year;
-    }
-  } else if (is_category()) {
-    title = __('category_title') + ': ' + page.category;
-  } else if (is_tag()) {
-    title = __('tag_title') + ': ' + page.tag;
-  }
-  %>
-  <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
-  <% if (config.author){ %><meta name="author" content="<%= config.author %>"><% } %>
-  <% if (page.description){ %>
-  <meta name="description" content="<%= page.description %>">
-  <% } else if (page.excerpt){ %>
-  <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '') %>">
-  <% } else if (page.content){ %>
-  <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
-  <% } else if (config.description){ %>
-  <meta name="description" content="<%= config.description %>">
-  <% } %>
-  <% if (page.keywords){ %><meta name="keywords" content="<%= page.keywords %>"><% } %>
+  <title>关于ArrayBlockingQueue的put和offer方法 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="最近线上出现了一个故障，故障的表现就是服务请响应很慢，依赖方获取不到执行结果，查看调用堆栈，发现所有的操作都阻塞在写日志的地方，这个写日志是先写日志到内存，然后再刷新到其他地方。采用了ArrayBlockingQueue，但是调用了ArrayBlockQueue的put方法
+1
+2
+3
+4
+5
+6
+">
+  
+  
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <% if (page.title){ %><meta property="og:title" content="<%= page.title %>"/><% } %>
-  <meta property="og:site_name" content="<%= config.title %>"/>
-  <% if (theme.rss){ %>
-  <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
-  <% } %>
-  <% if (theme.favicon){ %>
-    <link rel="icon" type="image/x-icon" href="<%- theme.favicon %>">
-  <% } %>
-  <%- css('css/style.css') %>
+  <meta property="og:title" content="关于ArrayBlockingQueue的put和offer方法"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <%- partial('google-analytics') %>
+  
 </head>
 
 <body>

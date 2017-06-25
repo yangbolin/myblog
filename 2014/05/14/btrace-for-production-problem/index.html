@@ -3,47 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <%
-  var title = page.title;
   
-  if (is_archive()) {
-    title = __('archive_title');
-
-    if (is_month()) {
-      title += ': ' + page.year + '/' + page.month;
-    } else if (is_year()) {
-      title += ': ' + page.year;
-    }
-  } else if (is_category()) {
-    title = __('category_title') + ': ' + page.category;
-  } else if (is_tag()) {
-    title = __('tag_title') + ': ' + page.tag;
-  }
-  %>
-  <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
-  <% if (config.author){ %><meta name="author" content="<%= config.author %>"><% } %>
-  <% if (page.description){ %>
-  <meta name="description" content="<%= page.description %>">
-  <% } else if (page.excerpt){ %>
-  <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '') %>">
-  <% } else if (page.content){ %>
-  <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
-  <% } else if (config.description){ %>
-  <meta name="description" content="<%= config.description %>">
-  <% } %>
-  <% if (page.keywords){ %><meta name="keywords" content="<%= page.keywords %>"><% } %>
+  <title>使用BTrace来定位方法中Catch住的异常 | BolinYoung&#39;s Blog</title>
+  <meta name="author" content="BolinYoung">
+  
+  <meta name="description" content="一.问题
+今天在自己应用中引入了一个新的中间件，发布到线上后，发现一个接口一直获取不到数据，此时找不到日志，因为代码中的日志输出不按常理出牌，误引入了某一中间件自定义的Logger导致日志很难找到，此时要是在测试环境，debug一下就搞定，但是线上不能这么搞，如何去查看一下本次调用接口返回的数据到底是什么呢？">
+  
+  
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <% if (page.title){ %><meta property="og:title" content="<%= page.title %>"/><% } %>
-  <meta property="og:site_name" content="<%= config.title %>"/>
-  <% if (theme.rss){ %>
-  <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
-  <% } %>
-  <% if (theme.favicon){ %>
-    <link rel="icon" type="image/x-icon" href="<%- theme.favicon %>">
-  <% } %>
-  <%- css('css/style.css') %>
+  <meta property="og:title" content="使用BTrace来定位方法中Catch住的异常"/>
+  <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
+  
+  <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <%- partial('google-analytics') %>
+  
 </head>
 
 <body>
