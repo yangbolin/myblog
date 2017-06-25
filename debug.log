@@ -1,83 +1,227 @@
-date: 2014-04-08 22:19:05.251
+date: 2016-03-19 18:28:09.616
 argv: node /usr/local/bin/hexo generate
-os: Linux 3.11.0-15-generic linux x64
+os: Darwin 14.5.0 darwin x64
 version:
   hexo: 2.5.2
-  http_parser: 1.0
-  node: 0.10.17
-  v8: 3.14.5.9
-  ares: 1.9.0-DEV
-  uv: 0.10.14
-  zlib: 1.2.3
-  modules: 11
-  openssl: 1.0.1e
+  http_parser: 2.3
+  node: 0.12.7
+  v8: 3.28.71.19
+  uv: 1.6.1
+  zlib: 1.2.8
+  modules: 14
+  openssl: 1.0.1p
 ---
 
-[debug] 22:19:04.929 Config file loaded
-[debug] 22:19:04.930 Version info checked successfully
-[debug] 22:19:04.946 Loading database.
-[debug] 22:19:05.037 Processed: LICENSE
-[debug] 22:19:05.037 Processed: README.md
-[debug] 22:19:05.202 Processed: source/css/_base/layout.styl
-[debug] 22:19:05.202 Processed: source/css/_base/variable.styl
-[debug] 22:19:05.202 Processed: source/css/_partial/archive.styl
-[debug] 22:19:05.202 Processed: source/css/_partial/article.styl
-[debug] 22:19:05.202 Processed: source/css/_partial/comment.styl
-[debug] 22:19:05.202 Processed: source/css/_partial/footer.styl
-[debug] 22:19:05.202 Processed: source/css/_partial/header.styl
-[debug] 22:19:05.202 Processed: source/css/_partial/index.styl
-[debug] 22:19:05.202 Processed: source/css/_partial/syntax.styl
-[debug] 22:19:05.211 Processed: source/fancybox/blank.gif
-[debug] 22:19:05.212 Processed: source/fancybox/fancybox_loading.gif
-[debug] 22:19:05.212 Processed: source/fancybox/fancybox_overlay.png
-[debug] 22:19:05.213 Processed: source/fancybox/fancybox_sprite.png
-[debug] 22:19:05.214 Processed: source/fancybox/jquery.fancybox.css
-[debug] 22:19:05.216 Processed: source/fancybox/jquery.fancybox.pack.js
-[debug] 22:19:05.217 Processed: source/js/gallery.js
-[debug] 22:19:05.218 Processed: source/js/jquery.imagesloaded.min.js
-[debug] 22:19:05.219 Processed: source/js/moment.min.js
-[debug] 22:19:05.220 Processed: source/js/scale.fix.js
-[debug] 22:19:05.221 Processed: source/css/style.styl
-[debug] 22:19:05.222 Processed: source/css/fonts/FontAwesome.otf
-[debug] 22:19:05.225 Processed: source/css/fonts/fontawesome-webfont.eot
-[debug] 22:19:05.227 Processed: source/css/fonts/fontawesome-webfont.svg
-[debug] 22:19:05.228 Processed: source/css/fonts/fontawesome-webfont.ttf
-[debug] 22:19:05.230 Processed: source/css/fonts/fontawesome-webfont.woff
-[debug] 22:19:05.231 Processed: source/css/images/checker.png
-[debug] 22:19:05.232 Processed: layout/archive.ejs
-[debug] 22:19:05.232 Processed: layout/index.ejs
-[debug] 22:19:05.232 Processed: layout/layout.ejs
-[debug] 22:19:05.232 Processed: layout/page.ejs
-[debug] 22:19:05.232 Processed: layout/post.ejs
-[debug] 22:19:05.232 Processed: layout/tag.ejs
-[debug] 22:19:05.232 Processed: layout/_partial/after-footer.ejs
-[debug] 22:19:05.232 Processed: layout/_partial/archive-post.ejs
-[debug] 22:19:05.232 Processed: layout/_partial/archive.ejs
-[debug] 22:19:05.232 Processed: layout/_partial/article.ejs
-[debug] 22:19:05.232 Processed: layout/_partial/comment.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/footer.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/google-analytics.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/head.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/header.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/pagination.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/post/category.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/post/date.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/post/gallery.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/post/tag.ejs
-[debug] 22:19:05.233 Processed: layout/_partial/post/title.ejs
-[debug] 22:19:05.234 Theme config loaded
-[debug] 22:19:05.234 Processed: _config.yml
-[debug] 22:19:05.235 Processed: languages/default.yml
-[debug] 22:19:05.235 Processed: languages/zh-CN.yml
-[error] 22:19:05.238 { rawMessage: 'Unable to parse.',
+[debug] 18:28:08.540 Config file loaded
+[debug] 18:28:08.542 Version info checked successfully
+[debug] 18:28:08.560 Loading database.
+[debug] 18:28:08.599 Plugin loaded successfully: hexo-generator-feed
+[debug] 18:28:08.617 Plugin loaded successfully: hexo-generator-sitemap
+[debug] 18:28:08.675 Processed: CNAME~
+[debug] 18:28:08.678 Processed: _posts/2014-qcon-first.md~
+[debug] 18:28:08.680 Processed: _posts/2014-qcon-third.md~
+[debug] 18:28:08.683 Processed: _posts/after-returning-advice-error.md~
+[debug] 18:28:08.686 Processed: _posts/async-write-data.md~
+[debug] 18:28:08.692 Processed: _posts/btrace-for-production-problem.md~
+[debug] 18:28:08.693 Processed: _posts/class-conflict-analyse-1.md~
+[debug] 18:28:08.694 Processed: _posts/consistent-hashing.md~
+[debug] 18:28:08.709 Processed: _posts/css-screen-scroll.md~
+[debug] 18:28:08.715 Processed: _posts/hash-map-infinite-loop.md~
+[debug] 18:28:08.716 Processed: _posts/hbase-idea.md~
+[debug] 18:28:08.751 Processed: _posts/ie-iframe-session-cookie.md~
+[debug] 18:28:08.752 Processed: _posts/install-zookeeper.md~
+[debug] 18:28:08.754 Processed: _posts/java-annotation-summarize.md~
+[debug] 18:28:08.757 Processed: _posts/java-generic-extends.md~
+[debug] 18:28:08.768 Processed: _posts/javac-accessbash00.md~
+[debug] 18:28:08.809 Processed: _posts/misunderstand-for-future-of-executorservice.md~
+[debug] 18:28:08.811 Processed: _posts/old-code-bug-thinking.md~
+[debug] 18:28:08.846 Processed: _posts/spring-aop-practice.md~
+[debug] 18:28:08.863 Processed: _posts/spring-ioc-aop-idea.md~
+[debug] 18:28:08.869 Processed: _posts/sql-group-by.md~
+[debug] 18:28:08.881 Processed: _posts/svn-command.md~
+[debug] 18:28:08.917 Processed: CNAME
+[debug] 18:28:09.550 Processed: about/index.md
+[debug] 18:28:09.550 Processed: reading/index.md
+[debug] 18:28:09.550 Processed: LICENSE
+[debug] 18:28:09.550 Processed: README.md
+[debug] 18:28:09.551 Processed: _config.yml~
+[debug] 18:28:09.554 Processed: source/css/_base/layout.styl
+[debug] 18:28:09.554 Processed: source/css/_base/layout.styl~
+[debug] 18:28:09.554 Processed: source/css/_base/variable.styl
+[debug] 18:28:09.554 Processed: source/css/_base/variable.styl~
+[debug] 18:28:09.554 Processed: source/css/_partial/archive.styl
+[debug] 18:28:09.554 Processed: source/css/_partial/article.styl
+[debug] 18:28:09.554 Processed: source/css/_partial/article.styl~
+[debug] 18:28:09.554 Processed: source/css/_partial/comment.styl
+[debug] 18:28:09.554 Processed: source/css/_partial/footer.styl
+[debug] 18:28:09.554 Processed: source/css/_partial/header.styl
+[debug] 18:28:09.554 Processed: source/css/_partial/index.styl
+[debug] 18:28:09.554 Processed: source/css/_partial/syntax.styl
+[debug] 18:28:09.554 Processed: source/css/_partial/syntax.styl~
+[debug] 18:28:09.554 Processed: source/css/_widget/category.styl
+[debug] 18:28:09.554 Processed: source/css/_widget/category.styl~
+[debug] 18:28:09.554 Processed: source/css/_widget/recent_posts.styl
+[debug] 18:28:09.554 Processed: source/css/_widget/recent_posts.styl~
+[debug] 18:28:09.554 Processed: source/css/_widget/tag.styl~
+[debug] 18:28:09.554 Processed: source/css/_widget/tags.styl
+[debug] 18:28:09.554 Processed: source/css/_widget/tags.styl~
+[debug] 18:28:09.554 Processed: source/css/_widget/weibo.styl
+[debug] 18:28:09.554 Processed: source/css/_widget/weibo.styl~
+[debug] 18:28:09.595 Processed: source/fancybox/blank.gif
+[debug] 18:28:09.596 Processed: source/fancybox/fancybox_loading.gif
+[debug] 18:28:09.596 Processed: source/fancybox/fancybox_overlay.png
+[debug] 18:28:09.596 Processed: source/fancybox/fancybox_sprite.png
+[debug] 18:28:09.596 Processed: source/fancybox/jquery.fancybox.css
+[debug] 18:28:09.596 Processed: source/fancybox/jquery.fancybox.pack.js
+[debug] 18:28:09.597 Processed: source/js/gallery.js
+[debug] 18:28:09.597 Processed: source/js/jquery-1.7.2.min.js
+[debug] 18:28:09.597 Processed: source/js/jquery.imagesloaded.min.js
+[debug] 18:28:09.598 Processed: source/js/moment.min.js
+[debug] 18:28:09.598 Processed: source/js/scale.fix.js
+[debug] 18:28:09.598 Processed: source/css/style.styl
+[debug] 18:28:09.598 Processed: source/css/style.styl~
+[debug] 18:28:09.599 Processed: source/css/fonts/FontAwesome.otf
+[debug] 18:28:09.599 Processed: source/css/fonts/fontawesome-webfont.eot
+[debug] 18:28:09.600 Processed: source/css/fonts/fontawesome-webfont.svg
+[debug] 18:28:09.600 Processed: source/css/fonts/fontawesome-webfont.ttf
+[debug] 18:28:09.600 Processed: source/css/fonts/fontawesome-webfont.woff
+[debug] 18:28:09.601 Processed: source/css/images/checker.png
+[debug] 18:28:09.601 Processed: source/css/images/icons.gif
+[debug] 18:28:09.601 Processed: _posts/2014-qcon-first.md
+[debug] 18:28:09.601 Processed: _posts/2014-qcon-second.md
+[debug] 18:28:09.601 Processed: _posts/2014-qcon-third.md
+[debug] 18:28:09.601 Processed: _posts/a-jvm-share.md
+[debug] 18:28:09.601 Processed: _posts/after-returning-advice-error.md
+[debug] 18:28:09.601 Processed: _posts/akka-spring.md
+[debug] 18:28:09.601 Processed: _posts/akka-start.md
+[debug] 18:28:09.601 Processed: _posts/asm-read-class-bytes.md
+[debug] 18:28:09.601 Processed: _posts/async-write-data.md
+[debug] 18:28:09.602 Processed: _posts/awk-command.md
+[debug] 18:28:09.602 Processed: _posts/beanfactorypostprocessor-and-beanpostprocessor.md
+[debug] 18:28:09.602 Processed: _posts/btrace-for-exception.md
+[debug] 18:28:09.602 Processed: _posts/btrace-for-production-problem.md
+[debug] 18:28:09.602 Processed: _posts/class-bytecode-constant-pool-num.md
+[debug] 18:28:09.602 Processed: _posts/class-conflict-analyse-1.md
+[debug] 18:28:09.602 Processed: _posts/consistent-hashing.md
+[debug] 18:28:09.602 Processed: _posts/countdownlatch-and-cyclicbarrier.md
+[debug] 18:28:09.602 Processed: _posts/css-break-line.md
+[debug] 18:28:09.602 Processed: _posts/css-screen-scroll.md
+[debug] 18:28:09.602 Processed: _posts/final-local-variable-for-jvm.md
+[debug] 18:28:09.602 Processed: _posts/fission-thought.md
+[debug] 18:28:09.602 Processed: _posts/future-cancel-task.md
+[debug] 18:28:09.602 Processed: _posts/futuretask.md
+[debug] 18:28:09.602 Processed: _posts/git-command.md
+[debug] 18:28:09.602 Processed: _posts/guava-multimap.md
+[debug] 18:28:09.602 Processed: _posts/hash-map-infinite-loop.md
+[debug] 18:28:09.602 Processed: _posts/hbase-idea.md
+[debug] 18:28:09.602 Processed: _posts/hbase-keyvalue-type.md
+[debug] 18:28:09.602 Processed: _posts/how-to-aware-jvm-exit.md
+[debug] 18:28:09.602 Processed: _posts/how-to-debug-hbase-source.md
+[debug] 18:28:09.602 Processed: _posts/how-to-dev-maven-hello-world-plugin.md
+[debug] 18:28:09.602 Processed: _posts/how-to-get-java-pid.md
+[debug] 18:28:09.602 Processed: _posts/how-to-modify-jvm-bytecode-dynamic.md
+[debug] 18:28:09.602 Processed: _posts/how-to-read-gc-log.md
+[debug] 18:28:09.602 Processed: _posts/how-to-use-asmifier.md
+[debug] 18:28:09.602 Processed: _posts/ibatis-dtd-convert.md
+[debug] 18:28:09.602 Processed: _posts/ibatis-version-for-parametermap.md
+[debug] 18:28:09.602 Processed: _posts/idempotency-and-db-lock.md
+[debug] 18:28:09.602 Processed: _posts/ie-iframe-session-cookie.md
+[debug] 18:28:09.602 Processed: _posts/install-zookeeper.md
+[debug] 18:28:09.602 Processed: _posts/java-annotation-summarize.md
+[debug] 18:28:09.602 Processed: _posts/java-concurrent-note-1.md
+[debug] 18:28:09.602 Processed: _posts/java-generic-extends.md
+[debug] 18:28:09.602 Processed: _posts/java-memory-model-abstract.md
+[debug] 18:28:09.602 Processed: _posts/java-parameter-reference.md
+[debug] 18:28:09.602 Processed: _posts/java-reflect.md
+[debug] 18:28:09.602 Processed: _posts/java-thread-model.md
+[debug] 18:28:09.602 Processed: _posts/javac-accessbash00.md
+[debug] 18:28:09.602 Processed: _posts/join-wait-notify-notifyall.md
+[debug] 18:28:09.602 Processed: _posts/jquery-placeholder.md
+[debug] 18:28:09.602 Processed: _posts/jvm-byte-code-attention.md
+[debug] 18:28:09.602 Processed: _posts/jvm-cmd.md
+[debug] 18:28:09.602 Processed: _posts/linux-c-thread.md
+[debug] 18:28:09.602 Processed: _posts/linux-command.md
+[debug] 18:28:09.602 Processed: _posts/log4j-additivity.md
+[debug] 18:28:09.602 Processed: _posts/mac-svn-problem.md
+[debug] 18:28:09.602 Processed: _posts/maven-default-arbitration.md
+[debug] 18:28:09.602 Processed: _posts/maven-notice.md
+[debug] 18:28:09.602 Processed: _posts/misunderstand-for-future-of-executorservice.md
+[debug] 18:28:09.602 Processed: _posts/mvn-dependencies-and-dependencymanagement-diff.md
+[debug] 18:28:09.602 Processed: _posts/noclassdeffounderror-vs-classnotfoundexception.md
+[debug] 18:28:09.602 Processed: _posts/open-call-to-avoid-deadlock.md
+[debug] 18:28:09.602 Processed: _posts/os-timer-call.md
+[debug] 18:28:09.603 Processed: _posts/project-accumulation-1.md
+[debug] 18:28:09.603 Processed: _posts/servlet-extend.md
+[debug] 18:28:09.603 Processed: _posts/short-ref-equal.md
+[debug] 18:28:09.603 Processed: _posts/spring-aop-practice.md
+[debug] 18:28:09.603 Processed: _posts/spring-application-event.md
+[debug] 18:28:09.603 Processed: _posts/spring-ioc-aop-idea.md
+[debug] 18:28:09.603 Processed: _posts/sql-error-analyse.md
+[debug] 18:28:09.603 Processed: _posts/sql-group-by.md
+[debug] 18:28:09.603 Processed: _posts/sql-join.md
+[debug] 18:28:09.603 Processed: _posts/sql-size.md
+[debug] 18:28:09.603 Processed: _posts/sqlmap-load-by-spring-container.md
+[debug] 18:28:09.603 Processed: _posts/svn-command.md
+[debug] 18:28:09.603 Processed: _posts/svn-merge-revert.md
+[debug] 18:28:09.603 Processed: _posts/tec-accumulation-1.md
+[debug] 18:28:09.603 Processed: _posts/thread-local-analyze.md
+[debug] 18:28:09.603 Processed: _posts/transaction-attention.md
+[debug] 18:28:09.603 Processed: _posts/ut-failed-problems.md
+[debug] 18:28:09.603 Processed: _posts/velocity-exception-analyze.md
+[debug] 18:28:09.603 Processed: _posts/velocity-utils-stream-to-string.md
+[debug] 18:28:09.603 Processed: _posts/vi-command.md
+[debug] 18:28:09.603 Processed: _posts/why-odd-number-machine-for-zookeeper.md
+[debug] 18:28:09.603 Processed: _posts/xstream-skills-for-utf8.md
+[debug] 18:28:09.603 Processed: layout/archive.ejs
+[debug] 18:28:09.604 Processed: layout/index.ejs
+[debug] 18:28:09.604 Processed: layout/layout.ejs
+[debug] 18:28:09.604 Processed: layout/layout.ejs~
+[debug] 18:28:09.604 Processed: layout/page.ejs
+[debug] 18:28:09.604 Processed: layout/post.ejs
+[debug] 18:28:09.604 Processed: layout/reading.ejs
+[debug] 18:28:09.604 Processed: layout/tag.ejs
+[debug] 18:28:09.604 Processed: layout/_widget/ recent_posts.ejs~
+[debug] 18:28:09.604 Processed: layout/_widget/blogroll.ejs
+[debug] 18:28:09.604 Processed: layout/_widget/blogroll.ejs~
+[debug] 18:28:09.604 Processed: layout/_widget/category.ejs
+[debug] 18:28:09.604 Processed: layout/_widget/category.ejs~
+[debug] 18:28:09.604 Processed: layout/_widget/recent_posts.ejs
+[debug] 18:28:09.604 Processed: layout/_widget/recent_posts.ejs~
+[debug] 18:28:09.604 Processed: layout/_widget/tag.ejs
+[debug] 18:28:09.604 Processed: layout/_widget/tag.ejs~
+[debug] 18:28:09.604 Processed: layout/_widget/tagcloud.ejs
+[debug] 18:28:09.604 Processed: layout/_widget/tagcloud.ejs~
+[debug] 18:28:09.604 Processed: layout/_widget/weibo.ejs
+[debug] 18:28:09.604 Processed: layout/_widget/weibo.ejs~
+[debug] 18:28:09.604 Processed: layout/_partial/after-footer.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/after-footer.ejs~
+[debug] 18:28:09.604 Processed: layout/_partial/archive-post.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/archive.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/article.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/comment.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/comment.ejs~
+[debug] 18:28:09.604 Processed: layout/_partial/footer.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/footer.ejs~
+[debug] 18:28:09.604 Processed: layout/_partial/google-analytics.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/head.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/head.ejs~
+[debug] 18:28:09.604 Processed: layout/_partial/header.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/pagination.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/sidebar.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/post/category.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/post/date.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/post/gallery.ejs
+[debug] 18:28:09.604 Processed: layout/_partial/post/tag.ejs
+[debug] 18:28:09.605 Processed: layout/_partial/post/title.ejs
+[error] 18:28:09.610 { rawMessage: 'Unable to parse.',
   parsedLine: 3,
-  snippet: 'tags:JAVA',
+  snippet: 'tags:JVM',
   parsedFile: null,
   message: 'Unable to parse.',
   domain: 
    { domain: null,
      _events: { error: [Function] },
-     _maxListeners: 10,
+     _maxListeners: undefined,
      members: [],
      _disposed: true },
   domainThrown: true }

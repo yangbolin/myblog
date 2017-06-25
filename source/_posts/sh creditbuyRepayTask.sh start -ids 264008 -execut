@@ -1,0 +1,21 @@
+sh creditbuyRepayTask.sh start -ids 264008 -executeMode once
+
+buyer=3692604945
+seller=3692285315
+
+
+invoke com.alibaba.china.shared.plutus.biz.facade.financeproduct.service.FinanceProductWriteService:1.0.0.unfreeze({"operator":"SYSTEM","targetId":1846002})
+
+194229961804549
+
+
+
+
+
+194248953454549
+194229966034549
+194229965834549
+
+
+确认收货成功
+194216061244549

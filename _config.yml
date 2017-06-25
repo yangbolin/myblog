@@ -5,14 +5,14 @@
 # Site
 title: BolinYoung's Blog 
 subtitle: Believe in yourself
-description:
-author: John Doe
-email:
+description: Coder @Alibaba
+author: BolinYoung
+email: boris.yangbl@alibaba-inc.com
 language:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://yangbolin.cn
 root: /
 permalink: :year/:month/:day/:title/
 tag_dir: tags
@@ -49,9 +49,9 @@ tag_map:
 ## 2: Enable pagination
 ## 1: Disable pagination
 ## 0: Fully Disable
-archive: 2
-category: 2
-tag: 2
+archive: 1
+category: 1
+tag: 1
 
 # Server
 ## Hexo uses Connect as a server
@@ -94,6 +94,8 @@ markdown:
   smartLists: true
   smartypants: true
 
+redcarpet: 
+    extensions: ["tables"]
 # Stylus
 stylus:
   compress: false
@@ -101,4 +103,9 @@ stylus:
 # Deployment
 ## Docs: http://zespia.tw/hexo/docs/deployment.html
 deploy:
-  type:
+  type: github
+  repo: https://github.com/yangbolin/myblog.git
+
+plugins:
+- hexo-generator-feed
+- hexo-generator-sitemap
