@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/05/17/maven-notice/">
+  <time datetime="2014-05-17T11:39:59.000Z">
+    May 17 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/17/maven-notice/">maven的一些注意点</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>目前maven被广泛用于java项目的开发中，统一管理项目依赖，以及项目的打包部署等，我们经常需要编写maven的pom文件，包括顶级pom以及子pom。maven既可以用来构建单工程项目，也可以用来构建多工程项目，子工程和子工程之间有相互依赖。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/17/maven-notice/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/05/17/final-local-variable-for-jvm/">
   <time datetime="2014-05-17T10:08:12.000Z">
     May 17 2014
@@ -417,46 +457,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/05/02/hash-map-infinite-loop/">
-  <time datetime="2014-05-02T04:11:27.000Z">
-    May 2 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/05/02/hash-map-infinite-loop/">Java HashMap死循环分析</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-引言">一.引言</h4>
-<p>我们在平时的Java代码中经常会用到HashMap这个结构，JDK的官方文档上描述这个结构是非线程安全的，就是说在并发的情况下，HashMap的操作可能不是我们想要的。为了避免并发造成的影响，我们推荐在代码使用ConcurrentMap。一个经常被讨论的问题就是HashMap在高并发的情况下面，使用get方法就会出现死循环，导致应用的load彪高，此时重启应用，一切都会正常。记得在应用出现问题的时候保留现场，出现load彪高，一般需要把线程堆栈使用jstack保留下来，方便后续问题的排查。那么为什么在高并发的情况下，HashMap中会出现死循环呢？下面我们就慢慢分析一下。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/05/02/hash-map-infinite-loop/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -486,6 +486,8 @@
 			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
 		
 			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Architecture/" title="Architecture">Architecture<sup>2</sup></a></li>
 		
 			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
 		
@@ -519,8 +521,6 @@
 		
 			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
 		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -532,6 +532,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2017/06/25/event-sourcing-cqrs/" title="初识EventSourcing和CQRS">初识EventSourcing和CQRS</a>
+      </li>
     
       <li>
         <a href="/2017/06/25/two-consistency-design-tech/" title="两种分布式系统中保持数据一致性的设计方案">两种分布式系统中保持数据一致性的设计方案</a>
@@ -567,10 +571,6 @@
     
       <li>
         <a href="/2016/04/17/software-design/" title="关于系统架构设计的心得(一)">关于系统架构设计的心得(一)</a>
-      </li>
-    
-      <li>
-        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
       </li>
     
   </ul>
@@ -609,7 +609,7 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>6</sup></a></li>
 		
-			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>2</sup></a></li>
 		
 			<li><a href="/categories/线上运维/" title="线上运维">线上运维<sup>1</sup></a></li>
 		

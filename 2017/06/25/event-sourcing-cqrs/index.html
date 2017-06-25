@@ -4,14 +4,16 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   
-  <title>Category: 开发工具 | BolinYoung&#39;s Blog</title>
+  <title>初识EventSourcing和CQRS | BolinYoung&#39;s Blog</title>
   <meta name="author" content="BolinYoung">
   
-  <meta name="description" content="Coder @Alibaba">
+  <meta name="description" content="EventSourcing就是事件溯源的意思，我们平时在设计系统的时候都存储了对象的最终的状态，比如一个交易订单，它当前的状态是等待买家确认收货，这个状态是由于发生了一系列事件所导致的，那么EventSourcing的思想就是存储对象的所有变更事件，根据对象的所有变更事件追溯出对象的状态。
+1
+st">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
+  <meta property="og:title" content="初识EventSourcing和CQRS"/>
   <meta property="og:site_name" content="BolinYoung&#39;s Blog"/>
   
   <link rel="alternate" href="/atom.xml" title="BolinYoung&#39;s Blog" type="application/atom+xml">
@@ -51,236 +53,59 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-		<div class="content">
-
-
-<h2 class="archives-title category"><span>开发工具</span></h2>
-
-
-
-  
-  
+		<div class="content"><article class="post">
+  <header>
     
+      <div class="icon"></div>
+      <a href="/2017/06/25/event-sourcing-cqrs/">
+  <time datetime="2017-06-25T14:22:07.000Z">
+    Jun 25 2017
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">初识EventSourcing和CQRS</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>EventSourcing就是事件溯源的意思，我们平时在设计系统的时候都存储了对象的最终的状态，比如一个交易订单，它当前的状态是等待买家确认收货，这个状态是由于发生了一系列事件所导致的，那么EventSourcing的思想就是存储对象的所有变更事件，根据对象的所有变更事件追溯出对象的状态。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="attribute">state </span>=<span class="string"> f(E1,E2,E3....)</span>
+</pre></td></tr></table></figure>
+
+<p>函数f就是溯源函数，这种设计思想对于数据一致性也有保证，因为它对所有的变更都是insert，即追加记录，能够很好地避免RaceCondition。不同的对象可能需要定义不同的溯源函数，由于数据库中没有存储对象当前的状态，那么需要根据一些状态来进行遍历的时候就比较麻烦了。</p>
+<p>CQRS是一种读写分离的架构设计，CQRS最早来自于Betrand Meyer（Eiffel语言之父，开-闭原则OCP提出者）在 Object-Oriented Software Construction 这本书中提到的一种 命令查询分离 (Command Query Separation,CQS) 的概念。其基本思想在于，任何一个对象的方法可以分为两大类：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>命令(Command):不返回任何结果(<span class="keyword">void</span>)，但会改变对象的状态。
+查询(Query):返回结果，但是不会改变对象的状态，对系统没有副作用。
+</pre></td></tr></table></figure>
+
+<p>先贴一张CQRS的架构图<br><img src="http://7fvbqj.com1.z0.glb.clouddn.com/CQRS.jpg" alt="CRQS"><br>一个Command只能修改一个聚合根，对同一个聚合根的修改需要通过Command Bus来排队。一个聚合根的修改可能会导致多个领域模型状态上的变更，这些状态的变更全部以事件的方式存储，事件通过EventBus找到对应的Handler，然后更新DB中的数据。其实上面这个架构可以理解为为是CQRS和EventSouring的结合。</p>
+<p><a href="https://martinfowler.com/bliki/CQRS.html" target="_blank">CQRS参考资料</a></p>
+
+    
+  </div>
+  <footer>
     
       
+  <div class="categories">
+    <a class="categories-link" href="/categories/架构设计/">架构设计</a>
+  </div>
+
       
-      <section class="archives-wrapper">
-        
-        <div class="archives">
-    
-    <article class="post">
-  <header>
-    <a href="/2015/10/29/mac-svn-problem/">
-  <time datetime="2015-10-29T05:34:37.000Z">
-    Oct 29
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2015/10/29/mac-svn-problem/">mac遇到的一个svn的问题</a></h1>
-  
+  <div class="tags">
+    <a class="tags-link" href="/tags/Architecture/">Architecture</a>
+  </div>
 
-  </header>
+    
+    <div class="clearfix"></div>
+  </footer>
 </article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2015/07/02/svn-merge-revert/">
-  <time datetime="2015-07-02T01:18:16.000Z">
-    Jul 02
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2015/07/02/svn-merge-revert/">使用svn merge命令来回滚代码</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2015/04/26/git-command/">
-  <time datetime="2015-04-26T06:27:34.000Z">
-    Apr 26
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2015/04/26/git-command/">GIT常用命令总结</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrapper">
-        
-        <div class="archives">
-    
-    <article class="post">
-  <header>
-    <a href="/2014/10/12/btrace-for-exception/">
-  <time datetime="2014-10-12T10:06:18.000Z">
-    Oct 12
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/10/12/btrace-for-exception/">使用BTrace监控方法入参</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/18/maven-default-arbitration/">
-  <time datetime="2014-06-18T14:09:25.000Z">
-    Jun 18
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/18/maven-default-arbitration/">maven自己的仲裁机制</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/13/linux-command/">
-  <time datetime="2014-06-13T06:30:04.000Z">
-    Jun 13
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/13/linux-command/">Linux命令总结</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/04/how-to-dev-maven-hello-world-plugin/">
-  <time datetime="2014-06-04T12:32:22.000Z">
-    Jun 04
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/04/how-to-dev-maven-hello-world-plugin/">如何编写maven的helloworld插件</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/06/01/vi-command/">
-  <time datetime="2014-05-31T16:39:35.000Z">
-    Jun 01
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/06/01/vi-command/">vim 命令</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/05/17/maven-notice/">
-  <time datetime="2014-05-17T11:39:59.000Z">
-    May 17
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/05/17/maven-notice/">maven的一些注意点</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/">
-  <time datetime="2014-05-17T09:35:04.000Z">
-    May 17
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/05/17/mvn-dependencies-and-dependencymanagement-diff/">maven dependencies 和 dependencyManagement的区别</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/05/14/btrace-for-production-problem/">
-  <time datetime="2014-05-14T07:55:55.000Z">
-    May 14
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/05/14/btrace-for-production-problem/">使用BTrace来定位方法中Catch住的异常</a></h1>
-  
-
-  </header>
-</article>
-  
-    
-    
-    <article class="post">
-  <header>
-    <a href="/2014/05/10/svn-command/">
-  <time datetime="2014-05-10T08:20:24.000Z">
-    May 10
-  </time>
-</a>
-    
-  
-    <h1 class="title"><a href="/2014/05/10/svn-command/">谈谈几个svn命令</a></h1>
-  
-
-  </header>
-</article>
-  
-  
-    </div></section>
-  
 
 
 </div>
