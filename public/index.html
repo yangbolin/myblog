@@ -61,6 +61,91 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2017/12/05/select-for-update-issues/">
+  <time datetime="2017-12-05T11:10:19.000Z">
+    Dec 5 2017
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2017/12/05/select-for-update-issues/">mysql中select for update锁的问题</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在日常关于资金业务的开发过程中，涉及到数据库的操作时我们经常按照一查二锁三写的套路，可能在加锁后还需要查询一些数据，因为加锁之前的数据可能已经发生变化了，这里的锁我们一般会采用数据库的select for update锁，使用这个本身也没有问题，在对数据进行操作的时候先加锁，避免其他线程修改后，当前线程看到的数据是错误的。但是在高并发的情况下面，这个select for update锁的等待时间太久导致很多线程都在等待这个锁，这样整个系统的吞吐量严重下降。举个栗子在电商业务中有个系统自动确认收货，确认收货后会更改一些用户的数据，如果同卖家在双11当天同时卖出了上万件商品，生成了上万笔订单，这上万笔订单系统自动确认收货的时间点都是一样的，到点后会爆发非常大的并发流量，如果先select for update的话，很多线程就会排队等待，系统吞吐量下降，数据库链接数耗尽，出现故障。</p>
+<p>在高并发系统中，如果出现了获取不到锁的情况，应该尽快返回让上游系统发起重试，而不是一直等直到可以获取到锁，一直的等待绝对会把系统拖死，这种case目前已经经历了好多了。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2017/06/25/event-sourcing-cqrs/">
+  <time datetime="2017-06-25T14:22:07.000Z">
+    Jun 25 2017
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2017/06/25/event-sourcing-cqrs/">初识EventSourcing和CQRS</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>EventSourcing就是事件溯源的意思，我们平时在设计系统的时候都存储了对象的最终的状态，比如一个交易订单，它当前的状态是等待买家确认收货，这个状态是由于发生了一系列事件所导致的，那么EventSourcing的思想就是存储对象的所有变更事件，根据对象的所有变更事件追溯出对象的状态。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="attribute">state </span>=<span class="string"> f(E1,E2,E3....)</span>
+</pre></td></tr></table></figure>
+
+<p>函数f就是溯源函数，这种设计思想对于数据一致性也有保证，因为它对所有的变更都是insert，即追加记录，能够很好地避免RaceCondition。不同的对象可能需要定义不同的溯源函数，由于数据库中没有存储对象当前的状态，那么需要根据一些状态来进行遍历的时候就比较麻烦了。</p>
+<p>CQRS是一种读写分离的架构设计，CQRS最早来自于Betrand Meyer（Eiffel语言之父，开-闭原则OCP提出者）在 Object-Oriented Software Construction 这本书中提到的一种 命令查询分离 (Command Query Separation,CQS) 的概念。其基本思想在于，任何一个对象的方法可以分为两大类：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>命令(Command):不返回任何结果(<span class="keyword">void</span>)，但会改变对象的状态。
+查询(Query):返回结果，但是不会改变对象的状态，对系统没有副作用。
+</pre></td></tr></table></figure>
+
+<p>先贴一张CQRS的架构图<br><img src="http://7fvbqj.com1.z0.glb.clouddn.com/CQRS.jpg" alt="CRQS"><br>一个Command只能修改一个聚合根，对同一个聚合根的修改需要通过Command Bus来排队。一个聚合根的修改可能会导致多个领域模型状态上的变更，这些状态的变更全部以事件的方式存储，事件通过EventBus找到对应的Handler，然后更新DB中的数据。其实上面这个架构可以理解为为是CQRS和EventSouring的结合。</p>
+<p><a href="https://martinfowler.com/bliki/CQRS.html" target="_blank">CQRS参考资料</a></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2017/06/25/two-consistency-design-tech/">
   <time datetime="2017-06-25T09:40:13.000Z">
     Jun 25 2017
@@ -599,111 +684,6 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"</span>
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2016/04/17/software-design/">
-  <time datetime="2016-04-17T13:33:06.000Z">
-    Apr 17 2016
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2016/04/17/software-design/">关于系统架构设计的心得(一)</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>关于系统的架构设计，其实有很多内容，要想设计出足够灵活的软件系统，确实不是一件容易的事情，特别是面对我们日新月异的业务，业务的变动完全可以推翻你之前所做的所有设计，如何在复杂的业务中剥离出一些固定的规律，这大概就是系统架构的主要目的了。要想做好系统架构，你需要对业务有一个宏观层面的认识和理解，需要把你所面对的业务模块化，结构化，然后再针对每个模块每个结构进行详细的设计。当然这些模块的划分以及抽象，也需要你有一定的经验。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2016/04/17/software-design/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2016/03/19/jvm-systemdictionary/">
-  <time datetime="2016-03-19T10:01:23.000Z">
-    Mar 19 2016
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2016/03/19/jvm-systemdictionary/">关于YGC时间变长的记录</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>最近看见很多同事都在讨论一个JVM YGC时间变长的问题，在平时业务开发的过程中，我们经常使用</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>XStream xs = <span class="keyword">new</span> XStream();
-</pre></td></tr></table></figure>
-
-<p>来实现XML和JavaBean之间的相互转换，看看实现就知道在上面的构造函数中不断创建新的classloader出来</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="title">XStream</span>(
-            ReflectionProvider reflectionProvider, Mapper mapper, HierarchicalStreamDriver driver) {
-        <span class="keyword">this</span>(reflectionProvider, driver, <span class="keyword">new</span> ClassLoaderReference(<span class="keyword">new</span> CompositeClassLoader()), mapper, <span class="keyword">new</span> DefaultConverterLookup(), <span class="keyword">null</span>);
-    }
-</pre></td></tr></table></figure>
-
-<p>不断创建新的classloader会导致YGC的时间变长。JVM的类加载机制都是双亲委派机制。<br>假如：AClassLoader-&gt;BClassLoader-&gt;CClassLoader，现在需要加载X这个类，AClassLoader首先会交给BClassLoader去加载，BClassLoader会交给CClassLoader去加载，如果CClassLoader能加载到，那么X这个类就被加载了。此时在SystemDictionary这个HashTable数据结构中会存储3条记录。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-</pre></td><td class="code"><pre>X-AClassLoader-X.cls
-X-BClassLoader-X.cls
-X-CClassLoader-X.cls
-
-此时SystemDictionary中有三条关于X的加载记录，如果发现任何一条，就认为X已经加载过了。
-</pre></td></tr></table></figure>
-
-<p>其中AClassLoader和BClassLoader叫做X的出始类加载器。CClassLoader叫做X的定义类加载器。如果不断自定义ClassLoader的话，SystemDictionary中会不断增加K-V记录，这样YGC扫描的范围就越大，YGC耗时就越多。</p>
-<p>最后，在使用XStream时，最好别每次都创建一个新的ClassLoader来，减少YGC的时间，提升性能。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -731,6 +711,8 @@ X-CClassLoader-X.cls
 			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
 		
 			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Architecture/" title="Architecture">Architecture<sup>2</sup></a></li>
 		
 			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
 		
@@ -764,8 +746,6 @@ X-CClassLoader-X.cls
 		
 			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
 		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -777,6 +757,14 @@ X-CClassLoader-X.cls
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2017/12/05/select-for-update-issues/" title="mysql中select for update锁的问题">mysql中select for update锁的问题</a>
+      </li>
+    
+      <li>
+        <a href="/2017/06/25/event-sourcing-cqrs/" title="初识EventSourcing和CQRS">初识EventSourcing和CQRS</a>
+      </li>
     
       <li>
         <a href="/2017/06/25/two-consistency-design-tech/" title="两种分布式系统中保持数据一致性的设计方案">两种分布式系统中保持数据一致性的设计方案</a>
@@ -808,14 +796,6 @@ X-CClassLoader-X.cls
     
       <li>
         <a href="/2016/05/15/arrayblockingqueue-put-offer/" title="关于ArrayBlockingQueue的put和offer方法">关于ArrayBlockingQueue的put和offer方法</a>
-      </li>
-    
-      <li>
-        <a href="/2016/04/17/software-design/" title="关于系统架构设计的心得(一)">关于系统架构设计的心得(一)</a>
-      </li>
-    
-      <li>
-        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
       </li>
     
   </ul>
@@ -854,11 +834,11 @@ X-CClassLoader-X.cls
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>6</sup></a></li>
 		
-			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>2</sup></a></li>
 		
 			<li><a href="/categories/线上运维/" title="线上运维">线上运维<sup>1</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>36</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>37</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		

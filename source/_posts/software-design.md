@@ -1,6 +1,6 @@
 title: 关于系统架构设计的心得(一)
 date: 2016-04-17 21:33:06
-tags: 架构
+tags: Architecture
 categories: 架构设计
 ---
 

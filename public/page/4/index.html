@@ -61,6 +61,86 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/10/31/log4j-additivity/">
+  <time datetime="2014-10-31T09:10:37.000Z">
+    Oct 31 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/31/log4j-additivity/">关于log4j的additivity</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-问题描述">一.问题描述</h4>
+<p>最近优化了一下一个应用的日志，但是优化后的结果不是自己想要的，简单说指定的log部分输出到了root中的appender中，部分输出到自己指定的log中。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/31/log4j-additivity/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/10/25/akka-start/">
+  <time datetime="2014-10-25T14:35:44.000Z">
+    Oct 25 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/10/25/akka-start/">Akka入门</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-概述">一.概述</h4>
+<p>为了提高一个数据计算平台的吞吐了，最近抽空看了看akka，之前听同事说akka能够提高并发吞吐量，高容错，很稳定，今天抽时间先简单看了相关的文档，写了个简单的例子，主要演示如何使用akka，当然我们也可以搭建一个akka的集群。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/10/25/akka-start/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/10/25/open-call-to-avoid-deadlock/">
   <time datetime="2014-10-25T13:00:45.000Z">
     Oct 25 2014
@@ -377,86 +457,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/08/16/a-jvm-share/">
-  <time datetime="2014-08-16T07:44:15.000Z">
-    Aug 16 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/08/16/a-jvm-share/">一次JVM分享的相关记录</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>最近看见公司一位前辈有分享JVM相关的知识，自己特地从跑过去听了一下，感觉讲的不是很深入，但是相对来说还是不错的，本文就自己听到的一些东西做一个简单的总结。平时我们大多数都是用JAVA写代码,很多人学JAVA都是从HelloWorld开始，但是从你写HelloWorld代码到最终输出HelloWorld到底发生那些事情呢？要想清楚的回答这个问题，并不是很容易，你需要对JVM有一个清晰的了解后，才能说清楚这个问题，这只是一个引子，本文也不去挑战这个问题，这里主要记录一下自己从这个分享中听到的一些感兴趣的东西。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/08/16/a-jvm-share/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/27/how-to-use-asmifier/">
-  <time datetime="2014-07-27T05:53:45.000Z">
-    Jul 27 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/27/how-to-use-asmifier/">如何使用ASMifier</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>ASM这个字节码处理框架，不仅能够读字节码，而且还能修改字节码，我们经常是先写好JAVA代码，然后编译(IDE或者javac)生成class文件，最后classloader再把相应的class文件加载到内存，但是有了ASM后，我们可以直接使用ASM生成class文件的字节数组，即面向字节码写JAVA代码，这样可以让JVM动态去加载一个类，但是这个类的class文件并不存在磁盘上，也就是说这个类的class文件是在内存中构建出来的。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/27/how-to-use-asmifier/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -486,6 +486,8 @@
 			<li><a href="/tags/Akka/" title="Akka">Akka<sup>2</sup></a></li>
 		
 			<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Architecture/" title="Architecture">Architecture<sup>2</sup></a></li>
 		
 			<li><a href="/tags/BTrace/" title="BTrace">BTrace<sup>2</sup></a></li>
 		
@@ -519,8 +521,6 @@
 		
 			<li><a href="/tags/crontab/" title="crontab">crontab<sup>1</sup></a></li>
 		
-			<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
-		
 		</ul>
 </div>
 <div class="widget-seperator"></div>
@@ -532,6 +532,14 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2017/12/05/select-for-update-issues/" title="mysql中select for update锁的问题">mysql中select for update锁的问题</a>
+      </li>
+    
+      <li>
+        <a href="/2017/06/25/event-sourcing-cqrs/" title="初识EventSourcing和CQRS">初识EventSourcing和CQRS</a>
+      </li>
     
       <li>
         <a href="/2017/06/25/two-consistency-design-tech/" title="两种分布式系统中保持数据一致性的设计方案">两种分布式系统中保持数据一致性的设计方案</a>
@@ -563,14 +571,6 @@
     
       <li>
         <a href="/2016/05/15/arrayblockingqueue-put-offer/" title="关于ArrayBlockingQueue的put和offer方法">关于ArrayBlockingQueue的put和offer方法</a>
-      </li>
-    
-      <li>
-        <a href="/2016/04/17/software-design/" title="关于系统架构设计的心得(一)">关于系统架构设计的心得(一)</a>
-      </li>
-    
-      <li>
-        <a href="/2016/03/19/jvm-systemdictionary/" title="关于YGC时间变长的记录">关于YGC时间变长的记录</a>
       </li>
     
   </ul>
@@ -609,11 +609,11 @@
 		
 			<li><a href="/categories/数据库/" title="数据库">数据库<sup>6</sup></a></li>
 		
-			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+			<li><a href="/categories/架构设计/" title="架构设计">架构设计<sup>2</sup></a></li>
 		
 			<li><a href="/categories/线上运维/" title="线上运维">线上运维<sup>1</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>36</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>37</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		

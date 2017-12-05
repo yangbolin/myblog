@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Believe in yourself]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangbolin.cn/"/>
-  <updated>2017-06-25T14:14:20.325Z</updated>
+  <updated>2017-12-05T11:36:45.383Z</updated>
   <id>http://yangbolin.cn/</id>
   
   <author>
@@ -13,6 +13,53 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[mysql中select for update锁的问题]]></title>
+    <link href="http://yangbolin.cn/2017/12/05/select-for-update-issues/"/>
+    <id>http://yangbolin.cn/2017/12/05/select-for-update-issues/</id>
+    <published>2017-12-05T11:10:19.000Z</published>
+    <updated>2017-12-05T11:36:35.000Z</updated>
+    <content type="html"><![CDATA[<p>在日常关于资金业务的开发过程中，涉及到数据库的操作时我们经常按照一查二锁三写的套路，可能在加锁后还需要查询一些数据，因为加锁之前的数据可能已经发生变化了，这里的锁我们一般会采用数据库的select for update锁，使用这个本身也没有问题，在对数据进行操作的时候先加锁，避免其他线程修改后，当前线程看到的数据是错误的。但是在高并发的情况下面，这个select for update锁的等待时间太久导致很多线程都在等待这个锁，这样整个系统的吞吐量严重下降。举个栗子在电商业务中有个系统自动确认收货，确认收货后会更改一些用户的数据，如果同卖家在双11当天同时卖出了上万件商品，生成了上万笔订单，这上万笔订单系统自动确认收货的时间点都是一样的，到点后会爆发非常大的并发流量，如果先select for update的话，很多线程就会排队等待，系统吞吐量下降，数据库链接数耗尽，出现故障。</p>
+<p>在高并发系统中，如果出现了获取不到锁的情况，应该尽快返回让上游系统发起重试，而不是一直等直到可以获取到锁，一直的等待绝对会把系统拖死，这种case目前已经经历了好多了。</p>
+]]></content>
+    
+    
+      <category term="mysql" scheme="http://yangbolin.cn/tags/mysql/"/>
+    
+      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[初识EventSourcing和CQRS]]></title>
+    <link href="http://yangbolin.cn/2017/06/25/event-sourcing-cqrs/"/>
+    <id>http://yangbolin.cn/2017/06/25/event-sourcing-cqrs/</id>
+    <published>2017-06-25T14:22:07.000Z</published>
+    <updated>2017-06-25T14:52:39.000Z</updated>
+    <content type="html"><![CDATA[<p>EventSourcing就是事件溯源的意思，我们平时在设计系统的时候都存储了对象的最终的状态，比如一个交易订单，它当前的状态是等待买家确认收货，这个状态是由于发生了一系列事件所导致的，那么EventSourcing的思想就是存储对象的所有变更事件，根据对象的所有变更事件追溯出对象的状态。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="attribute">state </span>=<span class="string"> f(E1,E2,E3....)</span>
+</pre></td></tr></table></figure>
+
+<p>函数f就是溯源函数，这种设计思想对于数据一致性也有保证，因为它对所有的变更都是insert，即追加记录，能够很好地避免RaceCondition。不同的对象可能需要定义不同的溯源函数，由于数据库中没有存储对象当前的状态，那么需要根据一些状态来进行遍历的时候就比较麻烦了。</p>
+<p>CQRS是一种读写分离的架构设计，CQRS最早来自于Betrand Meyer（Eiffel语言之父，开-闭原则OCP提出者）在 Object-Oriented Software Construction 这本书中提到的一种 命令查询分离 (Command Query Separation,CQS) 的概念。其基本思想在于，任何一个对象的方法可以分为两大类：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>命令(Command):不返回任何结果(<span class="keyword">void</span>)，但会改变对象的状态。
+查询(Query):返回结果，但是不会改变对象的状态，对系统没有副作用。
+</pre></td></tr></table></figure>
+
+<p>先贴一张CQRS的架构图<br><img src="http://7fvbqj.com1.z0.glb.clouddn.com/CQRS.jpg" alt="CRQS"><br>一个Command只能修改一个聚合根，对同一个聚合根的修改需要通过Command Bus来排队。一个聚合根的修改可能会导致多个领域模型状态上的变更，这些状态的变更全部以事件的方式存储，事件通过EventBus找到对应的Handler，然后更新DB中的数据。其实上面这个架构可以理解为为是CQRS和EventSouring的结合。</p>
+<p><a href="https://martinfowler.com/bliki/CQRS.html" target="_blank">CQRS参考资料</a></p>
+]]></content>
+    
+    
+      <category term="Architecture" scheme="http://yangbolin.cn/tags/Architecture/"/>
+    
+      <category term="架构设计" scheme="http://yangbolin.cn/categories/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[两种分布式系统中保持数据一致性的设计方案]]></title>
@@ -1278,7 +1325,7 @@ System.out.println(mockClazz.run(<span class="string">"C"</span>)); <span class=
     <link href="http://yangbolin.cn/2016/04/17/software-design/"/>
     <id>http://yangbolin.cn/2016/04/17/software-design/</id>
     <published>2016-04-17T13:33:06.000Z</published>
-    <updated>2016-04-18T13:13:39.000Z</updated>
+    <updated>2017-06-25T14:25:04.000Z</updated>
     <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
 <p>关于系统的架构设计，其实有很多内容，要想设计出足够灵活的软件系统，确实不是一件容易的事情，特别是面对我们日新月异的业务，业务的变动完全可以推翻你之前所做的所有设计，如何在复杂的业务中剥离出一些固定的规律，这大概就是系统架构的主要目的了。要想做好系统架构，你需要对业务有一个宏观层面的认识和理解，需要把你所面对的业务模块化，结构化，然后再针对每个模块每个结构进行详细的设计。当然这些模块的划分以及抽象，也需要你有一定的经验。</p>
 <a id="more"></a>
@@ -1297,7 +1344,7 @@ System.out.println(mockClazz.run(<span class="string">"C"</span>)); <span class=
 <p>关于系统的架构设计，其实有很多内容，要想设计出足够灵活的软件系统，确实不是一件容易的事情，特别是面对我们日新月异的业务，业务的变动完全可以推翻你之前所做的所有设计，如何在复杂的业务中剥离出一些固定的规律，这大概就是系统架构的主要目的了。要想做好系统架构，你需要对业务有一个宏观层面的认识和理解，需要把你所面对的业务模块化，结构化，然后再针对每个模块每个结构进行详细的设计。当然这些模块的划分以及抽象，也需要你有一定的经验。</p>
 ]]></summary>
     
-      <category term="架构" scheme="http://yangbolin.cn/tags/%E6%9E%B6%E6%9E%84/"/>
+      <category term="Architecture" scheme="http://yangbolin.cn/tags/Architecture/"/>
     
       <category term="架构设计" scheme="http://yangbolin.cn/categories/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
     
@@ -1903,150 +1950,6 @@ X-CClassLoader-X.cls
       <category term="svn" scheme="http://yangbolin.cn/tags/svn/"/>
     
       <category term="开发工具" scheme="http://yangbolin.cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[JAVA反射调用总结]]></title>
-    <link href="http://yangbolin.cn/2015/06/08/java-reflect/"/>
-    <id>http://yangbolin.cn/2015/06/08/java-reflect/</id>
-    <published>2015-06-08T14:48:54.000Z</published>
-    <updated>2015-06-08T15:15:32.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>这几天一直在忙于一个框架的开发，我们的初衷是基于配置产出业务数据，不要让开发工程师去编写JAVA代码来产出账单，一开始觉得这件事情很难，很难做到不开发JAVA代码，事实确实如此，不过数据如果规整的话，基于配置完全可以，一行java代码都不用写。当然这个框架目前还在测试中，核心功能已经开发结束了，开发一个框架和开发一个业务功能要考虑的事情完全不一样，在开发框架之前，需要把所有可能出现的需求都要考虑一下，其实框架就是高度的抽象，我们把平时所做的一些功能逻辑梳理清楚，再上一个高度就能梳理出一个框架。在开发这个框架的过程中用到了反射，感觉JDK的反射写起来代码有点多，于是考虑用Spring框架提供反射工具类，还有木有其他处理反射调用框架或者工具呢？</p>
-<a id="more"></a>
-
-<h4 id="二-概述">二.概述</h4>
-<h5 id="1-利用JDK本身的API来实现反射">1.利用JDK本身的API来实现反射</h5>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-</pre></td><td class="code"><pre>Object oo = <span class="keyword">new</span> InnerObject();
-Method[] methods = oo.getClass().getDeclaredMethods();
-<span class="keyword">for</span> (Method method : methods) {
-    <span class="keyword">if</span> (method.getName().equals(<span class="string">"test"</span>)) {
-        <span class="keyword">try</span> {
-            Object retValue = method.invoke(oo, <span class="keyword">null</span>);
-        } <span class="keyword">catch</span> (IllegalArgumentException e) {
-            e.printStackTrace();
-        } <span class="keyword">catch</span> (IllegalAccessException e) {
-            e.printStackTrace();
-        } <span class="keyword">catch</span> (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
-}
-</pre></td></tr></table></figure>
-
-<p>一个反射调用要写这么多代码，我也是醉了。。。。</p>
-<h5 id="2-利用Spring的工具类来实现反射">2.利用Spring的工具类来实现反射</h5>
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-</pre></td><td class="code"><pre>Method method = ReflectionUtils.findMethod(oo.getClass(), <span class="string">"test"</span>, <span class="keyword">null</span>);
-<span class="keyword">try</span> {
-    Object retValue = method.invoke(oo, <span class="keyword">null</span>);
-} <span class="keyword">catch</span> (IllegalArgumentException e) {
-    e.printStackTrace();
-} <span class="keyword">catch</span> (IllegalAccessException e) {
-    e.printStackTrace();
-} <span class="keyword">catch</span> (InvocationTargetException e) {
-    e.printStackTrace();
-}
-</pre></td></tr></table></figure>
-
-<p>虽然木有了for循环，但是代码还是有些多，不够精简。</p>
-<h5 id="3-利用Mirror来做反射">3.利用Mirror来做反射</h5>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre>1
-2
-3
-4
-5
-</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
- 	<span class="tag">&lt;<span class="title">groupId</span>&gt;</span>net.vidageek<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
- 	<span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>mirror<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
- 	<span class="tag">&lt;<span class="title">version</span>&gt;</span>1.6.1<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-</pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre>1
-2
-</pre></td><td class="code"><pre>Object oo = <span class="keyword">new</span> InnerObject();
-Object retValue = <span class="keyword">new</span> Mirror().on(oo).invoke().method(<span class="string">"test1"</span>).withoutArgs();
-</pre></td></tr></table></figure>
-
-<p>看看mirror是不是精简了很多呢？还是函数编程思想，这种写法在JDK8中会非常普遍。这里只是举例说明了一下方法调用，其他更多反射调用参考 <a href="http://projetos.vidageek.net/mirror/mirror/" target="_blank">mirror</a></p>
-<h4 id="三-总结">三.总结</h4>
-<p>对于一个点，多思考，寻求最简单的写法，你会有更多的收获。</p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>这几天一直在忙于一个框架的开发，我们的初衷是基于配置产出业务数据，不要让开发工程师去编写JAVA代码来产出账单，一开始觉得这件事情很难，很难做到不开发JAVA代码，事实确实如此，不过数据如果规整的话，基于配置完全可以，一行java代码都不用写。当然这个框架目前还在测试中，核心功能已经开发结束了，开发一个框架和开发一个业务功能要考虑的事情完全不一样，在开发框架之前，需要把所有可能出现的需求都要考虑一下，其实框架就是高度的抽象，我们把平时所做的一些功能逻辑梳理清楚，再上一个高度就能梳理出一个框架。在开发这个框架的过程中用到了反射，感觉JDK的反射写起来代码有点多，于是考虑用Spring框架提供反射工具类，还有木有其他处理反射调用框架或者工具呢？</p>
-]]></summary>
-    
-      <category term="JAVA" scheme="http://yangbolin.cn/tags/JAVA/"/>
-    
-      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[操作系统定时调度]]></title>
-    <link href="http://yangbolin.cn/2015/05/18/os-timer-call/"/>
-    <id>http://yangbolin.cn/2015/05/18/os-timer-call/</id>
-    <published>2015-05-18T12:13:29.000Z</published>
-    <updated>2015-05-19T00:58:32.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>最近需要开发一些定时任务，提到定时任务，我们都会想到quartz，为了让我们的定时任务能够更加灵活的被控制，我们通过shell脚本去执行一个java类，然后定时去执行这个shell脚本即可。如何去定时执行这个shell脚本，我们想到Linux本身提供后台进程去定时执行一些命令，那就是crontab，因此我们编写好自己的shell脚本再写好crontab后就能定时执行我们的任务了。</p>
-<a id="more"></a>
-
-<h4 id="二-如何配置">二.如何配置</h4>
-<ul>
-<li>查看crontab的配置<br>crontab -l</li>
-<li>编辑crontab的配置<br>crontab -e</li>
-<li><p>crontab的格式说明<br><img src="http://bolinyoung.qiniudn.com/crontab.jpg" alt="crontab格式说明"></p>
-</li>
-<li><p>less  /var/log/cron<br>查看crontab运行时的日志</p>
-</li>
-</ul>
-<h4 id="三-注意点">三.注意点</h4>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre><span class="bullet">* </span>6 <span class="bullet">* *</span> * sh xx.sh
-</pre></td></tr></table></figure>
-
-<p>表示每天凌晨6点开始没分钟执行一次sh xx.sh脚本</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>0 6 <span class="bullet">* *</span> * sh xx.sh
-</pre></td></tr></table></figure>
-
-<p>表示每天凌晨6点开始执行一次sh xx.sh脚本，只执行一次</p>
-<p>注意上面这两个频率的区别，排查问题的时候注意考虑那些一直被忽略的点，有可能那些点就是解决问题的关键之所在。</p>
-]]></content>
-    <summary type="html"><![CDATA[<h4 id="一-概述">一.概述</h4>
-<p>最近需要开发一些定时任务，提到定时任务，我们都会想到quartz，为了让我们的定时任务能够更加灵活的被控制，我们通过shell脚本去执行一个java类，然后定时去执行这个shell脚本即可。如何去定时执行这个shell脚本，我们想到Linux本身提供后台进程去定时执行一些命令，那就是crontab，因此我们编写好自己的shell脚本再写好crontab后就能定时执行我们的任务了。</p>
-]]></summary>
-    
-      <category term="crontab" scheme="http://yangbolin.cn/tags/crontab/"/>
-    
-      <category term="编程开发" scheme="http://yangbolin.cn/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   
