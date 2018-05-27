@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yangbolin.cn/2018/05/27/beancopier/</loc>
+    <lastmod>2018-05-27T14:31:07.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yangbolin.cn/2017/12/05/select-for-update-issues/</loc>
     <lastmod>2017-12-05T11:10:19.000Z</lastmod>
   </url>

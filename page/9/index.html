@@ -61,6 +61,45 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/05/09/class-conflict-analyse-1/">
+  <time datetime="2014-05-09T10:59:01.000Z">
+    May 9 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/05/09/class-conflict-analyse-1/">一个jar包冲突的解决</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>最近在发布一个需求的时候，遇到下面的错误</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/05/09/class-conflict-analyse-1/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/05/03/after-returning-advice-error/">
   <time datetime="2014-05-03T06:40:00.000Z">
     May 3 2014
@@ -416,46 +455,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/15/spring-aop-practice/">
-  <time datetime="2014-04-15T11:58:15.000Z">
-    Apr 15 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/04/15/spring-aop-practice/">如何不用修改原来的代码呢？</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-需求描述">一.需求描述</h4>
-<p>最近遇到这样一个需求，有个数据计算的方法，我们需要优化一下，因为有些数据在一段时间内计算出的结果总是一样的，为了提高性能，我们把这些数据的计算结果缓存起来，这样下次计算的时候就先去缓存中查一下，要是缓存中存在，就直接把缓存中的数据返回，要是缓存中不存在就走原来的计算逻辑去计算，面对这个需求，我们需要做两件事情，在调用计算方法之前读取一下缓存，在调用方法之后把值写入缓存。这样的计算方法有10多个，相应的类也有10多个。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/04/15/spring-aop-practice/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -504,7 +503,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>27</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>28</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
 		
@@ -531,6 +530,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2018/05/27/beancopier/" title="关于BeanCopier的使用">关于BeanCopier的使用</a>
+      </li>
     
       <li>
         <a href="/2017/12/05/select-for-update-issues/" title="mysql中select for update锁的问题">mysql中select for update锁的问题</a>
@@ -566,10 +569,6 @@
     
       <li>
         <a href="/2016/05/22/enum-probolems-in-hessian/" title="枚举在hessian序列化和反序列化中的问题">枚举在hessian序列化和反序列化中的问题</a>
-      </li>
-    
-      <li>
-        <a href="/2016/05/15/arrayblockingqueue-put-offer/" title="关于ArrayBlockingQueue的put和offer方法">关于ArrayBlockingQueue的put和offer方法</a>
       </li>
     
   </ul>
@@ -612,7 +611,7 @@
 		
 			<li><a href="/categories/线上运维/" title="线上运维">线上运维<sup>1</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>37</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>38</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		
@@ -629,7 +628,7 @@
   </div>
   <footer id="footer"><div class="copyright">
   
-  &copy; 2017 <a href="/">BolinYoung</a>
+  &copy; 2018 <a href="/">BolinYoung</a>
   
 </div>
 <div class="theme-copyright">

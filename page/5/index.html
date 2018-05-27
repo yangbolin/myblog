@@ -61,6 +61,46 @@
   <header>
     
       <div class="icon"></div>
+      <a href="/2014/08/22/velocity-exception-analyze/">
+  <time datetime="2014-08-22T14:05:14.000Z">
+    Aug 22 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/08/22/velocity-exception-analyze/">一次velocity异常的分析</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="一-现象">一.现象</h4>
+<p>最近在使用velocity模板的时候RuntimeInstance的1103行代码出现了NPE,如下图所示<br><img src="http://bolinyoung.qiniudn.com/velocity-npe.png" alt="velocity-npe"><br>该行代码一直在抛NPE。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+        <div class="alignleft">
+          <a href="/2014/08/22/velocity-exception-analyze/#more" class="more-link">Read More</a>
+        </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
       <a href="/2014/08/16/a-jvm-share/">
   <time datetime="2014-08-16T07:44:15.000Z">
     Aug 16 2014
@@ -414,46 +454,6 @@
 
 
   
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/07/07/spring-application-event/">
-  <time datetime="2014-07-07T05:08:20.000Z">
-    Jul 7 2014
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/07/07/spring-application-event/">Spring容器的事件机制</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h4 id="一-概述">一.概述</h4>
-<p>Spring容器暴漏了很多扩展点给框架的使用者，让框架的使用者能够干涉一些容器内部的事情，也让框架的使用能够感知到容器内部发生了什么事情，比如Spring容器在初始化完后，就会广播一个容器初始化完成的事件，然后事件的监听者监听到这个事件后做相应的事情，这也是Spring容器的一个非常有用的扩展点。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2014/07/07/spring-application-event/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -502,7 +502,7 @@
 		
 			<li><a href="/tags/IBatis/" title="IBatis">IBatis<sup>3</sup></a></li>
 		
-			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>27</sup></a></li>
+			<li><a href="/tags/JAVA/" title="JAVA">JAVA<sup>28</sup></a></li>
 		
 			<li><a href="/tags/JVM/" title="JVM">JVM<sup>9</sup></a></li>
 		
@@ -529,6 +529,10 @@
 <div class="widget recent-posts">
   <h3 class="title">最新文章</h3>
   <ul class="clearfix">
+    
+      <li>
+        <a href="/2018/05/27/beancopier/" title="关于BeanCopier的使用">关于BeanCopier的使用</a>
+      </li>
     
       <li>
         <a href="/2017/12/05/select-for-update-issues/" title="mysql中select for update锁的问题">mysql中select for update锁的问题</a>
@@ -564,10 +568,6 @@
     
       <li>
         <a href="/2016/05/22/enum-probolems-in-hessian/" title="枚举在hessian序列化和反序列化中的问题">枚举在hessian序列化和反序列化中的问题</a>
-      </li>
-    
-      <li>
-        <a href="/2016/05/15/arrayblockingqueue-put-offer/" title="关于ArrayBlockingQueue的put和offer方法">关于ArrayBlockingQueue的put和offer方法</a>
       </li>
     
   </ul>
@@ -610,7 +610,7 @@
 		
 			<li><a href="/categories/线上运维/" title="线上运维">线上运维<sup>1</sup></a></li>
 		
-			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>37</sup></a></li>
+			<li><a href="/categories/编程开发/" title="编程开发">编程开发<sup>38</sup></a></li>
 		
 			<li><a href="/categories/编程语言/" title="编程语言">编程语言<sup>11</sup></a></li>
 		
@@ -627,7 +627,7 @@
   </div>
   <footer id="footer"><div class="copyright">
   
-  &copy; 2017 <a href="/">BolinYoung</a>
+  &copy; 2018 <a href="/">BolinYoung</a>
   
 </div>
 <div class="theme-copyright">
