@@ -424,7 +424,7 @@ ASM这个字节码处理框架，不仅能够读字节码，而且还能修改�
   </div>
   <footer id="footer"><div class="copyright">
   
-  &copy; 2018 <a href="/">BolinYoung</a>
+  &copy; 2019 <a href="/">BolinYoung</a>
   
 </div>
 <div class="theme-copyright">
@@ -434,22 +434,46 @@ ASM这个字节码处理框架，不仅能够读字节码，而且还能修改�
 </div>
 <div class="clearfix"></div>
 </footer>
-  <script src="/js/jquery-1.7.2.min.js"></script>
-<script src="/js/scale.fix.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+  <script src="<%- config.root %>js/jquery-1.7.2.min.js"></script>
+<script src="<%- config.root %>js/scale.fix.js"></script>
+<script src="<%- config.root %>js/jquery.imagesloaded.min.js"></script>
+<script src="<%- config.root %>js/gallery.js"></script>
 
+<% if (config.disqus_shortname){ %>
+<script type="text/javascript">
+  var disqus_shortname = '<%= config.disqus_shortname %>';
 
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/<% if (page.comments){ %>embed.js<% } else { %>count.js<% } %>';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+<% } else if (theme.duoshuo_shortname){ %>
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: '<%= theme.duoshuo_shortname %>' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<% } %>
 
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<% if (theme.fancybox){ %>
+<link rel="stylesheet" href="<%- config.root %>fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="<%- config.root %>fancybox/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
   (function($){
     $('.fancybox').fancybox();
   })(jQuery);
 </script>
-
+<% } %>
 
 </body>
 </html>
